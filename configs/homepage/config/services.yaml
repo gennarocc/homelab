@@ -1,0 +1,40 @@
+- Media:
+    - Plex:
+        href: https://app.plex.tv/desktop/
+        description: Plex Media Server
+        icon: /icons/plex.png
+        widget:
+            type: plex
+            url: "{{HOMEPAGE_VAR_PLEX_URL}}"
+            key: "{{HOMEPAGE_VAR_PLEX_API_TOKEN}}"
+    - qBittorrent:
+        href: "{{HOMEPAGE_VAR_QBITTORRENT_URL}}"
+        description: Torrent Manager
+        icon: /icons/qbt.png
+        widget:
+            type: qbittorrent
+            url: "{{HOMEPAGE_VAR_QBITTORRENT_URL}}"
+            username: "{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}"
+            password: "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}"
+- Files and Documents:
+    - File Browser:
+        href: "{{HOMEPAGE_VAR_FILEBROWSER_URL}}"
+        description: File server and browser
+        icon: /icons/fb.svg
+    - Immich:
+        href: "{{HOMEPAGE_VAR_IMMICH_URL}}"
+        description: Image Gallery
+        icon: /icons/im.png
+    - Metube:
+        href: "{{HOMEPAGE_VAR_METUBE_URL}}"
+        description: Youtube Downloader
+        icon: /icons/metube.png
+- Websites:
+    - Hurley's Ranch:
+        href: "{{HOMEPAGE_VAR_LOST_URL}}"
+        description: Lost Website
+        icon: /icons/hurl.png
+    - Pugstreet Cinema:
+        href: "{{HOMEPAGE_VAR_CINEMA_URL}}"
+        description: Movie Podcast
+        icon: /icons/favicon.ico
