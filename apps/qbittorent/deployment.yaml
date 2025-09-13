@@ -1,0 +1,86 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbittorrent
+  namespace: homelab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qbittorrent
+  template:
+    metadata:
+      labels:
+        app: qbittorrent
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: qbittorrent
+          image: lscr.io/linuxserver/qbittorrent:latest
+          env:
+            - name: PUID
+              value: "1001"  # Match pi user ID
+            - name: PGID
+              value: "1001"  # Match pi group ID
+            - name: TZ
+              value: "America/New_York"
+            - name: WEBUI_PORT
+              value: "8080"
+          ports:
+            - containerPort: 8080
+            - containerPort: 6881
+            - containerPort: 6881
+              protocol: UDP
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: "256Mi"
+          volumeMounts:
+            - name: homelab-configs
+              mountPath: /config
+              subPath: qbittorrent
+            - name: hdd-data
+              mountPath: /data
+            - name: hdd-torrents
+              mountPath: /downloads
+      volumes:
+        - name: homelab-configs
+          persistentVolumeClaim:
+            claimName: homelab-configs-pvc
+        - name: hdd-data
+          hostPath:
+            path: /hdd
+            type: Directory
+        - name: hdd-torrents
+          hostPath:
+            path: /hdd/.torrents/movies
+            type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbittorrent
+  namespace: homelab
+spec:
+  selector:
+    app: qbittorrent
+  ports:
+    - name: webui
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+    - name: bittorrent-tcp
+      port: 6881
+      targetPort: 6881
+      protocol: TCP
+    - name: bittorrent-udp
+      port: 6881
+      targetPort: 6881
+      protocol: UDP
+  type: LoadBalancer
+  externalIPs:
+    - 192.168.1.99

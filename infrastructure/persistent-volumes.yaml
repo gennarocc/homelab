@@ -1,0 +1,42 @@
+---
+# PersistentVolume for app configs
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: homelab-configs-pv
+  namespace: homelab
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  hostPath:
+    path: /home/pi/homelab-k8s/configs
+    type: DirectoryOrCreate
+
+---
+# PersistentVolumeClaim for app configs
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homelab-configs-pvc
+  namespace: homelab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: local-storage
+  volumeName: homelab-configs-pv
+
+---
+# StorageClass for local storage
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewpot" content="width=device-width, initial-scale=1.0">
+    <title>Hurley's Ranch</title>
+    <link rel="icon" type="image/x-icon" href="images/hurley.png">
+    <style>
+        html, body {
+            background: #000;
+        }
+        body {
+            max-width: 800px;
+            font-size: 16px;
+            font-family: Open Sans, Arial;
+            margin: 2em auto;
+            padding: 1em;
+            text-align: justify;
+            color: #d9d9d9;
+        }
+        div {
+            padding: .5em;
+            margin: 1em auto;
+        }
+        img {
+            width: 420px;
+        }
+        audio {
+            width: 100%;
+        }
+        .center {
+            display: flex;
+            justify-content: center;
+        }
+        .line {
+            height: 1px;
+            background-color: #d9d9d9;
+            width: 100%;
+            margin: 20px 0;
+        }
+        /* Pagination styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+        .pagination button {
+            padding: 8px 15px;
+            background-color: #333;
+            border: 1px solid #555;
+            cursor: pointer;
+            border-radius: 5px;
+            color: #d9d9d9;
+        }
+        .pagination button:hover {
+            background-color: #444;
+        }
+        .pagination button.active {
+            background-color: #666;
+            color: white;
+            border-color: #888;
+        }
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .pagination span {
+            color: #d9d9d9;
+            align-self: center;
+        }
+        .episode-wrapper {
+            display: block;
+            width: 100%;
+        }
+        .episode-container {
+            display: block;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        h1, h3 {
+            color: #d9d9d9;
+        }
+    </style>
+    <!-- If you prefer to keep your CSS in a separate file, ensure the path is correct -->
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+</head>
+<body>
+    <div class="center">
+        <h1>Hurley's Ranch - Lost Discussion</h1>
+    </div>
+    <div class="center">
+        <p>The boys get down and dirty to watch Lost</p>
+    </div>
+    <div class="center">
+        <img src="images/locke.jpg">
+    </div>
+    <h1>Episodes</h1>
+
+    <div id="episodes-container">
+        <!-- Episodes will be loaded here -->
+    </div>
+
+    <div class="pagination" id="pagination">
+        <!-- Pagination controls will be added here -->
+    </div>
+
+    <script>
+        // Configuration
+        const EPISODES_PER_PAGE = 8;
+        const TOTAL_EPISODES = 59;
+
+        // Data structure for special images (like the sawyer.png after episode 10)
+        const specialImages = {
+            10: "images/sawyer.png"
+            // Add more special images here if needed, with episode number as key
+        };
+
+        // Generate episode data
+        function generateEpisodes() {
+            const episodes = [];
+
+            for (let i = 1; i <= TOTAL_EPISODES; i++) {
+                episodes.push({
+                    number: i,
+                    audioSrc: `audio/discussion-${i}.mp3`
+                });
+            }
+
+            return episodes;
+        }
+
+        // Render episodes for current page
+        function renderEpisodes(page) {
+            const episodes = generateEpisodes();
+            const container = document.getElementById('episodes-container');
+            container.innerHTML = '';
+
+            const startIdx = (page - 1) * EPISODES_PER_PAGE;
+            const endIdx = Math.min(startIdx + EPISODES_PER_PAGE, episodes.length);
+
+            for (let i = startIdx; i < endIdx; i++) {
+                const episode = episodes[i];
+
+                // Create a wrapper div for the entire episode section
+                const episodeWrapper = document.createElement('div');
+                episodeWrapper.className = 'episode-wrapper';
+
+                // Create episode element
+                const episodeDiv = document.createElement('div');
+                episodeDiv.className = 'episode-container';
+
+                // Add episode content
+                episodeDiv.innerHTML = `
+                    <h3>Episode ${episode.number}</h3>
+                    <audio controls>
+                        <source src="${episode.audioSrc}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                `;
+
+                // Add the episode div to the wrapper
+                episodeWrapper.appendChild(episodeDiv);
+
+                // Add the wrapper to the container
+                container.appendChild(episodeWrapper);
+
+                // Add divider line
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'line';
+                container.appendChild(lineDiv);
+
+                // Check if there's a special image for this episode
+                if (specialImages[episode.number]) {
+                    const imageDiv = document.createElement('div');
+                    imageDiv.className = 'center';
+                    imageDiv.innerHTML = `<img src="${specialImages[episode.number]}">`;
+                    container.appendChild(imageDiv);
+
+                    // Add another divider if we added an image
+                    const additionalLineDiv = document.createElement('div');
+                    additionalLineDiv.className = 'line';
+                    container.appendChild(additionalLineDiv);
+                }
+            }
+        }
+
+        // Render pagination controls
+        function renderPagination(currentPage) {
+            const totalPages = Math.ceil(TOTAL_EPISODES / EPISODES_PER_PAGE);
+            const paginationDiv = document.getElementById('pagination');
+            paginationDiv.innerHTML = '';
+
+            // Previous button
+            const prevButton = document.createElement('button');
+            prevButton.innerText = '← Previous';
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    goToPage(currentPage - 1);
+                }
+            });
+            paginationDiv.appendChild(prevButton);
+
+            // Page numbers (with ellipsis for many pages)
+            const maxVisiblePages = 5;
+
+            function addPageButton(pageNum) {
+                const pageButton = document.createElement('button');
+                pageButton.innerText = pageNum;
+                pageButton.className = pageNum === currentPage ? 'active' : '';
+                pageButton.addEventListener('click', () => goToPage(pageNum));
+                paginationDiv.appendChild(pageButton);
+                return pageButton;
+            }
+
+            if (totalPages <= maxVisiblePages) {
+                // Show all page numbers
+                for (let i = 1; i <= totalPages; i++) {
+                    addPageButton(i);
+                }
+            } else {
+                // Show limited page numbers with ellipsis
+                addPageButton(1);
+
+                if (currentPage > 3) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.innerText = '...';
+                    paginationDiv.appendChild(ellipsis);
+                }
+
+                // Pages around current
+                const startPage = Math.max(2, currentPage - 1);
+                const endPage = Math.min(totalPages - 1, currentPage + 1);
+
+                for (let i = startPage; i <= endPage; i++) {
+                    addPageButton(i);
+                }
+
+                if (currentPage < totalPages - 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.innerText = '...';
+                    paginationDiv.appendChild(ellipsis);
+                }
+
+                if (totalPages > 1) {
+                    addPageButton(totalPages);
+                }
+            }
+
+            // Next button
+            const nextButton = document.createElement('button');
+            nextButton.innerText = 'Next →';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    goToPage(currentPage + 1);
+                }
+            });
+            paginationDiv.appendChild(nextButton);
+        }
+
+        // Navigate to specific page
+        function goToPage(page) {
+            currentPage = page;
+            renderEpisodes(page);
+            renderPagination(page);
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+
+            // Update URL with page parameter
+            const url = new URL(window.location);
+            url.searchParams.set('page', page);
+            window.history.pushState({}, '', url);
+        }
+
+        // Initialize
+        let currentPage = 1;
+
+        // Check if there's a page parameter in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const pageParam = urlParams.get('page');
+        if (pageParam && !isNaN(parseInt(pageParam))) {
+            currentPage = parseInt(pageParam);
+        }
+
+        // Initial render
+        renderEpisodes(currentPage);
+        renderPagination(currentPage);
+    </script>
+</body>
+</html>

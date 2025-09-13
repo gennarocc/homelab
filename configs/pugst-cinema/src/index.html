@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <title>Pug Street Cinephiles</title>
+  <style>
+    body {
+      font-family: "MS Sans Serif", Arial, sans-serif;
+      background-color: #008080; /* Teal background */
+      color: #000000;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      background-color: #c0c0c0; /* Light gray */
+      border: 2px solid #ffffff;
+      border-right-color: #808080;
+      border-bottom-color: #808080;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 15px;
+    }
+    
+    h1 {
+      background-color: #000080; /* Navy blue */
+      color: #ffffff;
+      padding: 10px;
+      margin-top: 0;
+      border: 2px solid #c0c0c0;
+      border-right-color: #000000;
+      border-bottom-color: #000000;
+    }
+    
+    img {
+      max-width: 80%;
+      border: 2px solid #ffffff;
+      border-right-color: #808080;
+      border-bottom-color: #808080;
+      margin: 20px 0;
+    }
+    
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background-color: #ffffff;
+    }
+    
+    td {
+      border: 2px solid #c0c0c0;
+      padding: 8px;
+      text-align: center;
+    }
+    
+    a {
+      color: #0000ff;
+      text-decoration: none;
+      display: block;
+      padding: 5px;
+    }
+    
+    a:hover {
+      background-color: #000080;
+      color: #ffffff;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 0.8em;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pug Street Cinephiles</h1>
+    
+    <img src="/images/pugmovie.png" alt="Pug Street Cinephiles Home">
+    
+    <table id="movie-table">
+      <!-- Table will be populated with JavaScript -->
+      <tr><td>Loading movie list...</td></tr>
+    </table>
+  </div>
+  
+  <div class="footer">
+    © 2025 Pug Street Software - Made with Dungeonware
+  </div>
+
+  <script>
+    // Function to fetch audio files and populate the table
+    async function loadMovieList() {
+      try {
+        // Based on the Docker setup, we'll directly use files we know are available
+        // The filenames are determined by looking at the server contents from your screenshot
+        const audioFiles = [
+          "Month1-ApocalypseNow.mp3",
+          "Month2-Brazil.mp3",
+	  "Month3-TheHandmaiden.mp3",
+	  "Month4-SurvivingTheGame.mp3",
+	  "Month5-TheFreshman.mp3",
+	  "Month6-Suckerpunch.mp3",
+	  "Month7-Sorcerer.mp3",
+        ];
+        
+        // Check if each file exists by making a HEAD request
+        // This is more reliable than directory listing
+        const checkedFiles = [];
+        
+        for (const file of audioFiles) {
+          try {
+            const response = await fetch(`/audio/${file}`, { method: 'HEAD' });
+            if (response.ok) {
+              checkedFiles.push(file);
+            }
+          } catch (e) {
+            console.log(`File check failed for ${file}`);
+          }
+        }
+        
+        const table = document.getElementById('movie-table');
+        
+        if (checkedFiles.length === 0) {
+          // If no files were verified, try a different approach - use all files without verification
+          console.log("No files verified, using full list without verification");
+          populateTable(audioFiles);
+        } else {
+          // Use only verified files
+          populateTable(checkedFiles);
+        }
+      } catch (error) {
+        console.error('Error loading movie list:', error);
+        // Fallback in case of any errors
+        const audioFiles = [
+        ];
+        
+        populateTable(audioFiles, true);
+      }
+    }
+    
+    function populateTable(files, isFallback = false) {
+      const table = document.getElementById('movie-table');
+      table.innerHTML = ''; // Clear loading message
+      
+      if (isFallback) {
+        const message = document.createElement('tr');
+        const messageCell = document.createElement('td');
+        messageCell.setAttribute('colspan', '3');
+        messageCell.textContent = 'Note: Using fallback movie list. File verification failed.';
+        messageCell.style.backgroundColor = '#ffcccc';
+        messageCell.style.padding = '10px';
+        message.appendChild(messageCell);
+        table.appendChild(message);
+      }
+      
+      // Calculate rows and columns for the table
+      const totalFiles = files.length;
+      const cols = 3; // Adjust number of columns as needed
+      const rows = Math.ceil(totalFiles / cols);
+      
+      let fileIndex = 0;
+      
+      for (let i = 0; i < rows; i++) {
+        const row = document.createElement('tr');
+        
+        for (let j = 0; j < cols; j++) {
+          if (fileIndex < totalFiles) {
+            const cell = document.createElement('td');
+            const fileName = files[fileIndex];
+            
+            // Extract month number and movie name
+            const match = fileName.match(/Month(\d+)-(.+)\.mp3/);
+            if (match) {
+              const monthNum = match[1];
+              // Format movie name properly - handle special cases like "Apocalypse"
+              const rawMovieName = match[2];
+              let movieName = rawMovieName;
+              
+              // Add spacesmonthNumbefore capital letters if needed
+              if (rawMovieName.match(/[A-Z]/g) && rawMovieName.match(/[A-Z]/g).length > 1) {
+                movieName = rawMovieName.replace(/([A-Z])/g, ' $1').trim();
+              }
+              
+              const link = document.createElement('a');
+              link.href = `movie.html?month=${monthNum}&movie=${encodeURIComponent(movieName)}&file=${encodeURIComponent(fileName)}`;
+              link.textContent = `Month ${monthNum}: ${movieName}`;
+              
+              cell.appendChild(link);
+            }
+            
+            row.appendChild(cell);
+            fileIndex++;
+          } else {
+            // Add empty cell to maintain table structure
+            const cell = document.createElement('td');
+            row.appendChild(cell);
+          }
+        }
+        
+        table.appendChild(row);
+      }
+    }
+    
+    // Load the movie list when the page loads
+    window.addEventListener('DOMContentLoaded', loadMovieList);
+  </script>
+</body>
+</html>

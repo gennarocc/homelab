@@ -1,0 +1,10 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/settings
+
+title: DungeonWare Dashboard
+statusStyle: "dot"
+background: /icons/wallpaper.png
+headerStyle: boxed
+cardBlur: xl
+target: _self

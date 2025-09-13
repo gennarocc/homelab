@@ -1,0 +1,28 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: filebrowser
+  annotations:
+    gethomepage.dev/href: "files.dungeonware.systems"
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/description: Web File Browser
+    gethomepage.dev/group: Files and Documents
+    gethomepage.dev/icon: fb.svg
+    gethomepage.dev/app: filebrrowser # optional, may be needed if app.kubernetes.io/name != ingress metadata.name
+    gethomepage.dev/name: Filebrowser
+    gethomepage.dev/pod-selector: ""
+    gethomepage.dev/weight: 10 # optional
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`files.dungeonware.systems`)
+      services:
+        - kind: Service
+          name: filebrowser
+          namespace: homelab
+          port: 3000
+          scheme: http
+          strategy: RoundRobin
+          weight: 10

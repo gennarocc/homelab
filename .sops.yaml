@@ -1,0 +1,10 @@
+creation_rules:
+  # Encrypt YAML files in configs directory
+  - path_regex: .*configmap.*\.ya?ml$
+    encrypted_regex: '^(key|password|token|secret|apikey|api_key|username)$'
+    age: >-
+      age1fyxf44z7ztr6h06g65y7l2dvfemz73gfw3rcy657j22dhtlmnq3se0m8tn
+  - path_regex: .*secret.*\.ya?ml$
+    encrypted_regex: '^(token)$'
+    age: >-
+      age1fyxf44z7ztr6h06g65y7l2dvfemz73gfw3rcy657j22dhtlmnq3se0m8tn

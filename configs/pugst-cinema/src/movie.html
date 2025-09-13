@@ -1,0 +1,170 @@
+<DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <title>Pug Street Cinephiles - Movie</title>
+  <style>
+    body {
+      font-family: "MS Sans Serif", Arial, sans-serif;
+      background-color: #008080; /* Teal background */
+      color: #000000;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      background-color: #c0c0c0; /* Light gray */
+      border: 2px solid #ffffff;
+      border-right-color: #808080;
+      border-bottom-color: #808080;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 15px;
+    }
+    
+    h1 {
+      background-color: #000080; /* Navy blue */
+      color: #ffffff;
+      padding: 10px;
+      margin-top: 0;
+      border: 2px solid #c0c0c0;
+      border-right-color: #000000;
+      border-bottom-color: #000000;
+    }
+    
+    img {
+      max-width: 80%;
+      border: 2px solid #ffffff;
+      border-right-color: #808080;
+      border-bottom-color: #808080;
+      margin: 20px 0;
+    }
+    
+    .audio-player {
+      margin: 20px auto;
+      background-color: #ffffff;
+      padding: 10px;
+      border: 2px solid #ffffff;
+      border-right-color: #808080;
+      border-bottom-color: #808080;
+      width: 80%;
+    }
+    
+    audio {
+      width: 100%;
+    }
+    
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 8px 20px;
+      background-color: #c0c0c0;
+      border: 2px solid #ffffff;
+      border-right-color: #808080;
+      border-bottom-color: #808080;
+      color: #000000;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    
+    .back-button:hover {
+      background-color: #d0d0d0;
+    }
+    
+    .back-button:active {
+      border: 2px solid #808080;
+      border-right-color: #ffffff;
+      border-bottom-color: #ffffff;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 0.8em;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="movie-header">Loading...</h1>
+    
+    <img id="movie-image" src="/api/placeholder/400/300" alt="Movie Image">
+    
+    <div class="audio-player">
+      <audio id="movie-audio" controls>
+        <source id="audio-source" src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+    
+    <a href="index.html" class="back-button">Back to Home</a>
+  </div>
+  
+  <div class="footer">
+    © 2025 Pug Street Software - Made with Dungeonware
+  </div>
+
+  <script>
+    function getParameterByName(name, url = window.location.href) {
+      name = name.replace(/[\[\]]/g, '\\$&');
+      const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+    
+    function loadMoviePage() {
+      const monthNum = getParameterByName('month');
+      const movieName = getParameterByName('movie');
+      const fileName = getParameterByName('file');
+      
+      if (monthNum && movieName) {
+        // Set the page title and header
+        document.title = `Pug Street Cinephiles - Month ${monthNum}: ${movieName}`;
+        document.getElementById('movie-header').textContent = `Month ${monthNum}: ${movieName}`;
+       
+        // Set the movie image
+        const movieImage = document.getElementById('movie-image');
+        movieImage.src = `/images/month${monthNum}.jpg`;
+        movieImage.alt = `${movieName} Discussion Image`;
+        
+        // Set the audio source
+        if (fileName) {
+          const audioSource = document.getElementById('audio-source');
+          audioSource.src = `/audio/${fileName}`;
+          
+          // Reload the audio player to apply the new source
+          const audioPlayer = document.getElementById('movie-audio');
+          audioPlayer.load();
+          
+          // Add error handling for audio loading
+          audioPlayer.onerror = function() {
+           console.error('Error loading audio file:', fileName);
+            const audioContainer = document.querySelector('.audio-player');
+            audioContainer.innerHTML = `
+              <div style="background-color: #ffcccc; padding: 10px; margin: 10px 0; border: 1px solid #ff0000;">
+                Error loading audio file: ${fileName}.<br>
+                Please check that the file exists in the /audio/ directory.
+              </div>
+              <audio controls>
+                <source src="/audio/${fileName}" type="audio/mpeg">
+                Your browser does not support the audio element.
+              </audio>
+            `;
+          };
+        }
+      } else {
+        document.getElementById('movie-header').textContent = 'Movie not found';
+      }
+    }
+    
+    // Load the movie page when the DOM is fully loaded
+    window.addEventListener('DOMContentLoaded', loadMoviePage);
+  </script>
+</body>
+</html> 

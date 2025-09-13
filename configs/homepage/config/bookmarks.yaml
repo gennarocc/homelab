@@ -1,0 +1,34 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/bookmarks
+
+- Developer:
+    - Hogtagon:
+        - abbr: HG
+          href: https://github.com/gennarocc/hogtagon
+    - Dolphin:
+        - abbr: OC
+          href: https://github.com/crhuff/ocean-clown
+    - AlphaBeta:
+        - abbr: AB
+          href: https://github.com/vcevce/bitwig-projects-vce
+
+- Store Fronts:
+    - TCGPlayer:
+        - abbr: TC
+          href: https://tcgplayer.com/
+    - Discogs:
+        - abbr: DC
+          href: https://discogs.com/
+    - Reverb:
+        - abbr: RV
+          href: https://reverb.com/
+
+- Entertainment:
+    - Reddit:
+        - abbr: RT
+          href: https://reddit.com/
+    - YouTube:
+        - abbr: YT
+          href: https://youtube.com/
+

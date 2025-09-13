@@ -1,0 +1,4 @@
+---
+# sample kubernetes config
+mode: default
+traefik: true

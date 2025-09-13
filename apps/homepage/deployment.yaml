@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage
+  namespace: homelab
+spec:
+  replicas: 1
+  strategy: 
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: homepage
+  template:
+    metadata:
+      labels:
+        app: homepage
+    spec:
+      serviceAccountName: homepage
+      automountServiceAccountToken: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      containers:
+        - name: homepage
+          image: ghcr.io/gethomepage/homepage:latest
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: HOMEPAGE_ALLOWED_HOSTS
+              value: "dashboard.dungeonware.systems,192.168.1.99:3000"
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: homelab-configs
+              mountPath: /app/config
+              subPath: homepage/config
+            - name: homelab-configs
+              mountPath: /app/public/icons
+              subPath: homepage/icons
+            - name: hdd-data
+              mountPath: /hdd
+      volumes:
+        - name: homelab-configs
+          persistentVolumeClaim:
+            claimName: homelab-configs-pvc
+        - name: hdd-data
+          hostPath:
+            path: /hdd
+            type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homepage
+  namespace: homelab
+spec:
+  selector:
+    app: homepage
+  ports:
+    - port: 3000
+      targetPort: 3000
+  type: LoadBalancer
+
