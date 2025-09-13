@@ -30,6 +30,9 @@ spec:
               value: "1000"
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: "dashboard.dungeonware.systems,192.168.1.99:3000"
+          envFrom:
+            - secretRef:
+                name: homepage-secret
           ports:
             - containerPort: 3000
           volumeMounts:
