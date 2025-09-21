@@ -57,7 +57,7 @@ spec:
             type: Directory
         - name: hdd-torrents
           hostPath:
-            path: /hdd/.torrents/movies
+            path: /hdd/.torrents/
             type: Directory
 ---
 apiVersion: v1
