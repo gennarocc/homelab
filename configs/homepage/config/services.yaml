@@ -8,7 +8,7 @@
             url: "{{HOMEPAGE_VAR_PLEX_URL}}"
             key: "{{HOMEPAGE_VAR_PLEX_API_TOKEN}}"
     - qBittorrent:
-        href: "{{HOMEPAGE_VAR_QBITTORRENT_URL}}"
+        href: http://192.168.1.99:8080
         description: Torrent Manager
         icon: /icons/qbt.png
         widget:
@@ -21,10 +21,15 @@
         href: "{{HOMEPAGE_VAR_FILEBROWSER_URL}}"
         description: File server and browser
         icon: /icons/fb.svg
-    - Immich:
+    - PhotoPrisim:
         href: "{{HOMEPAGE_VAR_IMMICH_URL}}"
         description: Image Gallery
-        icon: /icons/im.png
+        icon: /icons/photoprisim.svg
+        widget:
+            type: photoprism
+            url: "{{HOMEPAGE_VAR_PHOTOPRISIM_URL}}"
+            username: "{{HOMEPAGE_VAR_PHOTOPRISIM_USERNAME}}"
+            password: "{{HOMEPAGE_VAR_PHOTOPRISIM_PASSWORD}}"
     - Metube:
         href: "{{HOMEPAGE_VAR_METUBE_URL}}"
         description: Youtube Downloader
