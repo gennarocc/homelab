@@ -22,14 +22,13 @@
         description: File server and browser
         icon: /icons/fb.svg
     - PhotoPrisim:
-        href: "{{HOMEPAGE_VAR_IMMICH_URL}}"
+        href: "{{HOMEPAGE_VAR_PHOTOPRISIM_URL}}"
         description: Image Gallery
         icon: /icons/photoprisim.svg
         widget:
             type: photoprism
             url: "{{HOMEPAGE_VAR_PHOTOPRISIM_URL}}"
-            username: "{{HOMEPAGE_VAR_PHOTOPRISIM_USERNAME}}"
-            password: "{{HOMEPAGE_VAR_PHOTOPRISIM_PASSWORD}}"
+            key: "{{HOMEPAGE_VAR_PHOTOPRISIM_TOKEN}}"
     - Metube:
         href: "{{HOMEPAGE_VAR_METUBE_URL}}"
         description: Youtube Downloader
