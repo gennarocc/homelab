@@ -1,0 +1,22 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # Infrastructure
+  - infrastructure/namespace.yaml
+  - infrastructure/persistent-volumes.yaml
+  - infrastructure/cloudflared/deployment.yaml
+  - infrastructure/cloudflared/secret.yaml
+  
+  # Apps
+  - apps/homepage/service-account.yaml
+  - apps/homepage/cluster-role.yaml
+  - apps/homepage/deployment.yaml
+  - apps/homepage/secret.yaml
+  - apps/qbittorrent/deployment.yaml
+  - apps/filebrowser/deployment.yaml
+  - apps/metube/deployment.yaml
+  - apps/photoprisim/deployment.yaml
+  - apps/photoprisim/secret.yaml
+  - apps/hurleys-ranch/deployment.yaml
+  - apps/pugst-cinema/deployment.yaml
