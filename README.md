@@ -1,6 +1,6 @@
 # Welcome to the Dungeonware Homelab
 
-This is my personal homelab project to help maintain and access al of my media.
+This is my personal homelab project to help maintain and access all of my media.
 
 ## Features:
 - Runs on **Raspberry Pi 4**
