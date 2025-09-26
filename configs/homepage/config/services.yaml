@@ -24,15 +24,15 @@
         description: File server and browser
         icon: /icons/fb.svg
         siteMonitor: "{{HOMEPAGE_VAR_FILEBROWSER_URL}}"
-    - PhotoPrisim:
-        href: "{{HOMEPAGE_VAR_PHOTOPRISIM_URL}}"
+    - PhotoPrism:
+        href: "{{HOMEPAGE_VAR_PHOTOPRISM_URL}}"
         description: Image Gallery
-        icon: /icons/photoprisim.svg
-        siteMonitor: "{{HOMEPAGE_VAR_PHOTOPRISIM_URL}}"
+        icon: /icons/photoprism.svg
+        siteMonitor: "{{HOMEPAGE_VAR_PHOTOPRISM_URL}}"
         widget:
             type: photoprism
-            url: "{{HOMEPAGE_VAR_PHOTOPRISIM_URL}}"
-            key: "{{HOMEPAGE_VAR_PHOTOPRISIM_TOKEN}}"
+            url: "{{HOMEPAGE_VAR_PHOTOPRISM_URL}}"
+            key: "{{HOMEPAGE_VAR_PHOTOPRISM_TOKEN}}"
     - Metube:
         href: "{{HOMEPAGE_VAR_METUBE_URL}}"
         description: Youtube Downloader
