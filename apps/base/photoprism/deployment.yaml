@@ -7,7 +7,7 @@ metadata:
 spec:
   replicas: 1
   strategy:
-    type: Recreate  # PhotoPrism doesn't handle multiple instances well
+    type: Recreate  
   selector:
     matchLabels:
       app: photoprism
@@ -33,7 +33,7 @@ spec:
             - name: PHOTOPRISM_AUTH_MODE
               value: "password"
             - name: PHOTOPRISM_SITE_URL
-              value: "https://photos.dungeonware.systems/"  # Update with your domain
+              value: "https://photos.dungeonware.systems/"
             - name: PHOTOPRISM_ORIGINALS_LIMIT
               value: "5000"
             - name: PHOTOPRISM_HTTP_COMPRESSION
