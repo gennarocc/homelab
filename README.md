@@ -13,7 +13,7 @@ This is my personal homelab project to help maintain and access all of my media.
 ![Homelab Dashboard](dashboard.png)
 
 ## Repository Structure
-- `infrastructure/` → cluster configuration & manifests
+- `infrastructure/` → cluster configuration, volumes, and flux
 - `apps/` → deployed services
-- `flux/` → GitOps setup
+- `config/` → service configuration files
 
