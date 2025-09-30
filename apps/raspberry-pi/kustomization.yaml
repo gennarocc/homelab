@@ -9,3 +9,4 @@ resources:
   - ../base/photoprism
   - ../base/pugst-cinema
   - ../base/hurleys-ranch
+  - ../../apps/base/test-configmap.yaml
