@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: flux-test
-  namespace: homelab
-data:
-  message: "Flux is working!"
-  timestamp: "2025-09-30"
