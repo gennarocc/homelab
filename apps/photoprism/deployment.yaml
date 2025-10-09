@@ -1,0 +1,227 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: photoprism
+  namespace: homelab
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate  
+  selector:
+    matchLabels:
+      app: photoprism
+  template:
+    metadata:
+      labels:
+        app: photoprism
+    spec:
+      containers:
+        - name: photoprism
+          image: photoprism/photoprism:latest
+          env:
+            # Initial Setup
+            - name: PHOTOPRISM_ADMIN_USER
+              value: "admin"
+            - name: PHOTOPRISM_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: photoprism-secret
+                  key: admin-password
+            
+            # Basic Configuration
+            - name: PHOTOPRISM_AUTH_MODE
+              value: "password"
+            - name: PHOTOPRISM_SITE_URL
+              value: "https://photos.dungeonware.systems/"
+            - name: PHOTOPRISM_ORIGINALS_LIMIT
+              value: "5000"
+            - name: PHOTOPRISM_HTTP_COMPRESSION
+              value: "gzip"
+            
+            # File Locations
+            - name: PHOTOPRISM_STORAGE_PATH
+              value: "/photoprism/storage"
+            - name: PHOTOPRISM_ORIGINALS_PATH
+              value: "/photoprism/originals"
+            - name: PHOTOPRISM_IMPORT_PATH
+              value: "/photoprism/import"
+            
+            # Workers & Logging
+            - name: PHOTOPRISM_WORKERS
+              value: "2"
+            - name: PHOTOPRISM_LOG_LEVEL
+              value: "info"
+            - name: PHOTOPRISM_READONLY
+              value: "false"
+            - name: PHOTOPRISM_EXPERIMENTAL
+              value: "false"
+            - name: PHOTOPRISM_DISABLE_CHOWN
+              value: "false"
+            - name: PHOTOPRISM_DISABLE_WEBDAV
+              value: "false"
+            - name: PHOTOPRISM_DISABLE_SETTINGS
+              value: "false"
+            - name: PHOTOPRISM_DISABLE_TENSORFLOW
+              value: "false"
+            - name: PHOTOPRISM_DISABLE_FACES
+              value: "false"
+            - name: PHOTOPRISM_DISABLE_CLASSIFICATION
+              value: "false"
+            - name: PHOTOPRISM_DISABLE_RAW
+              value: "false"
+            - name: PHOTOPRISM_RAW_PRESETS
+              value: "false"
+            - name: PHOTOPRISM_JPEG_QUALITY
+              value: "85"
+            - name: PHOTOPRISM_DETECT_NSFW
+              value: "false"
+            - name: PHOTOPRISM_UPLOAD_NSFW
+              value: "true"
+            
+            # Database Configuration
+            - name: PHOTOPRISM_DATABASE_DRIVER
+              value: "mysql"
+            - name: PHOTOPRISM_DATABASE_SERVER
+              value: "photoprism-mariadb:3306"
+            - name: PHOTOPRISM_DATABASE_NAME
+              value: "photoprism"
+            - name: PHOTOPRISM_DATABASE_USER
+              value: "photoprism"
+            - name: PHOTOPRISM_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: photoprism-secret
+                  key: database-password
+            
+          ports:
+            - containerPort: 2342
+          
+          volumeMounts:
+            - name: hdd-data
+              mountPath: /photoprism/storage
+              subPath: pictures/library/storage
+            - name: hdd-data
+              mountPath: /photoprism/originals
+              subPath: pictures/library/originals
+            - name: hdd-data
+              mountPath: /photoprism/import
+              subPath: pictures/library/import
+            
+          # Health checks
+          livenessProbe:
+            httpGet:
+              path: /api/v1/status
+              port: 2342
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+          
+          readinessProbe:
+            httpGet:
+              path: /api/v1/status
+              port: 2342
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+
+      volumes:
+        - name: hdd-data
+          hostPath:
+            path: /hdd
+            type: Directory
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: photoprism-mariadb
+  namespace: homelab
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: photoprism-mariadb
+  template:
+    metadata:
+      labels:
+        app: photoprism-mariadb
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb:10.11
+          env:
+            - name: MARIADB_AUTO_UPGRADE
+              value: "1"
+            - name: MARIADB_INITDB_SKIP_TZINFO
+              value: "1"
+            - name: MARIADB_DATABASE
+              value: "photoprism"
+            - name: MARIADB_USER
+              value: "photoprism"
+            - name: MARIADB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: photoprism-secret
+                  key: database-password
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: photoprism-secret
+                  key: database-root-password
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: hdd-data
+              mountPath: /var/lib/mysql
+              subPath: pictures/library/database
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+      volumes:
+        - name: hdd-data
+          hostPath:
+            path: /hdd
+            type: Directory
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: photoprism
+  namespace: homelab
+spec:
+  selector:
+    app: photoprism
+  ports:
+    - port: 2342
+      targetPort: 2342
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: photoprism-mariadb
+  namespace: homelab
+spec:
+  selector:
+    app: photoprism-mariadb
+  ports:
+    - port: 3306
+      targetPort: 3306
+  type: ClusterIP
