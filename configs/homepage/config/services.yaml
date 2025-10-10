@@ -55,6 +55,7 @@
       href: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
       icon: /icons/argocd.png
       description: Deployment Manager
+      siteMonitor: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
       widget:
         type: argocd
         url: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
