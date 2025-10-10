@@ -1,0 +1,905 @@
+(N) 2025-09-13T12:55:32 - qBittorrent v5.1.2 started. Process ID: 141
+(N) 2025-09-13T12:55:32 - Using config directory: /config/qBittorrent
+(N) 2025-09-13T12:55:32 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-09-13T12:55:32 - Peer ID: "-qB5120-"
+(I) 2025-09-13T12:55:32 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-09-13T12:55:32 - Distributed Hash Table (DHT) support: ON
+(I) 2025-09-13T12:55:32 - Local Peer Discovery support: ON
+(I) 2025-09-13T12:55:32 - Peer Exchange (PeX) support: ON
+(I) 2025-09-13T12:55:32 - Anonymous mode: OFF
+(I) 2025-09-13T12:55:32 - Encryption support: ON
+(I) 2025-09-13T12:55:32 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-09-13T12:55:32 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-09-13T12:55:32 - Successfully listening on IP. IP: "10.42.0.59". Port: "TCP/6881"
+(I) 2025-09-13T12:55:32 - Successfully listening on IP. IP: "10.42.0.59". Port: "UTP/6881"
+(I) 2025-09-13T12:55:32 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-09-13T12:55:32 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-09-13T12:55:32 - Successfully listening on IP. IP: "fe80::a4fc:b2ff:fe77:f95b%eth0". Port: "TCP/6881"
+(I) 2025-09-13T12:55:32 - Successfully listening on IP. IP: "fe80::a4fc:b2ff:fe77:f95b%eth0". Port: "UTP/6881"
+(W) 2025-09-13T12:55:32 - Couldn't load IP geolocation database. Reason: No such file or directory
+(N) 2025-09-13T12:55:33 - Using built-in WebUI.
+(W) 2025-09-13T12:55:33 - Couldn't load WebUI translation for selected locale (C).
+(N) 2025-09-13T12:55:33 - WebUI: Now listening on IP: *, port: 8080
+(I) 2025-09-13T12:55:33 - Detected external IP. IP: "69.209.117.6"
+(I) 2025-09-13T12:55:33 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(I) 2025-09-13T12:55:34 - Successfully updated IP geolocation database.
+(W) 2025-09-13T12:55:51 - WebAPI login failure. Reason: invalid credentials, attempt count: 1, IP: ::ffff:10.42.0.1, username: admin
+(W) 2025-09-13T13:36:55 - WebAPI login failure. Reason: invalid credentials, attempt count: 2, IP: ::ffff:10.42.0.1, username: admin
+(N) 2025-09-13T13:37:01 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-13T13:37:11 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-13T13:37:44 - WebUI translation for selected locale (en) has been successfully loaded.
+(W) 2025-09-13T13:37:49 - WebAPI login failure. Reason: invalid credentials, attempt count: 1, IP: ::ffff:10.42.0.1, username: admin
+(N) 2025-09-13T13:39:00 - WebAPI login success. IP: ::ffff:10.42.0.1
+(I) 2025-09-13T13:41:46 - Distributed Hash Table (DHT) support: OFF
+(W) 2025-09-13T13:41:46 - Restart is required to toggle Peer Exchange (PeX) support
+(I) 2025-09-13T13:41:46 - Local Peer Discovery support: OFF
+(N) 2025-09-13T14:03:44 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-13T15:23:57 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-13T15:41:57 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-13T15:42:11 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-13T17:59:53 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-13T20:03:46 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-14T03:00:01 - qBittorrent termination initiated
+(N) 2025-09-14T03:00:01 - Saving resume data completed.
+(N) 2025-09-14T03:00:01 - BitTorrent session successfully finished.
+(N) 2025-09-14T03:00:01 - qBittorrent is now ready to exit
+(N) 2025-09-14T03:00:02 - qBittorrent v5.1.2 started. Process ID: 203
+(N) 2025-09-14T03:00:02 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:00:02 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-09-14T03:00:03 - Peer ID: "-qB5120-"
+(I) 2025-09-14T03:00:03 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-09-14T03:00:03 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-09-14T03:00:03 - Local Peer Discovery support: OFF
+(I) 2025-09-14T03:00:03 - Peer Exchange (PeX) support: OFF
+(I) 2025-09-14T03:00:03 - Anonymous mode: OFF
+(I) 2025-09-14T03:00:03 - Encryption support: ON
+(I) 2025-09-14T03:00:03 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-09-14T03:00:03 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-09-14T03:00:03 - Successfully listening on IP. IP: "10.42.0.59". Port: "TCP/6881"
+(I) 2025-09-14T03:00:03 - Successfully listening on IP. IP: "10.42.0.59". Port: "UTP/6881"
+(I) 2025-09-14T03:00:03 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-09-14T03:00:03 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-09-14T03:00:03 - Successfully listening on IP. IP: "fe80::a4fc:b2ff:fe77:f95b%eth0". Port: "TCP/6881"
+(I) 2025-09-14T03:00:03 - Successfully listening on IP. IP: "fe80::a4fc:b2ff:fe77:f95b%eth0". Port: "UTP/6881"
+(I) 2025-09-14T03:00:03 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(N) 2025-09-14T03:00:03 - Using built-in WebUI.
+(N) 2025-09-14T03:00:03 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-09-14T03:00:03 - WebUI: Now listening on IP: *, port: 8080
+(W) 2025-09-14T03:00:08 - Couldn't download IP geolocation database file. Reason: The remote host name was not found (invalid hostname)
+(N) 2025-09-14T03:01:03 - qBittorrent termination initiated
+(N) 2025-09-14T03:01:03 - Saving resume data completed.
+(N) 2025-09-14T03:01:03 - BitTorrent session successfully finished.
+(N) 2025-09-14T03:01:03 - qBittorrent is now ready to exit
+(N) 2025-09-14T03:01:04 - qBittorrent v5.1.2 started. Process ID: 248
+(N) 2025-09-14T03:01:04 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:05 - qBittorrent v5.1.2 started. Process ID: 257
+(N) 2025-09-14T03:01:05 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:07 - qBittorrent v5.1.2 started. Process ID: 266
+(N) 2025-09-14T03:01:07 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:08 - qBittorrent v5.1.2 started. Process ID: 275
+(N) 2025-09-14T03:01:08 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:10 - qBittorrent v5.1.2 started. Process ID: 284
+(N) 2025-09-14T03:01:10 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:11 - qBittorrent v5.1.2 started. Process ID: 293
+(N) 2025-09-14T03:01:11 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:13 - qBittorrent v5.1.2 started. Process ID: 302
+(N) 2025-09-14T03:01:13 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:14 - qBittorrent v5.1.2 started. Process ID: 311
+(N) 2025-09-14T03:01:14 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:16 - qBittorrent v5.1.2 started. Process ID: 320
+(N) 2025-09-14T03:01:16 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:18 - qBittorrent v5.1.2 started. Process ID: 329
+(N) 2025-09-14T03:01:18 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:19 - qBittorrent v5.1.2 started. Process ID: 338
+(N) 2025-09-14T03:01:19 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:21 - qBittorrent v5.1.2 started. Process ID: 347
+(N) 2025-09-14T03:01:21 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:22 - qBittorrent v5.1.2 started. Process ID: 356
+(N) 2025-09-14T03:01:22 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:24 - qBittorrent v5.1.2 started. Process ID: 365
+(N) 2025-09-14T03:01:24 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:25 - qBittorrent v5.1.2 started. Process ID: 374
+(N) 2025-09-14T03:01:25 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:27 - qBittorrent v5.1.2 started. Process ID: 383
+(N) 2025-09-14T03:01:27 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:28 - qBittorrent v5.1.2 started. Process ID: 392
+(N) 2025-09-14T03:01:28 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:30 - qBittorrent v5.1.2 started. Process ID: 401
+(N) 2025-09-14T03:01:30 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:31 - qBittorrent v5.1.2 started. Process ID: 410
+(N) 2025-09-14T03:01:31 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:33 - qBittorrent v5.1.2 started. Process ID: 419
+(N) 2025-09-14T03:01:33 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:34 - qBittorrent v5.1.2 started. Process ID: 428
+(N) 2025-09-14T03:01:34 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:36 - qBittorrent v5.1.2 started. Process ID: 437
+(N) 2025-09-14T03:01:36 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:38 - qBittorrent v5.1.2 started. Process ID: 446
+(N) 2025-09-14T03:01:38 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:39 - qBittorrent v5.1.2 started. Process ID: 455
+(N) 2025-09-14T03:01:39 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:41 - qBittorrent v5.1.2 started. Process ID: 464
+(N) 2025-09-14T03:01:41 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:42 - qBittorrent v5.1.2 started. Process ID: 473
+(N) 2025-09-14T03:01:42 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:44 - qBittorrent v5.1.2 started. Process ID: 482
+(N) 2025-09-14T03:01:44 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:45 - qBittorrent v5.1.2 started. Process ID: 491
+(N) 2025-09-14T03:01:45 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:47 - qBittorrent v5.1.2 started. Process ID: 500
+(N) 2025-09-14T03:01:47 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:49 - qBittorrent v5.1.2 started. Process ID: 509
+(N) 2025-09-14T03:01:49 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:50 - qBittorrent v5.1.2 started. Process ID: 518
+(N) 2025-09-14T03:01:50 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:52 - qBittorrent v5.1.2 started. Process ID: 527
+(N) 2025-09-14T03:01:52 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:53 - qBittorrent v5.1.2 started. Process ID: 536
+(N) 2025-09-14T03:01:53 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:55 - qBittorrent v5.1.2 started. Process ID: 545
+(N) 2025-09-14T03:01:55 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:56 - qBittorrent v5.1.2 started. Process ID: 554
+(N) 2025-09-14T03:01:56 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:58 - qBittorrent v5.1.2 started. Process ID: 563
+(N) 2025-09-14T03:01:58 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:01:59 - qBittorrent v5.1.2 started. Process ID: 572
+(N) 2025-09-14T03:01:59 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:01 - qBittorrent v5.1.2 started. Process ID: 581
+(N) 2025-09-14T03:02:01 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:02 - qBittorrent v5.1.2 started. Process ID: 590
+(N) 2025-09-14T03:02:02 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:04 - qBittorrent v5.1.2 started. Process ID: 599
+(N) 2025-09-14T03:02:04 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:05 - qBittorrent v5.1.2 started. Process ID: 608
+(N) 2025-09-14T03:02:05 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:07 - qBittorrent v5.1.2 started. Process ID: 617
+(N) 2025-09-14T03:02:07 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:08 - qBittorrent v5.1.2 started. Process ID: 626
+(N) 2025-09-14T03:02:08 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:10 - qBittorrent v5.1.2 started. Process ID: 635
+(N) 2025-09-14T03:02:10 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:11 - qBittorrent v5.1.2 started. Process ID: 644
+(N) 2025-09-14T03:02:11 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:13 - qBittorrent v5.1.2 started. Process ID: 653
+(N) 2025-09-14T03:02:13 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:15 - qBittorrent v5.1.2 started. Process ID: 662
+(N) 2025-09-14T03:02:15 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:16 - qBittorrent v5.1.2 started. Process ID: 671
+(N) 2025-09-14T03:02:16 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:18 - qBittorrent v5.1.2 started. Process ID: 680
+(N) 2025-09-14T03:02:18 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:19 - qBittorrent v5.1.2 started. Process ID: 689
+(N) 2025-09-14T03:02:19 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:21 - qBittorrent v5.1.2 started. Process ID: 698
+(N) 2025-09-14T03:02:21 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:22 - qBittorrent v5.1.2 started. Process ID: 707
+(N) 2025-09-14T03:02:22 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:24 - qBittorrent v5.1.2 started. Process ID: 716
+(N) 2025-09-14T03:02:24 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:25 - qBittorrent v5.1.2 started. Process ID: 725
+(N) 2025-09-14T03:02:25 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:27 - qBittorrent v5.1.2 started. Process ID: 734
+(N) 2025-09-14T03:02:27 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:28 - qBittorrent v5.1.2 started. Process ID: 743
+(N) 2025-09-14T03:02:28 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:30 - qBittorrent v5.1.2 started. Process ID: 752
+(N) 2025-09-14T03:02:30 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T03:02:31 - qBittorrent v5.1.2 started. Process ID: 761
+(N) 2025-09-14T03:02:31 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T11:01:43 - qBittorrent v5.1.2 started. Process ID: 141
+(N) 2025-09-14T11:01:43 - Using config directory: /config/qBittorrent
+(N) 2025-09-14T11:01:43 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-09-14T11:01:43 - Peer ID: "-qB5120-"
+(I) 2025-09-14T11:01:43 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-09-14T11:01:43 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-09-14T11:01:43 - Local Peer Discovery support: OFF
+(I) 2025-09-14T11:01:43 - Peer Exchange (PeX) support: OFF
+(I) 2025-09-14T11:01:43 - Anonymous mode: OFF
+(I) 2025-09-14T11:01:43 - Encryption support: ON
+(I) 2025-09-14T11:01:43 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-09-14T11:01:43 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-09-14T11:01:43 - Successfully listening on IP. IP: "10.42.0.126". Port: "TCP/6881"
+(I) 2025-09-14T11:01:43 - Successfully listening on IP. IP: "10.42.0.126". Port: "UTP/6881"
+(I) 2025-09-14T11:01:43 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-09-14T11:01:43 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-09-14T11:01:43 - Successfully listening on IP. IP: "fe80::68b1:77ff:fe4b:cab1%eth0". Port: "TCP/6881"
+(I) 2025-09-14T11:01:43 - Successfully listening on IP. IP: "fe80::68b1:77ff:fe4b:cab1%eth0". Port: "UTP/6881"
+(I) 2025-09-14T11:01:43 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(N) 2025-09-14T11:01:43 - Using built-in WebUI.
+(N) 2025-09-14T11:01:43 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-09-14T11:01:43 - WebUI: Now listening on IP: *, port: 8080
+(N) 2025-09-14T11:02:38 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-14T11:03:02 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-14T17:38:07 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-14T19:32:36 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-14T20:36:27 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-15T07:35:33 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-15T09:49:56 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-15T10:56:16 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-15T13:02:38 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-15T15:33:19 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-15T16:23:53 - qBittorrent termination initiated
+(N) 2025-09-15T16:23:53 - Saving resume data completed.
+(N) 2025-09-15T16:23:53 - BitTorrent session successfully finished.
+(N) 2025-09-15T16:23:53 - qBittorrent is now ready to exit
+(N) 2025-09-15T16:23:54 - qBittorrent v5.1.2 started. Process ID: 200
+(N) 2025-09-15T16:23:54 - Using config directory: /config/qBittorrent
+(N) 2025-09-15T16:23:54 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-09-15T16:23:55 - Peer ID: "-qB5120-"
+(I) 2025-09-15T16:23:55 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-09-15T16:23:55 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-09-15T16:23:55 - Local Peer Discovery support: OFF
+(I) 2025-09-15T16:23:55 - Peer Exchange (PeX) support: OFF
+(I) 2025-09-15T16:23:55 - Anonymous mode: OFF
+(I) 2025-09-15T16:23:55 - Encryption support: ON
+(I) 2025-09-15T16:23:55 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-09-15T16:23:55 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-09-15T16:23:55 - Successfully listening on IP. IP: "10.42.0.126". Port: "TCP/6881"
+(I) 2025-09-15T16:23:55 - Successfully listening on IP. IP: "10.42.0.126". Port: "UTP/6881"
+(I) 2025-09-15T16:23:55 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-09-15T16:23:55 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-09-15T16:23:55 - Successfully listening on IP. IP: "fe80::68b1:77ff:fe4b:cab1%eth0". Port: "TCP/6881"
+(I) 2025-09-15T16:23:55 - Successfully listening on IP. IP: "fe80::68b1:77ff:fe4b:cab1%eth0". Port: "UTP/6881"
+(I) 2025-09-15T16:23:55 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(N) 2025-09-15T16:23:55 - Using built-in WebUI.
+(N) 2025-09-15T16:23:55 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-09-15T16:23:55 - WebUI: Now listening on IP: *, port: 8080
+(W) 2025-09-15T16:24:00 - Couldn't download IP geolocation database file. Reason: The remote host name was not found (invalid hostname)
+(N) 2025-09-15T16:27:49 - qBittorrent v5.1.2 started. Process ID: 144
+(N) 2025-09-15T16:27:49 - Using config directory: /config/qBittorrent
+(N) 2025-09-15T16:27:50 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-09-15T16:27:50 - Peer ID: "-qB5120-"
+(I) 2025-09-15T16:27:50 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-09-15T16:27:50 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-09-15T16:27:50 - Local Peer Discovery support: OFF
+(I) 2025-09-15T16:27:50 - Peer Exchange (PeX) support: OFF
+(I) 2025-09-15T16:27:50 - Anonymous mode: OFF
+(I) 2025-09-15T16:27:50 - Encryption support: ON
+(I) 2025-09-15T16:27:50 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-09-15T16:27:50 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-09-15T16:27:50 - Successfully listening on IP. IP: "10.42.0.137". Port: "TCP/6881"
+(I) 2025-09-15T16:27:50 - Successfully listening on IP. IP: "10.42.0.137". Port: "UTP/6881"
+(I) 2025-09-15T16:27:50 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-09-15T16:27:50 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-09-15T16:27:50 - Successfully listening on IP. IP: "fe80::dc28:b5ff:fe5d:5334%eth0". Port: "TCP/6881"
+(I) 2025-09-15T16:27:50 - Successfully listening on IP. IP: "fe80::dc28:b5ff:fe5d:5334%eth0". Port: "UTP/6881"
+(I) 2025-09-15T16:27:50 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(N) 2025-09-15T16:27:50 - Using built-in WebUI.
+(N) 2025-09-15T16:27:50 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-09-15T16:27:50 - WebUI: Now listening on IP: *, port: 8080
+(N) 2025-09-15T22:31:27 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-16T08:21:32 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-16T11:59:22 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-16T15:25:03 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-16T18:28:55 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-16T23:49:48 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-17T09:06:04 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-17T11:40:11 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-17T13:22:42 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-17T16:55:28 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-17T18:20:15 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-17T23:12:14 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-18T07:45:00 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-18T09:41:13 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-18T11:43:54 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-18T13:57:42 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-18T20:16:19 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-18T21:19:45 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-19T08:18:48 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-19T11:58:44 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-19T14:19:13 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-19T16:21:02 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-19T18:40:22 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-19T20:40:23 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-20T08:41:54 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-20T10:12:17 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-20T12:11:33 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-20T15:02:56 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-20T16:43:04 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-20T16:43:27 - Added new torrent. Torrent: "The.Time.Machine.1960.1080p.BluRay.x265"
+(I) 2025-09-20T16:43:29 - Detected external IP. IP: "69.209.117.6"
+(N) 2025-09-20T16:46:17 - Torrent download finished. Torrent: "The.Time.Machine.1960.1080p.BluRay.x265"
+(N) 2025-09-21T08:41:03 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-21T10:57:09 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-21T11:00:07 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-21T13:37:39 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-21T14:46:16 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-21T20:41:37 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-22T07:40:23 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-22T10:06:21 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-22T17:14:18 - qBittorrent termination initiated
+(N) 2025-09-22T17:14:19 - Saving resume data completed.
+(N) 2025-09-22T17:14:19 - BitTorrent session successfully finished.
+(N) 2025-09-22T17:14:20 - qBittorrent is now ready to exit
+(N) 2025-09-22T17:14:23 - qBittorrent v5.1.2 started. Process ID: 371
+(N) 2025-09-22T17:14:23 - Using config directory: /config/qBittorrent
+(N) 2025-09-22T17:14:23 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-09-22T17:14:23 - Peer ID: "-qB5120-"
+(I) 2025-09-22T17:14:23 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-09-22T17:14:23 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-09-22T17:14:23 - Local Peer Discovery support: OFF
+(I) 2025-09-22T17:14:23 - Peer Exchange (PeX) support: OFF
+(I) 2025-09-22T17:14:23 - Anonymous mode: OFF
+(I) 2025-09-22T17:14:23 - Encryption support: ON
+(I) 2025-09-22T17:14:23 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-09-22T17:14:23 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-09-22T17:14:23 - Successfully listening on IP. IP: "10.42.0.137". Port: "TCP/6881"
+(I) 2025-09-22T17:14:23 - Successfully listening on IP. IP: "10.42.0.137". Port: "UTP/6881"
+(I) 2025-09-22T17:14:23 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-09-22T17:14:23 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-09-22T17:14:23 - Successfully listening on IP. IP: "fe80::dc28:b5ff:fe5d:5334%eth0". Port: "TCP/6881"
+(I) 2025-09-22T17:14:23 - Successfully listening on IP. IP: "fe80::dc28:b5ff:fe5d:5334%eth0". Port: "UTP/6881"
+(N) 2025-09-22T17:14:23 - Restored torrent. Torrent: "The.Time.Machine.1960.1080p.BluRay.x265"
+(I) 2025-09-22T17:14:23 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(N) 2025-09-22T17:14:23 - Using built-in WebUI.
+(N) 2025-09-22T17:14:23 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-09-22T17:14:23 - WebUI: Now listening on IP: *, port: 8080
+(I) 2025-09-22T17:14:23 - Detected external IP. IP: "69.209.117.6"
+(W) 2025-09-22T17:14:28 - Couldn't download IP geolocation database file. Reason: The remote host name was not found (invalid hostname)
+(N) 2025-09-22T17:20:21 - qBittorrent v5.1.2 started. Process ID: 141
+(N) 2025-09-22T17:20:21 - Using config directory: /config/qBittorrent
+(N) 2025-09-22T17:20:21 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-09-22T17:20:21 - Peer ID: "-qB5120-"
+(I) 2025-09-22T17:20:21 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-09-22T17:20:21 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-09-22T17:20:21 - Local Peer Discovery support: OFF
+(I) 2025-09-22T17:20:21 - Peer Exchange (PeX) support: OFF
+(I) 2025-09-22T17:20:21 - Anonymous mode: OFF
+(I) 2025-09-22T17:20:21 - Encryption support: ON
+(I) 2025-09-22T17:20:21 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-09-22T17:20:21 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-09-22T17:20:21 - Successfully listening on IP. IP: "10.42.0.195". Port: "TCP/6881"
+(I) 2025-09-22T17:20:21 - Successfully listening on IP. IP: "10.42.0.195". Port: "UTP/6881"
+(I) 2025-09-22T17:20:21 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-09-22T17:20:21 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-09-22T17:20:21 - Successfully listening on IP. IP: "fe80::b801:14ff:fe92:5224%eth0". Port: "TCP/6881"
+(I) 2025-09-22T17:20:21 - Successfully listening on IP. IP: "fe80::b801:14ff:fe92:5224%eth0". Port: "UTP/6881"
+(N) 2025-09-22T17:20:21 - Restored torrent. Torrent: "The.Time.Machine.1960.1080p.BluRay.x265"
+(I) 2025-09-22T17:20:22 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(N) 2025-09-22T17:20:22 - Using built-in WebUI.
+(N) 2025-09-22T17:20:22 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-09-22T17:20:22 - WebUI: Now listening on IP: *, port: 8080
+(I) 2025-09-22T17:20:22 - Detected external IP. IP: "69.209.117.6"
+(N) 2025-09-22T20:59:04 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-23T07:40:02 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-23T09:01:22 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-23T13:06:46 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-23T13:06:51 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-23T14:50:08 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-23T19:36:27 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-24T07:18:04 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-24T10:41:04 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-24T11:20:48 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-24T18:33:53 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-24T22:46:39 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-25T07:22:37 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-25T09:44:45 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-25T14:24:11 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-25T15:37:50 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-25T16:35:00 - qBittorrent termination initiated
+(N) 2025-09-25T16:35:00 - Saving resume data completed.
+(N) 2025-09-25T16:35:01 - BitTorrent session successfully finished.
+(N) 2025-09-25T16:35:01 - qBittorrent is now ready to exit
+(N) 2025-09-25T16:35:02 - qBittorrent v5.1.2 started. Process ID: 428
+(N) 2025-09-25T16:35:02 - Using config directory: /config/qBittorrent
+(N) 2025-09-25T16:35:02 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-09-25T16:35:02 - Peer ID: "-qB5120-"
+(I) 2025-09-25T16:35:02 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-09-25T16:35:02 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-09-25T16:35:02 - Local Peer Discovery support: OFF
+(I) 2025-09-25T16:35:02 - Peer Exchange (PeX) support: OFF
+(I) 2025-09-25T16:35:02 - Anonymous mode: OFF
+(I) 2025-09-25T16:35:02 - Encryption support: ON
+(I) 2025-09-25T16:35:02 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-09-25T16:35:02 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-09-25T16:35:02 - Successfully listening on IP. IP: "10.42.0.195". Port: "TCP/6881"
+(I) 2025-09-25T16:35:02 - Successfully listening on IP. IP: "10.42.0.195". Port: "UTP/6881"
+(I) 2025-09-25T16:35:02 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-09-25T16:35:02 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-09-25T16:35:02 - Successfully listening on IP. IP: "fe80::b801:14ff:fe92:5224%eth0". Port: "TCP/6881"
+(I) 2025-09-25T16:35:02 - Successfully listening on IP. IP: "fe80::b801:14ff:fe92:5224%eth0". Port: "UTP/6881"
+(N) 2025-09-25T16:35:02 - Restored torrent. Torrent: "The.Time.Machine.1960.1080p.BluRay.x265"
+(I) 2025-09-25T16:35:03 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(N) 2025-09-25T16:35:03 - Using built-in WebUI.
+(N) 2025-09-25T16:35:03 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-09-25T16:35:03 - WebUI: Now listening on IP: *, port: 8080
+(W) 2025-09-25T16:35:08 - Couldn't download IP geolocation database file. Reason: The remote host name was not found (invalid hostname)
+(N) 2025-09-26T10:51:33 - qBittorrent v5.1.2 started. Process ID: 141
+(N) 2025-09-26T10:51:33 - Using config directory: /config/qBittorrent
+(N) 2025-09-26T10:51:33 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-09-26T10:51:33 - Peer ID: "-qB5120-"
+(I) 2025-09-26T10:51:33 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-09-26T10:51:33 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-09-26T10:51:33 - Local Peer Discovery support: OFF
+(I) 2025-09-26T10:51:33 - Peer Exchange (PeX) support: OFF
+(I) 2025-09-26T10:51:33 - Anonymous mode: OFF
+(I) 2025-09-26T10:51:33 - Encryption support: ON
+(I) 2025-09-26T10:51:33 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-09-26T10:51:33 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-09-26T10:51:33 - Successfully listening on IP. IP: "10.42.0.28". Port: "TCP/6881"
+(I) 2025-09-26T10:51:33 - Successfully listening on IP. IP: "10.42.0.28". Port: "UTP/6881"
+(I) 2025-09-26T10:51:33 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-09-26T10:51:33 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-09-26T10:51:33 - Successfully listening on IP. IP: "fe80::1480:18ff:fe2f:9271%eth0". Port: "TCP/6881"
+(I) 2025-09-26T10:51:33 - Successfully listening on IP. IP: "fe80::1480:18ff:fe2f:9271%eth0". Port: "UTP/6881"
+(N) 2025-09-26T10:51:33 - Restored torrent. Torrent: "The.Time.Machine.1960.1080p.BluRay.x265"
+(I) 2025-09-26T10:51:33 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(N) 2025-09-26T10:51:33 - Using built-in WebUI.
+(N) 2025-09-26T10:51:33 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-09-26T10:51:33 - WebUI: Now listening on IP: *, port: 8080
+(N) 2025-09-26T10:51:43 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-26T14:24:53 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-26T15:29:25 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-26T16:23:58 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-26T23:59:59 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-27T07:28:12 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-27T09:01:03 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-27T13:12:05 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-27T21:22:38 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-27T22:36:59 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-28T03:00:01 - qBittorrent termination initiated
+(N) 2025-09-28T03:00:01 - Saving resume data completed.
+(N) 2025-09-28T03:00:01 - BitTorrent session successfully finished.
+(N) 2025-09-28T03:00:02 - qBittorrent is now ready to exit
+(N) 2025-09-28T03:00:03 - qBittorrent v5.1.2 started. Process ID: 330
+(N) 2025-09-28T03:00:03 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:00:03 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-09-28T03:00:03 - Peer ID: "-qB5120-"
+(I) 2025-09-28T03:00:03 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-09-28T03:00:03 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-09-28T03:00:03 - Local Peer Discovery support: OFF
+(I) 2025-09-28T03:00:03 - Peer Exchange (PeX) support: OFF
+(I) 2025-09-28T03:00:03 - Anonymous mode: OFF
+(I) 2025-09-28T03:00:03 - Encryption support: ON
+(I) 2025-09-28T03:00:03 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-09-28T03:00:03 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-09-28T03:00:03 - Successfully listening on IP. IP: "10.42.0.28". Port: "TCP/6881"
+(I) 2025-09-28T03:00:03 - Successfully listening on IP. IP: "10.42.0.28". Port: "UTP/6881"
+(I) 2025-09-28T03:00:03 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-09-28T03:00:03 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-09-28T03:00:03 - Successfully listening on IP. IP: "fe80::1480:18ff:fe2f:9271%eth0". Port: "TCP/6881"
+(I) 2025-09-28T03:00:03 - Successfully listening on IP. IP: "fe80::1480:18ff:fe2f:9271%eth0". Port: "UTP/6881"
+(N) 2025-09-28T03:00:03 - Restored torrent. Torrent: "The.Time.Machine.1960.1080p.BluRay.x265"
+(I) 2025-09-28T03:00:03 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(N) 2025-09-28T03:00:04 - Using built-in WebUI.
+(N) 2025-09-28T03:00:04 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-09-28T03:00:04 - WebUI: Now listening on IP: *, port: 8080
+(W) 2025-09-28T03:00:08 - Couldn't download IP geolocation database file. Reason: The remote host name was not found (invalid hostname)
+(N) 2025-09-28T03:00:50 - qBittorrent termination initiated
+(N) 2025-09-28T03:00:51 - Saving resume data completed.
+(N) 2025-09-28T03:00:51 - BitTorrent session successfully finished.
+(N) 2025-09-28T03:00:51 - qBittorrent is now ready to exit
+(N) 2025-09-28T03:00:51 - qBittorrent v5.1.2 started. Process ID: 365
+(N) 2025-09-28T03:00:51 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:00:53 - qBittorrent v5.1.2 started. Process ID: 386
+(N) 2025-09-28T03:00:53 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:00:54 - qBittorrent v5.1.2 started. Process ID: 395
+(N) 2025-09-28T03:00:54 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:00:56 - qBittorrent v5.1.2 started. Process ID: 404
+(N) 2025-09-28T03:00:56 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:00:57 - qBittorrent v5.1.2 started. Process ID: 413
+(N) 2025-09-28T03:00:57 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:00:59 - qBittorrent v5.1.2 started. Process ID: 422
+(N) 2025-09-28T03:00:59 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:01 - qBittorrent v5.1.2 started. Process ID: 431
+(N) 2025-09-28T03:01:01 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:02 - qBittorrent v5.1.2 started. Process ID: 440
+(N) 2025-09-28T03:01:02 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:04 - qBittorrent v5.1.2 started. Process ID: 449
+(N) 2025-09-28T03:01:04 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:05 - qBittorrent v5.1.2 started. Process ID: 458
+(N) 2025-09-28T03:01:05 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:07 - qBittorrent v5.1.2 started. Process ID: 467
+(N) 2025-09-28T03:01:07 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:08 - qBittorrent v5.1.2 started. Process ID: 476
+(N) 2025-09-28T03:01:08 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:10 - qBittorrent v5.1.2 started. Process ID: 485
+(N) 2025-09-28T03:01:10 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:11 - qBittorrent v5.1.2 started. Process ID: 494
+(N) 2025-09-28T03:01:11 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:13 - qBittorrent v5.1.2 started. Process ID: 503
+(N) 2025-09-28T03:01:13 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:14 - qBittorrent v5.1.2 started. Process ID: 512
+(N) 2025-09-28T03:01:14 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:16 - qBittorrent v5.1.2 started. Process ID: 521
+(N) 2025-09-28T03:01:16 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:18 - qBittorrent v5.1.2 started. Process ID: 530
+(N) 2025-09-28T03:01:18 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:19 - qBittorrent v5.1.2 started. Process ID: 539
+(N) 2025-09-28T03:01:19 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:21 - qBittorrent v5.1.2 started. Process ID: 548
+(N) 2025-09-28T03:01:21 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:22 - qBittorrent v5.1.2 started. Process ID: 557
+(N) 2025-09-28T03:01:22 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:24 - qBittorrent v5.1.2 started. Process ID: 566
+(N) 2025-09-28T03:01:24 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:25 - qBittorrent v5.1.2 started. Process ID: 575
+(N) 2025-09-28T03:01:25 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:27 - qBittorrent v5.1.2 started. Process ID: 584
+(N) 2025-09-28T03:01:27 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:28 - qBittorrent v5.1.2 started. Process ID: 593
+(N) 2025-09-28T03:01:28 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:30 - qBittorrent v5.1.2 started. Process ID: 602
+(N) 2025-09-28T03:01:30 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:31 - qBittorrent v5.1.2 started. Process ID: 611
+(N) 2025-09-28T03:01:31 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:33 - qBittorrent v5.1.2 started. Process ID: 620
+(N) 2025-09-28T03:01:33 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:34 - qBittorrent v5.1.2 started. Process ID: 629
+(N) 2025-09-28T03:01:34 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:36 - qBittorrent v5.1.2 started. Process ID: 638
+(N) 2025-09-28T03:01:36 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:37 - qBittorrent v5.1.2 started. Process ID: 647
+(N) 2025-09-28T03:01:37 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:39 - qBittorrent v5.1.2 started. Process ID: 656
+(N) 2025-09-28T03:01:39 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:40 - qBittorrent v5.1.2 started. Process ID: 665
+(N) 2025-09-28T03:01:40 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:42 - qBittorrent v5.1.2 started. Process ID: 674
+(N) 2025-09-28T03:01:42 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:44 - qBittorrent v5.1.2 started. Process ID: 683
+(N) 2025-09-28T03:01:44 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:45 - qBittorrent v5.1.2 started. Process ID: 692
+(N) 2025-09-28T03:01:45 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:47 - qBittorrent v5.1.2 started. Process ID: 701
+(N) 2025-09-28T03:01:47 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:48 - qBittorrent v5.1.2 started. Process ID: 710
+(N) 2025-09-28T03:01:48 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:50 - qBittorrent v5.1.2 started. Process ID: 719
+(N) 2025-09-28T03:01:50 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:51 - qBittorrent v5.1.2 started. Process ID: 728
+(N) 2025-09-28T03:01:51 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:53 - qBittorrent v5.1.2 started. Process ID: 737
+(N) 2025-09-28T03:01:53 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:54 - qBittorrent v5.1.2 started. Process ID: 746
+(N) 2025-09-28T03:01:54 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:56 - qBittorrent v5.1.2 started. Process ID: 755
+(N) 2025-09-28T03:01:56 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:57 - qBittorrent v5.1.2 started. Process ID: 764
+(N) 2025-09-28T03:01:57 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:01:59 - qBittorrent v5.1.2 started. Process ID: 773
+(N) 2025-09-28T03:01:59 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:01 - qBittorrent v5.1.2 started. Process ID: 782
+(N) 2025-09-28T03:02:01 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:02 - qBittorrent v5.1.2 started. Process ID: 791
+(N) 2025-09-28T03:02:02 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:04 - qBittorrent v5.1.2 started. Process ID: 800
+(N) 2025-09-28T03:02:04 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:05 - qBittorrent v5.1.2 started. Process ID: 809
+(N) 2025-09-28T03:02:05 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:07 - qBittorrent v5.1.2 started. Process ID: 818
+(N) 2025-09-28T03:02:07 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:08 - qBittorrent v5.1.2 started. Process ID: 827
+(N) 2025-09-28T03:02:08 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:10 - qBittorrent v5.1.2 started. Process ID: 836
+(N) 2025-09-28T03:02:10 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:11 - qBittorrent v5.1.2 started. Process ID: 845
+(N) 2025-09-28T03:02:11 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:13 - qBittorrent v5.1.2 started. Process ID: 854
+(N) 2025-09-28T03:02:13 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:14 - qBittorrent v5.1.2 started. Process ID: 863
+(N) 2025-09-28T03:02:14 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:16 - qBittorrent v5.1.2 started. Process ID: 872
+(N) 2025-09-28T03:02:16 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:17 - qBittorrent v5.1.2 started. Process ID: 881
+(N) 2025-09-28T03:02:17 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:19 - qBittorrent v5.1.2 started. Process ID: 890
+(N) 2025-09-28T03:02:19 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:02:20 - qBittorrent v5.1.2 started. Process ID: 899
+(N) 2025-09-28T03:02:20 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:05:52 - qBittorrent v5.1.2 started. Process ID: 143
+(N) 2025-09-28T03:05:52 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T03:05:52 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-09-28T03:05:52 - Peer ID: "-qB5120-"
+(I) 2025-09-28T03:05:52 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-09-28T03:05:52 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-09-28T03:05:52 - Local Peer Discovery support: OFF
+(I) 2025-09-28T03:05:52 - Peer Exchange (PeX) support: OFF
+(I) 2025-09-28T03:05:52 - Anonymous mode: OFF
+(I) 2025-09-28T03:05:52 - Encryption support: ON
+(I) 2025-09-28T03:05:52 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-09-28T03:05:52 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-09-28T03:05:52 - Successfully listening on IP. IP: "10.42.0.54". Port: "TCP/6881"
+(I) 2025-09-28T03:05:52 - Successfully listening on IP. IP: "10.42.0.54". Port: "UTP/6881"
+(I) 2025-09-28T03:05:52 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-09-28T03:05:52 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-09-28T03:05:52 - Successfully listening on IP. IP: "fe80::881b:2ff:fe42:9fa7%eth0". Port: "TCP/6881"
+(I) 2025-09-28T03:05:52 - Successfully listening on IP. IP: "fe80::881b:2ff:fe42:9fa7%eth0". Port: "UTP/6881"
+(N) 2025-09-28T03:05:52 - Restored torrent. Torrent: "The.Time.Machine.1960.1080p.BluRay.x265"
+(I) 2025-09-28T03:05:52 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(N) 2025-09-28T03:05:52 - Using built-in WebUI.
+(N) 2025-09-28T03:05:52 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-09-28T03:05:52 - WebUI: Now listening on IP: *, port: 8080
+(N) 2025-09-28T07:59:04 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-28T08:23:52 - qBittorrent termination initiated
+(N) 2025-09-28T08:23:52 - Saving resume data completed.
+(N) 2025-09-28T08:23:53 - BitTorrent session successfully finished.
+(N) 2025-09-28T08:23:53 - qBittorrent is now ready to exit
+(N) 2025-09-28T08:23:53 - qBittorrent v5.1.2 started. Process ID: 226
+(N) 2025-09-28T08:23:53 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:23:55 - qBittorrent v5.1.2 started. Process ID: 238
+(N) 2025-09-28T08:23:55 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:23:56 - qBittorrent v5.1.2 started. Process ID: 247
+(N) 2025-09-28T08:23:56 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:23:58 - qBittorrent v5.1.2 started. Process ID: 256
+(N) 2025-09-28T08:23:58 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:23:59 - qBittorrent v5.1.2 started. Process ID: 265
+(N) 2025-09-28T08:23:59 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:01 - qBittorrent v5.1.2 started. Process ID: 274
+(N) 2025-09-28T08:24:01 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:03 - qBittorrent v5.1.2 started. Process ID: 283
+(N) 2025-09-28T08:24:03 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:04 - qBittorrent v5.1.2 started. Process ID: 292
+(N) 2025-09-28T08:24:04 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:06 - qBittorrent v5.1.2 started. Process ID: 301
+(N) 2025-09-28T08:24:06 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:07 - qBittorrent v5.1.2 started. Process ID: 310
+(N) 2025-09-28T08:24:07 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:09 - qBittorrent v5.1.2 started. Process ID: 319
+(N) 2025-09-28T08:24:09 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:10 - qBittorrent v5.1.2 started. Process ID: 328
+(N) 2025-09-28T08:24:10 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:12 - qBittorrent v5.1.2 started. Process ID: 337
+(N) 2025-09-28T08:24:12 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:13 - qBittorrent v5.1.2 started. Process ID: 346
+(N) 2025-09-28T08:24:13 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:15 - qBittorrent v5.1.2 started. Process ID: 355
+(N) 2025-09-28T08:24:15 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:16 - qBittorrent v5.1.2 started. Process ID: 364
+(N) 2025-09-28T08:24:16 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:18 - qBittorrent v5.1.2 started. Process ID: 373
+(N) 2025-09-28T08:24:18 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:19 - qBittorrent v5.1.2 started. Process ID: 382
+(N) 2025-09-28T08:24:19 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:21 - qBittorrent v5.1.2 started. Process ID: 391
+(N) 2025-09-28T08:24:21 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:22 - qBittorrent v5.1.2 started. Process ID: 400
+(N) 2025-09-28T08:24:22 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:24 - qBittorrent v5.1.2 started. Process ID: 409
+(N) 2025-09-28T08:24:24 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:25 - qBittorrent v5.1.2 started. Process ID: 418
+(N) 2025-09-28T08:24:25 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:27 - qBittorrent v5.1.2 started. Process ID: 427
+(N) 2025-09-28T08:24:27 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:28 - qBittorrent v5.1.2 started. Process ID: 436
+(N) 2025-09-28T08:24:28 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:30 - qBittorrent v5.1.2 started. Process ID: 445
+(N) 2025-09-28T08:24:30 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:31 - qBittorrent v5.1.2 started. Process ID: 454
+(N) 2025-09-28T08:24:31 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:33 - qBittorrent v5.1.2 started. Process ID: 463
+(N) 2025-09-28T08:24:33 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:35 - qBittorrent v5.1.2 started. Process ID: 472
+(N) 2025-09-28T08:24:35 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:36 - qBittorrent v5.1.2 started. Process ID: 481
+(N) 2025-09-28T08:24:36 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:38 - qBittorrent v5.1.2 started. Process ID: 490
+(N) 2025-09-28T08:24:38 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:39 - qBittorrent v5.1.2 started. Process ID: 499
+(N) 2025-09-28T08:24:39 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:41 - qBittorrent v5.1.2 started. Process ID: 508
+(N) 2025-09-28T08:24:41 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:42 - qBittorrent v5.1.2 started. Process ID: 517
+(N) 2025-09-28T08:24:42 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:44 - qBittorrent v5.1.2 started. Process ID: 526
+(N) 2025-09-28T08:24:44 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:45 - qBittorrent v5.1.2 started. Process ID: 535
+(N) 2025-09-28T08:24:45 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:47 - qBittorrent v5.1.2 started. Process ID: 544
+(N) 2025-09-28T08:24:47 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:48 - qBittorrent v5.1.2 started. Process ID: 553
+(N) 2025-09-28T08:24:48 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:50 - qBittorrent v5.1.2 started. Process ID: 562
+(N) 2025-09-28T08:24:50 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:51 - qBittorrent v5.1.2 started. Process ID: 571
+(N) 2025-09-28T08:24:51 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:53 - qBittorrent v5.1.2 started. Process ID: 580
+(N) 2025-09-28T08:24:53 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:54 - qBittorrent v5.1.2 started. Process ID: 589
+(N) 2025-09-28T08:24:54 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:56 - qBittorrent v5.1.2 started. Process ID: 598
+(N) 2025-09-28T08:24:56 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:58 - qBittorrent v5.1.2 started. Process ID: 607
+(N) 2025-09-28T08:24:58 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:24:59 - qBittorrent v5.1.2 started. Process ID: 616
+(N) 2025-09-28T08:24:59 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:01 - qBittorrent v5.1.2 started. Process ID: 625
+(N) 2025-09-28T08:25:01 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:02 - qBittorrent v5.1.2 started. Process ID: 634
+(N) 2025-09-28T08:25:02 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:04 - qBittorrent v5.1.2 started. Process ID: 643
+(N) 2025-09-28T08:25:04 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:05 - qBittorrent v5.1.2 started. Process ID: 652
+(N) 2025-09-28T08:25:05 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:07 - qBittorrent v5.1.2 started. Process ID: 661
+(N) 2025-09-28T08:25:07 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:08 - qBittorrent v5.1.2 started. Process ID: 670
+(N) 2025-09-28T08:25:08 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:10 - qBittorrent v5.1.2 started. Process ID: 679
+(N) 2025-09-28T08:25:10 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:11 - qBittorrent v5.1.2 started. Process ID: 688
+(N) 2025-09-28T08:25:11 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:13 - qBittorrent v5.1.2 started. Process ID: 697
+(N) 2025-09-28T08:25:13 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:14 - qBittorrent v5.1.2 started. Process ID: 706
+(N) 2025-09-28T08:25:14 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:16 - qBittorrent v5.1.2 started. Process ID: 715
+(N) 2025-09-28T08:25:16 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:17 - qBittorrent v5.1.2 started. Process ID: 724
+(N) 2025-09-28T08:25:17 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:19 - qBittorrent v5.1.2 started. Process ID: 733
+(N) 2025-09-28T08:25:19 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:20 - qBittorrent v5.1.2 started. Process ID: 742
+(N) 2025-09-28T08:25:20 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:25:22 - qBittorrent v5.1.2 started. Process ID: 751
+(N) 2025-09-28T08:25:22 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:30:41 - qBittorrent v5.1.2 started. Process ID: 143
+(N) 2025-09-28T08:30:41 - Using config directory: /config/qBittorrent
+(N) 2025-09-28T08:30:41 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-09-28T08:30:41 - Peer ID: "-qB5120-"
+(I) 2025-09-28T08:30:41 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-09-28T08:30:41 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-09-28T08:30:41 - Local Peer Discovery support: OFF
+(I) 2025-09-28T08:30:41 - Peer Exchange (PeX) support: OFF
+(I) 2025-09-28T08:30:41 - Anonymous mode: OFF
+(I) 2025-09-28T08:30:41 - Encryption support: ON
+(I) 2025-09-28T08:30:41 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-09-28T08:30:41 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-09-28T08:30:41 - Successfully listening on IP. IP: "10.42.0.84". Port: "TCP/6881"
+(I) 2025-09-28T08:30:41 - Successfully listening on IP. IP: "10.42.0.84". Port: "UTP/6881"
+(I) 2025-09-28T08:30:41 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-09-28T08:30:41 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-09-28T08:30:41 - Successfully listening on IP. IP: "fe80::cc85:dbff:fe61:c372%eth0". Port: "TCP/6881"
+(I) 2025-09-28T08:30:41 - Successfully listening on IP. IP: "fe80::cc85:dbff:fe61:c372%eth0". Port: "UTP/6881"
+(N) 2025-09-28T08:30:41 - Restored torrent. Torrent: "The.Time.Machine.1960.1080p.BluRay.x265"
+(I) 2025-09-28T08:30:41 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(N) 2025-09-28T08:30:41 - Using built-in WebUI.
+(N) 2025-09-28T08:30:41 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-09-28T08:30:41 - WebUI: Now listening on IP: *, port: 8080
+(N) 2025-09-28T09:57:13 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-28T20:18:38 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-28T22:42:22 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-29T08:27:17 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-29T09:57:12 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-29T15:47:36 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-29T19:41:51 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-29T22:12:38 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-30T08:56:04 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-30T10:44:34 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-30T10:57:48 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-30T15:58:13 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-09-30T23:14:23 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-01T07:38:24 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-01T13:25:35 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-01T16:53:12 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-01T18:46:59 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-01T23:51:16 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-02T06:34:22 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-02T09:38:15 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-02T13:04:26 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-02T14:32:55 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-02T18:03:54 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-02T19:28:39 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-02T21:51:46 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-02T23:58:14 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-03T03:00:01 - qBittorrent termination initiated
+(N) 2025-10-03T03:00:01 - Saving resume data completed.
+(N) 2025-10-03T03:00:02 - BitTorrent session successfully finished.
+(N) 2025-10-03T03:00:02 - qBittorrent is now ready to exit
+(N) 2025-10-03T03:05:55 - qBittorrent v5.1.2 started. Process ID: 145
+(N) 2025-10-03T03:05:55 - Using config directory: /config/qBittorrent
+(N) 2025-10-03T03:05:55 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-10-03T03:05:55 - Peer ID: "-qB5120-"
+(I) 2025-10-03T03:05:55 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-10-03T03:05:55 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-10-03T03:05:55 - Local Peer Discovery support: OFF
+(I) 2025-10-03T03:05:55 - Peer Exchange (PeX) support: OFF
+(I) 2025-10-03T03:05:55 - Anonymous mode: OFF
+(I) 2025-10-03T03:05:55 - Encryption support: ON
+(I) 2025-10-03T03:05:55 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-10-03T03:05:55 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-10-03T03:05:55 - Successfully listening on IP. IP: "10.42.0.108". Port: "TCP/6881"
+(I) 2025-10-03T03:05:55 - Successfully listening on IP. IP: "10.42.0.108". Port: "UTP/6881"
+(I) 2025-10-03T03:05:55 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-10-03T03:05:55 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-10-03T03:05:55 - Successfully listening on IP. IP: "fe80::c861:97ff:fede:42d3%eth0". Port: "TCP/6881"
+(I) 2025-10-03T03:05:55 - Successfully listening on IP. IP: "fe80::c861:97ff:fede:42d3%eth0". Port: "UTP/6881"
+(N) 2025-10-03T03:05:55 - Restored torrent. Torrent: "The.Time.Machine.1960.1080p.BluRay.x265"
+(I) 2025-10-03T03:05:55 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Sun Aug 31 21:19:30 2025.
+(N) 2025-10-03T03:05:55 - Using built-in WebUI.
+(N) 2025-10-03T03:05:55 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-10-03T03:05:55 - WebUI: Now listening on IP: *, port: 8080
+(I) 2025-10-03T03:05:56 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Tue Sep 30 21:26:02 2025.
+(I) 2025-10-03T03:05:57 - Successfully updated IP geolocation database.
+(N) 2025-10-03T08:22:26 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-03T11:04:17 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-03T12:48:36 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-03T13:58:10 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-03T17:22:37 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-03T19:58:36 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-04T00:19:23 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-04T08:23:24 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-04T11:38:11 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-04T14:13:03 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-04T16:37:09 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-04T19:19:21 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-04T22:07:02 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-04T23:14:35 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-05T03:00:02 - qBittorrent termination initiated
+(N) 2025-10-05T03:00:02 - Saving resume data completed.
+(N) 2025-10-05T03:00:02 - BitTorrent session successfully finished.
+(N) 2025-10-05T03:00:02 - qBittorrent is now ready to exit
+(N) 2025-10-05T03:00:04 - qBittorrent v5.1.2 started. Process ID: 361
+(N) 2025-10-05T03:00:04 - Using config directory: /config/qBittorrent
+(N) 2025-10-05T03:00:04 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-10-05T03:00:04 - Peer ID: "-qB5120-"
+(I) 2025-10-05T03:00:04 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-10-05T03:00:04 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-10-05T03:00:04 - Local Peer Discovery support: OFF
+(I) 2025-10-05T03:00:04 - Peer Exchange (PeX) support: OFF
+(I) 2025-10-05T03:00:04 - Anonymous mode: OFF
+(I) 2025-10-05T03:00:04 - Encryption support: ON
+(I) 2025-10-05T03:00:04 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-10-05T03:00:04 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-10-05T03:00:04 - Successfully listening on IP. IP: "10.42.0.108". Port: "TCP/6881"
+(I) 2025-10-05T03:00:04 - Successfully listening on IP. IP: "10.42.0.108". Port: "UTP/6881"
+(I) 2025-10-05T03:00:04 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-10-05T03:00:04 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-10-05T03:00:04 - Successfully listening on IP. IP: "fe80::c861:97ff:fede:42d3%eth0". Port: "TCP/6881"
+(I) 2025-10-05T03:00:04 - Successfully listening on IP. IP: "fe80::c861:97ff:fede:42d3%eth0". Port: "UTP/6881"
+(N) 2025-10-05T03:00:04 - Restored torrent. Torrent: "The.Time.Machine.1960.1080p.BluRay.x265"
+(I) 2025-10-05T03:00:05 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Tue Sep 30 21:26:02 2025.
+(N) 2025-10-05T03:00:05 - Using built-in WebUI.
+(N) 2025-10-05T03:00:05 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-10-05T03:00:05 - WebUI: Now listening on IP: *, port: 8080
+(W) 2025-10-05T03:00:10 - Couldn't download IP geolocation database file. Reason: The remote host name was not found (invalid hostname)
+(N) 2025-10-05T03:07:28 - qBittorrent v5.1.2 started. Process ID: 144
+(N) 2025-10-05T03:07:28 - Using config directory: /config/qBittorrent
+(N) 2025-10-05T03:07:28 - Trying to listen on the following list of IP addresses: "0.0.0.0:6881,[::]:6881"
+(I) 2025-10-05T03:07:28 - Peer ID: "-qB5120-"
+(I) 2025-10-05T03:07:28 - HTTP User-Agent: "qBittorrent/5.1.2"
+(I) 2025-10-05T03:07:28 - Distributed Hash Table (DHT) support: OFF
+(I) 2025-10-05T03:07:28 - Local Peer Discovery support: OFF
+(I) 2025-10-05T03:07:28 - Peer Exchange (PeX) support: OFF
+(I) 2025-10-05T03:07:28 - Anonymous mode: OFF
+(I) 2025-10-05T03:07:28 - Encryption support: ON
+(I) 2025-10-05T03:07:28 - Successfully listening on IP. IP: "127.0.0.1". Port: "TCP/6881"
+(I) 2025-10-05T03:07:28 - Successfully listening on IP. IP: "127.0.0.1". Port: "UTP/6881"
+(I) 2025-10-05T03:07:28 - Successfully listening on IP. IP: "10.42.0.136". Port: "TCP/6881"
+(I) 2025-10-05T03:07:28 - Successfully listening on IP. IP: "10.42.0.136". Port: "UTP/6881"
+(I) 2025-10-05T03:07:28 - Successfully listening on IP. IP: "::1". Port: "TCP/6881"
+(I) 2025-10-05T03:07:28 - Successfully listening on IP. IP: "::1". Port: "UTP/6881"
+(I) 2025-10-05T03:07:28 - Successfully listening on IP. IP: "fe80::9875:93ff:fe1c:c2d2%eth0". Port: "TCP/6881"
+(I) 2025-10-05T03:07:28 - Successfully listening on IP. IP: "fe80::9875:93ff:fe1c:c2d2%eth0". Port: "UTP/6881"
+(N) 2025-10-05T03:07:28 - Restored torrent. Torrent: "The.Time.Machine.1960.1080p.BluRay.x265"
+(I) 2025-10-05T03:07:28 - IP geolocation database loaded. Type: DBIP-Country-Lite. Build time: Tue Sep 30 21:26:02 2025.
+(N) 2025-10-05T03:07:28 - Using built-in WebUI.
+(N) 2025-10-05T03:07:28 - WebUI translation for selected locale (en) has been successfully loaded.
+(N) 2025-10-05T03:07:28 - WebUI: Now listening on IP: *, port: 8080
+(N) 2025-10-05T07:56:32 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-05T11:09:13 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-05T19:47:01 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-05T21:09:19 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-06T09:43:01 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-06T11:07:56 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-06T14:21:15 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-06T18:29:39 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-06T21:40:26 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-06T23:22:04 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-07T08:12:04 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-07T09:38:45 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-07T15:30:29 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-08T08:43:33 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-08T12:07:36 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-09T07:47:14 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-09T11:21:13 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-09T14:02:22 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-09T14:45:42 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-09T14:45:52 - Added new torrent. Torrent: "Bob's Burgers S01-S14 1080p WEB-DL DD+ 5.1 264-Mixed"
+(I) 2025-10-09T14:45:54 - Detected external IP. IP: "69.209.117.6"
+(N) 2025-10-09T17:45:45 - Torrent download finished. Torrent: "Bob's Burgers S01-S14 1080p WEB-DL DD+ 5.1 264-Mixed"
+(N) 2025-10-09T19:59:47 - WebAPI login success. IP: ::ffff:10.42.0.1
+(N) 2025-10-10T03:00:01 - qBittorrent termination initiated
+(N) 2025-10-10T03:00:01 - Saving resume data completed.
+(N) 2025-10-10T03:00:02 - BitTorrent session successfully finished.
+(N) 2025-10-10T03:00:02 - qBittorrent is now ready to exit
