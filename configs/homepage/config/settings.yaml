@@ -6,5 +6,15 @@ title: DungeonWare Dashboard
 statusStyle: "dot"
 background: /icons/wallpaper.png
 headerStyle: boxed
+hideVersion: true
 cardBlur: xl
 target: _self
+
+layout:
+  Services:
+    style: row
+    columns: 3
+    header: false
+  Admin:
+    style: row
+    columns: 2
