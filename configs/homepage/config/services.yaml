@@ -52,12 +52,13 @@
           siteMonitor: '{{HOMEPAGE_VAR_CINEMA_URL}}'
 - Admin:
   - ArgoCD:
-      href: 'http://192.168.1.8090'
+      href: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
+      icon: /icons/argocd.png
       description: Deployment Manager
       widget:
         type: argocd
-        url: 'http://192.168.1.99:8090'
-        key: keykeykey
+        url: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
+        key: '{{HOMEPAGE_VAR_ARGOCD_TOKEN}}'
   - Grafana:
       href: ""
       description: Monitoring Tool
