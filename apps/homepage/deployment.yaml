@@ -65,4 +65,14 @@ spec:
     - port: 3000
       targetPort: 3000
   type: LoadBalancer
-
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/service-account-token
+metadata:
+    name: homepage
+    namespace: homelab
+    labels:
+        app.kubernetes.io/name: homepage
+    annotations:
+        kubernetes.io/service-account.name: homepage
