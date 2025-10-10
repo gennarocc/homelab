@@ -6,3 +6,4 @@
 *.log
 *.db
 **/qBittorrent-data.conf
+**/qbittorrent.log.bak
