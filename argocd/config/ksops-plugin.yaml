@@ -11,6 +11,8 @@ data:
       name: ksops
     spec:
       version: v1.0
+      discover:
+        fileName: "kustomization.yaml"
       generate:
         command: ["sh", "-c"]
         args: ["kustomize build --enable-alpha-plugins --enable-exec ."]
