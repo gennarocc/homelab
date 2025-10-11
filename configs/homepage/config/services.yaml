@@ -61,5 +61,14 @@
         url: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
         key: '{{HOMEPAGE_VAR_ARGOCD_TOKEN}}'
   - Grafana:
-      href: ""
+      href: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
+      icon: /icons/grafana.svg
       description: Monitoring Tool
+      sitMonitor: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
+      widget:
+        type: grafana
+        version: 2
+        alerts: alertsmanager
+        url: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
+        username: '{{HOMEPAGE_VAR_GRAFANA_USERNAME}}'
+        password: '{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}'

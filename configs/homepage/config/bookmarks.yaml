@@ -2,27 +2,35 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/en/configs/bookmarks
 
+- Proton:
+    - E-Mail:
+        - abbr: PM
+          href: https://mail.proton.me
+    - Calendar:
+        - abbr: CL
+          href: https://calendar.proton.me
+
 - Developer:
     - Hogtagon:
         - abbr: HG
           href: https://github.com/gennarocc/hogtagon
-    - Dolphin:
-        - abbr: OC
-          href: https://github.com/crhuff/ocean-clown
+    - Homelab:
+        - abbr: HL
+          href: https://github.com/gennarocc/homelab
     - AlphaBeta:
         - abbr: AB
           href: https://github.com/vcevce/bitwig-projects-vce
 
 - Store Fronts:
-    - TCGPlayer:
-        - abbr: TC
-          href: https://tcgplayer.com/
     - Discogs:
         - abbr: DC
           href: https://discogs.com/
     - Reverb:
         - abbr: RV
           href: https://reverb.com/
+    - PirateShip:
+        - abbr: PS
+          href: https://pirateship.com/
 
 - Entertainment:
     - Reddit:
@@ -31,4 +39,3 @@
     - YouTube:
         - abbr: YT
           href: https://youtube.com/
-
