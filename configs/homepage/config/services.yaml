@@ -64,7 +64,7 @@
       href: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
       icon: /icons/grafana.svg
       description: Monitoring Tool
-      sitMonitor: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
+      siteMonitor: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
       widget:
         type: grafana
         version: 2
