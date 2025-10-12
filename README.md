@@ -1,6 +1,8 @@
 # Welcome to the Dungeonware Homelab
 
 This is my personal homelab project to help maintain and access all of my media.
+## Dashboard
+![Homelab Dashboard](dashboard.png)
 
 ## Features:
 - Runs on **Raspberry Pi 4**
@@ -25,5 +27,3 @@ homelab/
     ├── namespace.yaml           # Homelab namespace
     └── persistent-volumes.yaml  # Storage configuration
 ```
-
-![Homelab Dashboard](dashboard.png)
