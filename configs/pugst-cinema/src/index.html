@@ -14,7 +14,6 @@
       margin: 0;
       padding: 20px;
     }
-    
     .container {
       background-color: #c0c0c0; /* Light gray */
       border: 2px solid #ffffff;
@@ -25,7 +24,6 @@
       margin: 0 auto;
       padding: 15px;
     }
-    
     h1 {
       background-color: #000080; /* Navy blue */
       color: #ffffff;
@@ -35,7 +33,6 @@
       border-right-color: #000000;
       border-bottom-color: #000000;
     }
-    
     img {
       max-width: 80%;
       border: 2px solid #ffffff;
@@ -43,32 +40,32 @@
       border-bottom-color: #808080;
       margin: 20px 0;
     }
-    
     table {
       width: 80%;
       margin: 20px auto;
       border-collapse: collapse;
       background-color: #ffffff;
     }
-    
     td {
       border: 2px solid #c0c0c0;
       padding: 8px;
       text-align: center;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
-    
     a {
       color: #0000ff;
       text-decoration: none;
       display: block;
       padding: 5px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
     }
-    
     a:hover {
       background-color: #000080;
       color: #ffffff;
     }
-
     .footer {
       margin-top: 30px;
       font-size: 0.8em;
@@ -96,8 +93,6 @@
     // Function to fetch audio files and populate the table
     async function loadMovieList() {
       try {
-        // Based on the Docker setup, we'll directly use files we know are available
-        // The filenames are determined by looking at the server contents from your screenshot
         const audioFiles = [
           "Month1-ApocalypseNow.mp3",
           "Month2-Brazil.mp3",
@@ -106,8 +101,10 @@
 	  "Month5-TheFreshman.mp3",
 	  "Month6-Suckerpunch.mp3",
 	  "Month7-Sorcerer.mp3",
+	  "Month8-TheFall.mp3",
+	  "Month9-TheTrial.mp3",
+	  "Month10-BadLieutenant.mp3",
         ];
-        
         // Check if each file exists by making a HEAD request
         // This is more reliable than directory listing
         const checkedFiles = [];

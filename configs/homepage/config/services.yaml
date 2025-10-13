@@ -55,18 +55,18 @@
       href: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
       icon: /icons/argocd.png
       description: Deployment Manager
-      siteMonitor: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
+      siteMonitor: https://192.168.1.99:8090
       widget:
         type: argocd
-        url: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
+        url: https://192.168.1.99:8090
         key: '{{HOMEPAGE_VAR_ARGOCD_TOKEN}}'
   - Grafana:
       href: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
       icon: /icons/grafana.svg
-      description: Monitoring Tool
+      description: Observability Dashboard
       siteMonitor: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
       widget:
         type: grafana
         url: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
-        username: admin
-        password: trainisland
+        username: '{{HOMEPAGE_VAR_GRAFANA_USERNAME}}'
+        password: '{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}'

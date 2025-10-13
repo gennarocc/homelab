@@ -46,6 +46,12 @@ spec:
               value: "/photoprism/originals"
             - name: PHOTOPRISM_IMPORT_PATH
               value: "/photoprism/import"
+
+            # File Support
+            - name: PHOTOPRISM_DISABLE_HEIF
+              value: "false"
+            - name: PHOTOPRISM_HEIF_CONVERT
+              value: "true"
             
             # Workers & Logging
             - name: PHOTOPRISM_WORKERS
