@@ -1,8 +1,6 @@
 # Welcome to the Dungeonware Homelab
 
 This is my personal homelab project to help maintain and access all of my media.
-## Dashboard
-![Homelab Dashboard](dashboard.png)
 
 ## Features:
 - Runs on **Raspberry Pi 4**
@@ -11,6 +9,9 @@ This is my personal homelab project to help maintain and access all of my media.
 - [Sealed-Secrets](https://github.com/bitnami-labs/sealed-secrets) encryption and secret management.
 - Public servies are exposed via [Cloudflare Tunnels](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
 - Monitoring and Usage dashbaords using [Prometheus](https://prometheus.io/) & [Grafana](https://grafana.com/)
+
+## Dashboard
+![Homelab Dashboard](dashboard.png)
 
 ## Repo Structure:
 
