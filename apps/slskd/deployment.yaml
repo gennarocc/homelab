@@ -1,0 +1,112 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: slskd
+  namespace: homelab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: slskd
+  template:
+    metadata:
+      labels:
+        app: slskd
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: slskd
+          image: slskd/slskd:latest
+          env:
+            - name: SLSKD_HTTP_PORT
+              value: "5030"
+            - name: SLSKD_HTTPS_PORT
+              value: "5031"
+            - name: SLSKD_SLSK_LISTEN_PORT
+              value: "50300"
+            - name: SLSKD_REMOTE_CONFIGURATION
+              value: "true"
+            - name: TZ
+              value: "America/New_York"
+          envFrom:
+            - secretRef:
+                name: slskd-secret
+          ports:
+            - name: http
+              containerPort: 5030
+              protocol: TCP
+            - name: https
+              containerPort: 5031
+              protocol: TCP
+            - name: slsk
+              containerPort: 50300
+              protocol: TCP
+          volumeMounts:
+            - name: homelab-configs
+              mountPath: /app/config
+              subPath: slskd/config
+            - name: hdd-data
+              mountPath: /var/slskd/incomplete
+              subPath: media/music/.tmp/incomplete
+            - name: hdd-data
+              mountPath: /var/slskd/shared
+              subPath: media/music
+            - name: hdd-data
+              mountPath: /var/slskd/downloads
+              subPath: media/music/.tmp/complete
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5030
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5030
+            initialDelaySeconds: 10
+            periodSeconds: 5
+      volumes:
+        - name: homelab-configs
+          persistentVolumeClaim:
+            claimName: homelab-configs-pvc
+        - name: hdd-data
+          hostPath:
+            path: /hdd
+            type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: slskd
+  namespace: homelab
+spec:
+  selector:
+    app: slskd
+  ports:
+    - name: http
+      port: 5030
+      targetPort: 5030
+      protocol: TCP
+    - name: https
+      port: 5031
+      targetPort: 5031
+      protocol: TCP
+    - name: slsk
+      port: 50300
+      targetPort: 50300
+      protocol: TCP
+  type: LoadBalancer
+  externalIPs:
+    - 192.168.1.99
