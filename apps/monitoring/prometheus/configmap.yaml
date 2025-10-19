@@ -94,11 +94,11 @@ data:
         static_configs:
           - targets: ['qbittorrent:8080']
         metrics_path: '/metrics'
-        # Note: qBittorrent doesn't expose Prometheus metrics by default
-        # This is here as an example if you add an exporter
 
       - job_name: 'photoprism'
         static_configs:
           - targets: ['photoprism:2342']
         metrics_path: '/api/v1/metrics'
-        # PhotoPrism has built-in metrics
+        basic_auth:
+          username: admin
+          passowrd_file: /etc/prometheus/secrets/photoprism-password
