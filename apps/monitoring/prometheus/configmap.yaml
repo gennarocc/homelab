@@ -88,17 +88,3 @@ data:
           - source_labels: [__meta_kubernetes_pod_name]
             action: replace
             target_label: kubernetes_pod_name
-
-      # Your specific services (optional manual configs)
-      - job_name: 'qbittorrent'
-        static_configs:
-          - targets: ['qbittorrent:8080']
-        metrics_path: '/metrics'
-
-      - job_name: 'photoprism'
-        static_configs:
-          - targets: ['photoprism:2342']
-        metrics_path: '/api/v1/metrics'
-        basic_auth:
-          username: admin
-          passowrd_file: /etc/prometheus/secrets/photoprism-password
