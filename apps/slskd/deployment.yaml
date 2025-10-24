@@ -60,11 +60,11 @@ spec:
               subPath: media/music/.tmp/complete
           resources:
             limits:
-              cpu: "1"
-              memory: "512Mi"
+              cpu: 1
+              memory: 512Mi
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: 100m
+              memory: 128Mi
           livenessProbe:
             httpGet:
               path: /health
