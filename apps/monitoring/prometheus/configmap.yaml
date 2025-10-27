@@ -13,7 +13,6 @@ data:
         cluster: 'dungeonware-homelab'
         monitor: 'raspberry-pi'
 
-    # Scrape configs - what to monitor
     scrape_configs:
       # Prometheus monitors itself
       - job_name: 'prometheus'
@@ -29,10 +28,23 @@ data:
             target_label: instance
             replacement: 'raspberry-pi'
 
-      # Kube State Metrics - Kubernetes cluster state
-      - job_name: 'kube-state-metrics'
-        static_configs:
-          - targets: ['kube-state-metrics:8080']
+      # Kubelet cAdvisor - Container metrics (CPU, Memory, etc)
+      - job_name: 'kubernetes-cadvisor'
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        kubernetes_sd_configs:
+          - role: node
+        relabel_configs:
+          - action: labelmap
+            regex: __meta_kubernetes_node_label_(.+)
+          - target_label: __address__
+            replacement: kubernetes.default.svc:443
+          - source_labels: [__meta_kubernetes_node_name]
+            regex: (.+)
+            target_label: __metrics_path__
+            replacement: /api/v1/nodes/${1}/proxy/metrics/cadvisor
 
       # Kubernetes pods - auto-discover any pod with prometheus annotations
       - job_name: 'kubernetes-pods'

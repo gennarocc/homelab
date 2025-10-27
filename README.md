@@ -10,8 +10,10 @@ This is my personal homelab project to help maintain and access all of my media.
 - Public servies are exposed via [Cloudflare Tunnels](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
 - Monitoring and Usage dashbaords using [Prometheus](https://prometheus.io/) & [Grafana](https://grafana.com/)
 
-## Dashboard
+## Dashboards
 ![Homelab Dashboard](dashboard.png)
+
+![Grafana Dashboard](dashboard-grafana.png)
 
 ## Repo Structure:
 
