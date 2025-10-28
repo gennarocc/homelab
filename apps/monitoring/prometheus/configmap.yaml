@@ -28,6 +28,11 @@ data:
             target_label: instance
             replacement: 'raspberry-pi'
 
+      # Process exporter for plex stats
+      - job_name: 'process-exporter'
+        static_configs:
+          - targets: ['192.168.1.99:9256']
+
       # Kubelet cAdvisor - Container metrics (CPU, Memory, etc)
       - job_name: 'kubernetes-cadvisor'
         scheme: https

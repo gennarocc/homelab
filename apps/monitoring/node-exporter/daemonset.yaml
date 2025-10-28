@@ -25,6 +25,7 @@ spec:
             - '--path.sysfs=/host/sys'
             - '--path.rootfs=/host/root'
             - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+            - '--collector.textfile.directory=/host/textfile'
           ports:
             - containerPort: 9100
               name: metrics
@@ -45,6 +46,9 @@ spec:
             - name: root
               mountPath: /host/root
               readOnly: true
+            - name: textfile
+              mountPath: /host/textfile
+              readOnly: true
       volumes:
         - name: proc
           hostPath:
@@ -55,6 +59,9 @@ spec:
         - name: root
           hostPath:
             path: /
+        - name: textfile
+          hostPath:
+            path: /var/lib/node_exporter
 ---
 apiVersion: v1
 kind: Service
