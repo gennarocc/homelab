@@ -25,6 +25,8 @@ homelab/
 │   ├── applications/            # Individual app definitions
 │   └── homelab.yaml             # Root application
 │
+├── configs/                     # Service configs
+│
 └── infrastructure/              # Core infrastructure
     ├── cloudflared/             # Cloudflare tunnel
     ├── namespace.yaml           # Homelab namespace
