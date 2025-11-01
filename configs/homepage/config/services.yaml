@@ -67,6 +67,6 @@
       siteMonitor: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
       widget:
         type: grafana
-        url: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
+        url: 'http://192.168.1.99:3001'
         username: '{{HOMEPAGE_VAR_GRAFANA_USERNAME}}'
         password: '{{HOMEPAGE_VAR_GRAFANA_PASSWORD}}'
