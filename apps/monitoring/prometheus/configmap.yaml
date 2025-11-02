@@ -56,7 +56,8 @@ data:
         kubernetes_sd_configs:
           - role: pod
             namespaces:
-              names: ['homelab']
+              names: ['homelab', 'argocd']
+
         relabel_configs:
           # Only scrape pods with prometheus.io/scrape: "true" annotation
           - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
