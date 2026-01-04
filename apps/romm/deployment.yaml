@@ -178,7 +178,7 @@ spec:
         - name: database
           hostPath:
             path: /hdd/games/roms/.database
-            type: DirectoryOrCreate
+            type: Directory
 
 ---
 # Redis for Romm caching

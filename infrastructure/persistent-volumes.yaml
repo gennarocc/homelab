@@ -14,7 +14,7 @@ spec:
   storageClassName: local-storage
   hostPath:
     path: /home/pi/homelab/configs
-    type: DirectoryOrCreate
+    type: Directory
 
 ---
 # PersistentVolumeClaim for app configs
