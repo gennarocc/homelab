@@ -13,6 +13,7 @@ integrations:
 scanner:
   scan_threads: 2
   scan_extensions:
+    - chd
     - zip
     - 7z
     - rar

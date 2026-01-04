@@ -116,8 +116,7 @@ spec:
       volumes:
         - name: romm-library
           hostPath:
-            path: /hdd/games/roms
-            type: DirectoryOrCreate
+            path: /hdd/games
         - name: homelab-configs
           persistentVolumeClaim:
             claimName: homelab-configs-pvc
