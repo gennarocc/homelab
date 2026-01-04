@@ -1,0 +1,58 @@
+system:
+  library_path: /rom/library
+  resources_path: /romm/resources
+  scan_on_upload: true
+  enable_background_scan: true
+ui:
+  theme: auto
+  show_nsfw: false
+
+integrations:
+  igdb:
+    enabled: true
+scanner:
+  scan_threads: 2
+  scan_extensions:
+    - zip
+    - 7z
+    - rar
+    - iso
+    - chd
+    - cue
+    - bin
+    - gdi
+    - nds
+    - nes
+    - sfc
+    - smc
+    - gb
+    - gbc
+    - gba
+    - n64
+    - z64
+    - v64
+    - gcm
+    - iso
+    - wbfs
+    - ciso
+    - wia
+    - rvz
+    - dol
+    - elf
+    - xci
+    - nsp
+    - pbp
+    - cso
+platforms:
+  gba: 5
+  gbc: 22
+  nes: 18
+  snes: 19
+  n64: 4
+  gamecube: 21
+  genesis: 29
+  saturn: 32
+  dreamcast: 23
+  psx: 7
+  ps2: 8
+  ps3: 9
