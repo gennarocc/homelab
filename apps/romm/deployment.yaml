@@ -5,7 +5,7 @@ metadata:
   name: romm
   namespace: homelab
 spec:
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   selector:
@@ -129,7 +129,7 @@ metadata:
   name: romm-mariadb
   namespace: homelab
 spec:
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   selector:
@@ -188,7 +188,7 @@ metadata:
   name: romm-redis
   namespace: homelab
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: romm-redis
@@ -254,4 +254,4 @@ spec:
   ports:
     - port: 6379
       targetPort: 6379
-  type: ClusterIP
+  eype: ClusterIP
