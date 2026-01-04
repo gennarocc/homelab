@@ -20,6 +20,7 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
+      enableServiceLinks: false
       containers:
         - name: romm
           image: rommapp/romm:latest
@@ -83,9 +84,10 @@ spec:
           volumeMounts:
             - name: romm-library
               mountPath: /romm/library
-            - name: romm-resources
+            - name: homelab-configs
               mountPath: /romm/resources
-            - name: romm-config
+              subPath: romm/resources
+            - name: homelab-configs
               mountPath: /romm/config
               subPath: romm/config
           
@@ -116,11 +118,7 @@ spec:
           hostPath:
             path: /hdd/games/roms
             type: DirectoryOrCreate
-        - name: romm-resources
-          hostPath:
-            path: /hdd/games/roms/.resources
-            type: DirectoryOrCreate
-        - name: romm-config
+        - name: homelab-configs
           persistentVolumeClaim:
             claimName: homelab-configs-pvc
 
@@ -180,7 +178,7 @@ spec:
       volumes:
         - name: database
           hostPath:
-            path: /hdd/.romm/database
+            path: /hdd/games/roms/.database
             type: DirectoryOrCreate
 
 ---
