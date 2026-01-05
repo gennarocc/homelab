@@ -63,7 +63,7 @@ spec:
                   name: romm-secret
                   key: admin-password
             
-            # Application Settings
+            # Metadata Scrapers
             - name: IGDB_CLIENT_ID
               valueFrom:
                 secretKeyRef:
@@ -76,6 +76,26 @@ spec:
                   name: romm-secret
                   key: igdb-client-secret
                   optional: true
+            - name: SCREENSCRAPER_USER
+              valueFrom:
+                secretKeyRef:
+                  name: romm-secret
+                  key: screenscraper-username
+                  optional: true
+            - name: SCREENSCRAPER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: romm-secret
+                  key: screenscraper-password
+                  optional: true
+            - name: RETROACHIEVEMENTS_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: romm-secret
+                  key: cheevos-key
+                  optional: true
+            - name: HLTB_API_ENABLED
+              value: true
           
           ports:
             - containerPort: 8080
@@ -84,9 +104,9 @@ spec:
           volumeMounts:
             - name: romm-library
               mountPath: /romm/library
-            - name: homelab-configs
+            - name: romm-library
               mountPath: /romm/resources
-              subPath: romm/resources
+              subPath: .resources
             - name: homelab-configs
               mountPath: /romm/config
               subPath: romm/config
@@ -161,7 +181,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: romm-secret
-                  key: database-root-password
+                  key: database-password
           ports:
             - containerPort: 3306
           volumeMounts:
@@ -177,8 +197,8 @@ spec:
       volumes:
         - name: database
           hostPath:
-            path: /hdd/games/roms/.database
-            type: Directory
+            path: /hdd/games/.database
+            type: DirectoryOrCreate
 
 ---
 # Redis for Romm caching
@@ -254,4 +274,4 @@ spec:
   ports:
     - port: 6379
       targetPort: 6379
-  eype: ClusterIP
+  type: ClusterIP
