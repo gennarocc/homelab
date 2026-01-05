@@ -95,7 +95,7 @@ spec:
                   key: cheevos-key
                   optional: true
             - name: HLTB_API_ENABLED
-              value: true
+              value: "true"
           
           ports:
             - containerPort: 8080
@@ -106,9 +106,8 @@ spec:
               mountPath: /romm/library
             - name: romm-assets
               mountPath: /romm/assets
-            - name: romm-library
+            - name: romm-resources
               mountPath: /romm/resources
-              subPath: .resources
             - name: homelab-configs
               mountPath: /romm/config
               subPath: romm/config
@@ -139,6 +138,9 @@ spec:
         - name: romm-library
           hostPath:
             path: /hdd/games
+        - name: romm-resources
+          hostPath:
+            path: /hdd/games/.resources
         - name: romm-assets
           hostPath:
             path: /hdd/games/saves
@@ -203,7 +205,7 @@ spec:
         - name: database
           hostPath:
             path: /hdd/games/.database
-            type: DirectoryOrCreate
+            type: Directory
 
 ---
 # Redis for Romm caching
