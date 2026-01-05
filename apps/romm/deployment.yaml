@@ -5,7 +5,7 @@ metadata:
   name: romm
   namespace: homelab
 spec:
-  replicas: 0
+  replicas: 1
   strategy:
     type: Recreate
   selector:
@@ -129,7 +129,7 @@ metadata:
   name: romm-mariadb
   namespace: homelab
 spec:
-  replicas: 0
+  replicas: 1
   strategy:
     type: Recreate
   selector:
@@ -188,7 +188,7 @@ metadata:
   name: romm-redis
   namespace: homelab
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: romm-redis
