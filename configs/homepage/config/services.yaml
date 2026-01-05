@@ -9,6 +9,15 @@
             type: plex
             url: '{{HOMEPAGE_VAR_PLEX_URL}}'
             key: '{{HOMEPAGE_VAR_PLEX_API_TOKEN}}'
+      - Romm:
+          href: '{{HOMEPAGE_VAR_ROMM_URL}}'
+          description: Emulator and Rom Manager
+          siteMonitor: '{{HOMEPAGE_VAR_ROMM_URL}}'
+          icon: /icons/romm.png
+          widget:
+            type: romm
+            url: '{{HOMEPAGE_VAR_ROMM_URL}}'
+            fields: ["platforms", "totalRoms", "saves"]
       - qBittorrent:
           href: '{{HOMEPAGE_VAR_QBITTORRENT_URL}}'
           description: Torrent Manager

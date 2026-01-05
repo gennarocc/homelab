@@ -104,6 +104,8 @@ spec:
           volumeMounts:
             - name: romm-library
               mountPath: /romm/library
+            - name: romm-assets
+              mountPath: /romm/assets
             - name: romm-library
               mountPath: /romm/resources
               subPath: .resources
@@ -137,6 +139,9 @@ spec:
         - name: romm-library
           hostPath:
             path: /hdd/games
+        - name: romm-assets
+          hostPath:
+            path: /hdd/games/saves
         - name: homelab-configs
           persistentVolumeClaim:
             claimName: homelab-configs-pvc
