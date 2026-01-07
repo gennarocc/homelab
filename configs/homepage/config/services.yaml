@@ -7,8 +7,17 @@
           siteMonitor: '{{HOMEPAGE_VAR_PLEX_URL}}'
           widget:
             type: plex
-            url: '{{HOMEPAGE_VAR_PLEX_URL}}'
             key: '{{HOMEPAGE_VAR_PLEX_API_TOKEN}}'
+            url: '{{HOMEPAGE_VAR_PLEX_URL}}'
+      - PhotoPrism:
+          href: '{{HOMEPAGE_VAR_PHOTOPRISM_URL}}'
+          description: Image Gallery
+          icon: /icons/photoprism.svg
+          siteMonitor: '{{HOMEPAGE_VAR_PHOTOPRISM_URL}}'
+          widget:
+            type: photoprism
+            url: '{{HOMEPAGE_VAR_PHOTOPRISM_URL}}'
+            key: '{{HOMEPAGE_VAR_PHOTOPRISM_TOKEN}}'
       - Romm:
           href: '{{HOMEPAGE_VAR_ROMM_URL}}'
           description: Emulator and Rom Manager
@@ -18,6 +27,12 @@
             type: romm
             url: '{{HOMEPAGE_VAR_ROMM_URL}}'
             fields: ["platforms", "totalRoms", "saves"]
+  - Files and Documents:
+      - File Browser:
+          href: '{{HOMEPAGE_VAR_FILEBROWSER_URL}}'
+          description: File server and browser
+          icon: /icons/fb.svg
+          siteMonitor: '{{HOMEPAGE_VAR_FILEBROWSER_URL}}'
       - qBittorrent:
           href: '{{HOMEPAGE_VAR_QBITTORRENT_URL}}'
           description: Torrent Manager
@@ -28,21 +43,6 @@
             url: '{{HOMEPAGE_VAR_QBITTORRENT_URL}}'
             username: '{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}'
             password: '{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}'
-  - Files and Documents:
-      - File Browser:
-          href: '{{HOMEPAGE_VAR_FILEBROWSER_URL}}'
-          description: File server and browser
-          icon: /icons/fb.svg
-          siteMonitor: '{{HOMEPAGE_VAR_FILEBROWSER_URL}}'
-      - PhotoPrism:
-          href: '{{HOMEPAGE_VAR_PHOTOPRISM_URL}}'
-          description: Image Gallery
-          icon: /icons/photoprism.svg
-          siteMonitor: '{{HOMEPAGE_VAR_PHOTOPRISM_URL}}'
-          widget:
-            type: photoprism
-            url: '{{HOMEPAGE_VAR_PHOTOPRISM_URL}}'
-            key: '{{HOMEPAGE_VAR_PHOTOPRISM_TOKEN}}'
       - Metube:
           href: '{{HOMEPAGE_VAR_METUBE_URL}}'
           description: Youtube Downloader

@@ -11,20 +11,24 @@ emulatorjs:
 exclude:
   platforms:
   - .database
-  - .ps2
-  - .psx
-  - .saturn
-  - .dreamcast
   - .resources
   roms:
     multi_file:
-      names: []
+      names:
+      - .psx
+      - .dreamcast
+      - .ps2
+      - .saturn
       parts:
         extensions: []
         names: []
     single_file:
       extensions: []
-      names: []
+      names:
+      - .psx
+      - .dreamcast
+      - .ps2
+      - .saturn
 filesystem:
   firmware_folder: bios
   roms_folder: roms

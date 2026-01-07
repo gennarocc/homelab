@@ -1,0 +1,92 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbitwebui
+  namespace: homelab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qbitwebui
+  template:
+    metadata:
+      labels:
+        app: qbitwebui
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: qbitwebui
+          image: maciejonos/qbitwebui:latest
+          env:
+            - name: ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: qbitwebui-secret
+                  key: encryption-key
+            - name: PORT
+              value: "3000"
+            - name: DATABASE_PATH
+              value: "/data/qbitwebui.db"
+            - name: SALT_PATH
+              value: "/data/.salt"
+            - name: ALLOW_SELF_SIGNED_CERTS
+              value: "false"
+            - name: DISABLE_AUTH
+              value: "false"
+            - name: DOWNLOADS_PATH
+              value: "/downloads"
+          ports:
+            - containerPort: 3000
+              name: http
+          volumeMounts:
+            - name: homelab-configs
+              mountPath: /data
+              subPath: qbitwebui/data
+            - name: hdd-torrents
+              mountPath: /downloads
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: "256Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+      volumes:
+        - name: homelab-configs
+          persistentVolumeClaim:
+            claimName: homelab-configs-pvc
+        - name: hdd-torrents
+          hostPath:
+            path: /hdd/.torrents/
+            type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbitwebui
+  namespace: homelab
+spec:
+  selector:
+    app: qbitwebui
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+  type: LoadBalancer
