@@ -20,7 +20,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: qbitwebui
-          image: maciejonos/qbitwebui:latest
+          image: ghcr.io/maciejonos/qbitwebui:latest
           env:
             - name: ENCRYPTION_KEY
               valueFrom:
