@@ -45,7 +45,7 @@ spec:
           volumeMounts:
             - name: homelab-configs
               mountPath: /data
-              subPath: qbitwebui/data
+              subPath: qbitwebui
             - name: hdd-torrents
               mountPath: /downloads
           resources:
