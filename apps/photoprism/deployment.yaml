@@ -16,6 +16,10 @@ spec:
       labels:
         app: photoprism
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
         - name: photoprism
           image: photoprism/photoprism:latest
@@ -163,6 +167,10 @@ spec:
       labels:
         app: photoprism-mariadb
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       containers:
         - name: mariadb
           image: mariadb:10.11

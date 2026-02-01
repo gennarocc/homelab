@@ -33,6 +33,14 @@ filesystem:
   firmware_folder: bios
   roms_folder: roms
 scan:
+  media:
+    - box3d
+    - miximage
+    - physical
+    - screenshot
+    - marquee
+    - manual
+    - video
   priority:
     artwork:
     - igdb
