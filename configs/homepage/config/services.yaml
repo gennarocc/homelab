@@ -43,6 +43,11 @@
             url: '{{HOMEPAGE_VAR_QBITTORRENT_URL}}'
             username: '{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}'
             password: '{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}'
+      - slskd:
+          href: '{{HOMEPAGE_VAR_SLSKD_URL}}'
+          description: Music Sharing
+          icon: /icons/slskd.png
+          siteMonitor: '{{HOMEPAGE_VAR_SLSKD_URL}}'
       - Metube:
           href: '{{HOMEPAGE_VAR_METUBE_URL}}'
           description: Youtube Downloader
