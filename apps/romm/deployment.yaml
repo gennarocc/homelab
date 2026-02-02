@@ -167,28 +167,10 @@ spec:
       labels:
         app: romm-mariadb
     spec:
-  selector:
-    matchLabels:
-      app: photoprism
-  template:
-    metadata:
-      labels:
-        app: photoprism
-    spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-      containers:
-        - name: photoprism
-          image: photoprism/photoprism:latest
-          env:
-            # Initial Setup
-            - name: PHOTOPRISM_ADMIN_USER
-              value: "admin"
-            - name: PHOTOPRISM_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
       containers:
         - name: mariadb
           image: mariadb:10.11
