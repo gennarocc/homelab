@@ -17,8 +17,8 @@ spec:
         app: grafana
     spec:
       securityContext:
-        fsGroup: 1000
-        runAsUser: 1000
+        fsGroup: 472
+        runAsUser: 472
         runAsNonRoot: true
       containers:
         - name: grafana
