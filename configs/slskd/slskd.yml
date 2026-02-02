@@ -1,0 +1,14 @@
+directories:
+  incomplete: /var/slskd/incomplete
+  downloads: /var/slskd/downloads
+shares:
+  directories:
+    - /var/slskd/shared
+  filters:
+    - \.ini$
+    - Thumbs.db$
+    - \.DS_Store$
+  cache:
+    storage_mode: memory
+    workers: 16
+    retention: ~ # retain indefinitely (do not automatically re-scan)
