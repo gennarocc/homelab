@@ -41,30 +41,15 @@ scan:
     - marquee
     - manual
     - video
+    - title_screen
   priority:
     artwork:
-    - igdb
-    - moby
     - ss
-    - ra
-    - launchbox
-    - gamelist
-    - hasheous
-    - tgdb
-    - flashpoint
     - hltb
     language:
     - en
     metadata:
-    - igdb
-    - moby
     - ss
-    - ra
-    - launchbox
-    - gamelist
-    - hasheous
-    - tgdb
-    - flashpoint
     - hltb
     region:
     - us

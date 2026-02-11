@@ -1,6 +1,7 @@
 directories:
   incomplete: /var/slskd/incomplete
-  downloads: /var/slskd/downloads
+  downloads: /var/slskd/downloading
+
 shares:
   directories:
     - /var/slskd/shared
@@ -11,4 +12,4 @@ shares:
   cache:
     storage_mode: memory
     workers: 16
-    retention: ~ # retain indefinitely (do not automatically re-scan)
+    retention: ~
