@@ -196,9 +196,9 @@ spec:
           ports:
             - containerPort: 3306
           volumeMounts:
-            - name: hdd-data
+            - name: database
               mountPath: /var/lib/mysql
-              subPath: pictures/library/database
+              subPath: databases/photoprism-mariadb
           resources:
             requests:
               memory: "256Mi"
@@ -207,10 +207,9 @@ spec:
               memory: "1Gi"
               cpu: "500m"
       volumes:
-        - name: hdd-data
-          hostPath:
-            path: /hdd
-            type: Directory
+        - name: database
+          persistentVolumeClaim:
+            claimName: homelab-data-pvc
 
 ---
 apiVersion: v1

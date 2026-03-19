@@ -198,6 +198,7 @@ spec:
           volumeMounts:
             - name: database
               mountPath: /var/lib/mysql
+              subPath: databases/romm-mariadb
           resources:
             requests:
               memory: "256Mi"
@@ -207,9 +208,8 @@ spec:
               cpu: "500m"
       volumes:
         - name: database
-          hostPath:
-            path: /hdd/games/.database
-            type: Directory
+          persistentVolumeClaim:
+            claimName: homelab-data-pvc
 
 ---
 # Redis for Romm caching

@@ -48,6 +48,7 @@ spec:
           volumeMounts:
             - name: grafana-storage
               mountPath: /var/lib/grafana
+              subPath: monitoring/grafana
           resources:
             limits:
               cpu: 500m
@@ -69,9 +70,8 @@ spec:
             periodSeconds: 5
       volumes:
         - name: grafana-storage
-          hostPath:
-            path: /hdd/.monitoring/grafana
-            type: DirectoryOrCreate
+          persistentVolumeClaim:
+            claimName: homelab-data-pvc
 ---
 apiVersion: v1
 kind: Service

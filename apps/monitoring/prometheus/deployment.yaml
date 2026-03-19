@@ -39,6 +39,7 @@ spec:
               mountPath: /etc/prometheus
             - name: prometheus-storage
               mountPath: /prometheus
+              subPath: monitoring/prometheus
           resources:
             limits:
               cpu: 500m
@@ -63,9 +64,8 @@ spec:
           configMap:
             name: prometheus-config
         - name: prometheus-storage
-          hostPath:
-            path: /hdd/.monitoring/prometheus
-            type: DirectoryOrCreate
+          persistentVolumeClaim:
+            claimName: homelab-data-pvc
 ---
 apiVersion: v1
 kind: Service

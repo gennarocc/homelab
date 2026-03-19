@@ -33,6 +33,40 @@ spec:
   volumeName: homelab-configs-pv
 
 ---
+# PersistentVolume for databases and monitoring data (local SD card)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: homelab-data-pv
+  namespace: homelab
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  hostPath:
+    path: /home/pi/homelab/data
+    type: DirectoryOrCreate
+
+---
+# PersistentVolumeClaim for databases and monitoring data
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homelab-data-pvc
+  namespace: homelab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: local-storage
+  volumeName: homelab-data-pv
+
+---
 # StorageClass for local storage
 apiVersion: storage.k8s.io/v1
 kind: StorageClass

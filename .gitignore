@@ -8,3 +8,4 @@
 **/qBittorrent-data.conf
 **/qbittorrent.log.*
 **/secret.yaml
+data/
