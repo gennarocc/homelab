@@ -7,5 +7,6 @@
 *.db
 **/qBittorrent-data.conf
 **/qbittorrent.log.*
+configs/qbittorrent/
 **/secret.yaml
 data/
