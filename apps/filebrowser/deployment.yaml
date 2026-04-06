@@ -23,6 +23,9 @@ spec:
           image: hurlenko/filebrowser
           ports:
             - containerPort: 8080
+          env:
+            - name: FB_DATABASE
+              value: /db/filebrowser.db
           volumeMounts:
             - name: hdd-data
               mountPath: /data
@@ -32,6 +35,9 @@ spec:
             - name: homelab-configs
               mountPath: /config
               subPath: filebrowser/config
+            - name: homelab-data
+              mountPath: /db
+              subPath: filebrowser
       volumes:
         - name: hdd-data
           hostPath:
@@ -40,6 +46,9 @@ spec:
         - name: homelab-configs
           persistentVolumeClaim:
             claimName: homelab-configs-pvc
+        - name: homelab-data
+          persistentVolumeClaim:
+            claimName: homelab-data-pvc
 ---
 apiVersion: v1
 kind: Service
