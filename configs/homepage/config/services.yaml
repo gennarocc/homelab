@@ -69,10 +69,10 @@
       href: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
       icon: /icons/argocd.png
       description: Deployment Manager
-      siteMonitor: https://192.168.1.99:8090
+      siteMonitor: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
       widget:
         type: argocd
-        url: https://192.168.1.99:8090
+        url: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
         key: '{{HOMEPAGE_VAR_ARGOCD_TOKEN}}'
   - Grafana:
       href: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
