@@ -23,9 +23,9 @@ spec:
           image: lscr.io/linuxserver/qbittorrent:latest
           env:
             - name: PUID
-              value: "1001"  # Match pi user ID
+              value: "1000" 
             - name: PGID
-              value: "1001"  # Match pi group ID
+              value: "1000"
             - name: TZ
               value: "America/New_York"
             - name: WEBUI_PORT
@@ -36,9 +36,11 @@ spec:
             - containerPort: 6881
               protocol: UDP
           resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
             limits:
-              cpu: "0.5"
-              memory: "256Mi"
+              memory: "1.5Gi"
           volumeMounts:
             - name: homelab-configs
               mountPath: /config
