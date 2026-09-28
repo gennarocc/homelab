@@ -59,7 +59,7 @@ spec:
             
             # Workers & Logging
             - name: PHOTOPRISM_WORKERS
-              value: "2"
+              value: "1"
             - name: PHOTOPRISM_LOG_LEVEL
               value: "info"
             - name: PHOTOPRISM_READONLY
@@ -140,7 +140,7 @@ spec:
               memory: "512Mi"
               cpu: "250m"
             limits:
-              memory: "2Gi"
+              memory: "3Gi"
               cpu: "1000m"
 
       volumes:
