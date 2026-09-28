@@ -5,7 +5,7 @@ metadata:
   name: slskd
   namespace: homelab
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: slskd
@@ -61,7 +61,7 @@ spec:
           resources:
             limits:
               cpu: 1
-              memory: 512Mi
+              memory: 1Gi
             requests:
               cpu: 50m
               memory: 128Mi
