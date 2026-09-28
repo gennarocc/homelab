@@ -30,8 +30,9 @@ exclude:
       - .ps2
       - .saturn
 filesystem:
-  firmware_folder: bios
-  roms_folder: roms
+  structure:
+    default: "roms/{platform}/{game}"
+    firmware: "bios/{platform}"
 scan:
   media:
     - box3d
