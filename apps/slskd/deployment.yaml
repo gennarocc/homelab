@@ -71,6 +71,7 @@ spec:
               port: 5030
             initialDelaySeconds: 30
             periodSeconds: 10
+            failureThreshold: 90
           readinessProbe:
             httpGet:
               path: /health
