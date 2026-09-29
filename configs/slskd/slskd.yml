@@ -14,3 +14,12 @@ shares:
     storage_mode: disk
     workers: 4
     retention: ~
+transfers:
+  upload:
+    slots: 5
+    speed_limit: 875
+    limits:
+      deaily: megabytes: 20000
+  download:
+    slots: 10
+    speed_limit: 3000
