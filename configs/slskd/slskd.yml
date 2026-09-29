@@ -9,6 +9,7 @@ shares:
     - \.ini$
     - Thumbs.db$
     - \.DS_Store$
+    - /\.tmp/
   cache:
     storage_mode: disk
     workers: 4
