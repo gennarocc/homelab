@@ -14,12 +14,41 @@ shares:
     storage_mode: disk
     workers: 4
     retention: ~
+
 transfers:
   upload:
-    slots: 5
-    speed_limit: 875
-    limits:
-      deaily: megabytes: 20000
+    slots: 3
+    speed_limit: 400          # KiB/s aggregate -> ~33 GiB/day sustained
+    limits:                   # these are PER USER
+      queued:
+        files: 30
+        megabytes: 500
+      daily:
+        files: 50
+        megabytes: 1000       # 1 GB per user per day
+      weekly:
+        files: 200
+        megabytes: 4000       # 4 GB per user per week
   download:
-    slots: 10
-    speed_limit: 3000
+    slots: 5
+    speed_limit: 2000         # KiB/s -> ~2 MiB/s
+  groups:
+    leechers:
+      thresholds:
+        files: 50
+        directories: 5
+      upload:
+        priority: 999
+        strategy: roundrobin
+        slots: 1
+        speed_limit: 50
+        limits:
+          queued:
+            files: 5
+            megabytes: 100
+          daily:
+            files: 10
+            megabytes: 200
+          weekly:
+            files: 30
+            megabytes: 600
