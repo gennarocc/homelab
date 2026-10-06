@@ -51,7 +51,7 @@
       - wrtag:
           href: '{{HOMEPAGE_VAR_WRTAG_URL}}'
           description: Music Tagger and Importer
-          icon: si-musicbrainz
+          icon: /icons/musicbrainz.png
           siteMonitor: '{{HOMEPAGE_VAR_WRTAG_URL}}'
       - Metube:
           href: '{{HOMEPAGE_VAR_METUBE_URL}}'

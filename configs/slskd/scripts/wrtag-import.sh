@@ -11,7 +11,7 @@ WRTAG_URL="${WRTAG_URL:-http://wrtag.homelab.svc.cluster.local:7373}"
 SLSKD_DOWNLOADS="/var/slskd/downloads"
 WRTAG_DOWNLOADS="/hdd/media/music/.tmp/complete"
 
-DIR=$(jq -r '.localDirectory // .LocalDirectory // empty' <<<"$SLSKD_SCRIPT_DATA")
+DIR=$(jq -r '.localDirectoryName // .LocalDirectoryName // empty' <<<"$SLSKD_SCRIPT_DATA")
 
 if [[ -z "$DIR" ]]; then
   echo "wrtag-import: no localDirectory in event payload" >&2
