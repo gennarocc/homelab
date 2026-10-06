@@ -52,3 +52,11 @@ transfers:
           weekly:
             files: 30
             megabytes: 600
+
+integrations:
+  scripts:
+    wrtag:
+      on:
+        - DownloadDirectoryComplete
+      run:
+        command: /app/scripts/wrtag-import.sh

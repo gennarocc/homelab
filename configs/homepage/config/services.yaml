@@ -48,6 +48,11 @@
           description: Music Sharing
           icon: /icons/slskd.png
           siteMonitor: '{{HOMEPAGE_VAR_SLSKD_URL}}'
+      - wrtag:
+          href: '{{HOMEPAGE_VAR_WRTAG_URL}}'
+          description: Music Tagger and Importer
+          icon: si-musicbrainz
+          siteMonitor: '{{HOMEPAGE_VAR_WRTAG_URL}}'
       - Metube:
           href: '{{HOMEPAGE_VAR_METUBE_URL}}'
           description: Youtube Downloader

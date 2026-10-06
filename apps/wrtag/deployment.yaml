@@ -1,0 +1,88 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wrtag
+  namespace: homelab
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: wrtag
+  template:
+    metadata:
+      labels:
+        app: wrtag
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: wrtag
+          image: ghcr.io/sentriz/wrtag:latest
+          env:
+            - name: WRTAG_PATH_FORMAT
+              value: >-
+                /hdd/media/music/{{ artists .Release.Artists | join "; " | safepath }}/{{ .Release.ReleaseGroup.FirstReleaseDate.Year }} - {{ .Release.Title | safepath }}/{{ pad0 2 .Track.Position }}-{{ .Track.Title | safepath }}{{ .Ext }}
+            - name: WRTAG_WEB_LISTEN_ADDR
+              value: ":7373"
+            - name: WRTAG_WEB_DB_PATH
+              value: /data/wrtag.db
+            - name: WRTAG_WEB_AUTH
+              value: basic-auth-from-api-key
+            - name: WRTAG_WEB_PUBLIC_URL
+              value: http://192.168.1.99:7373
+            - name: WRTAG_WEB_NUM_WORKERS
+              value: "2"
+            - name: WRTAG_LOG_LEVEL
+              value: info
+            - name: TZ
+              value: "America/New_York"
+          envFrom:
+            - secretRef:
+                name: wrtag-secret
+          ports:
+            - name: http
+              containerPort: 7373
+              protocol: TCP
+          volumeMounts:
+            - name: homelab-data
+              mountPath: /data
+              subPath: wrtag
+            - name: hdd-data
+              mountPath: /hdd
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+      volumes:
+        - name: homelab-data
+          persistentVolumeClaim:
+            claimName: homelab-data-pvc
+        - name: hdd-data
+          hostPath:
+            path: /hdd
+            type: Directory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wrtag
+  namespace: homelab
+spec:
+  selector:
+    app: wrtag
+  ports:
+    - name: http
+      port: 7373
+      targetPort: 7373
+      protocol: TCP
+  type: LoadBalancer
+  externalIPs:
+    - 192.168.1.99

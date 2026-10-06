@@ -35,6 +35,8 @@ spec:
           envFrom:
             - secretRef:
                 name: slskd-secret
+            - secretRef:
+                name: wrtag-secret
           ports:
             - name: http
               containerPort: 5030
