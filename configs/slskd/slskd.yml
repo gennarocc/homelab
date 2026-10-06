@@ -60,3 +60,12 @@ integrations:
         - DownloadDirectoryComplete
       run:
         command: /app/scripts/wrtag-import.sh
+
+web:
+  authentication:
+    api_keys:
+      homepage:
+        # Rendered at pod start by the config-render initContainer.
+        # Real value lives in the sealed slskd-secret as SLSKD_API_KEY_HOMEPAGE.
+        key: "__HOMEPAGE_API_KEY__"
+        cidr: 10.42.0.0/16

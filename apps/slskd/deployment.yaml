@@ -18,6 +18,40 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
+      initContainers:
+        - name: config-render
+          image: slskd/slskd:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set -eu
+              : "${SLSKD_API_KEY_HOMEPAGE:?not set in slskd-secret}"
+              sed "s|__HOMEPAGE_API_KEY__|${SLSKD_API_KEY_HOMEPAGE}|" \
+                /config-src/slskd.yml > /config-rendered/slskd.yml
+              chmod 600 /config-rendered/slskd.yml
+              grep -q __HOMEPAGE_API_KEY__ /config-rendered/slskd.yml \
+                && { echo "placeholder not substituted"; exit 1; } || true
+              echo "rendered slskd.yml ok"
+          env:
+            - name: SLSKD_API_KEY_HOMEPAGE
+              valueFrom:
+                secretKeyRef:
+                  name: slskd-secret
+                  key: SLSKD_API_KEY_HOMEPAGE
+          volumeMounts:
+            - name: homelab-configs
+              mountPath: /config-src
+              subPath: slskd
+              readOnly: true
+            - name: slskd-config-rendered
+              mountPath: /config-rendered
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 200m
+              memory: 64Mi
       containers:
         - name: slskd
           image: slskd/slskd:latest
@@ -30,6 +64,8 @@ spec:
               value: "50300"
             - name: SLSKD_REMOTE_CONFIGURATION
               value: "false"
+            - name: SLSKD_CONFIG
+              value: /config-rendered/slskd.yml
             - name: TZ
               value: "America/New_York"
           envFrom:
@@ -51,6 +87,9 @@ spec:
             - name: homelab-configs
               mountPath: /app
               subPath: slskd
+            - name: slskd-config-rendered
+              mountPath: /config-rendered
+              readOnly: true
             - name: hdd-data
               mountPath: /var/slskd/incomplete
               subPath: media/music/.tmp/incomplete
@@ -81,6 +120,10 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 5
       volumes:
+        - name: slskd-config-rendered
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Mi
         - name: homelab-configs
           persistentVolumeClaim:
             claimName: homelab-configs-pvc

@@ -48,6 +48,10 @@
           description: Music Sharing
           icon: /icons/slskd.png
           siteMonitor: '{{HOMEPAGE_VAR_SLSKD_URL}}'
+          widget:
+            type: slskd
+            url: '{{HOMEPAGE_VAR_SLSKD_URL}}'
+            key: '{{HOMEPAGE_VAR_SLSKD_API_KEY}}'
       - wrtag:
           href: '{{HOMEPAGE_VAR_WRTAG_URL}}'
           description: Music Tagger and Importer
