@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# Reseal SealedSecrets from their plaintext secret.yaml siblings.
+#
+#   ./reseal              seal every apps/*/secret.yaml
+#   ./reseal wrtag slskd  seal only the named apps
+#
+# Each secret.yaml is sealed to sealed-secret.yaml next to it. The existing
+# sealed-secret.yaml is only replaced once the new one is known good, so a
+# kubeseal failure can never leave you with a truncated file.
+set -euo pipefail
+
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+APPS="$REPO/apps"
+
+command -v kubeseal >/dev/null || { echo "kubeseal not found in PATH" >&2; exit 1; }
+
+if [[ $# -gt 0 ]]; then
+  targets=("$@")
+else
+  targets=()
+  for f in "$APPS"/*/secret.yaml; do
+    [[ -e "$f" ]] || continue
+    targets+=("$(basename "$(dirname "$f")")")
+  done
+fi
+
+[[ ${#targets[@]} -gt 0 ]] || { echo "nothing to seal"; exit 0; }
+
+sealed=0
+skipped=0
+failed=0
+
+for app in "${targets[@]}"; do
+  src="$APPS/$app/secret.yaml"
+  dst="$APPS/$app/sealed-secret.yaml"
+
+  if [[ ! -f "$src" ]]; then
+    printf '  %-14s no secret.yaml, skipping\n' "$app"
+    skipped=$((skipped + 1))
+    continue
+  fi
+
+  if grep -q 'REPLACE_ME' "$src"; then
+    printf '  %-14s contains REPLACE_ME placeholder, refusing\n' "$app"
+    failed=$((failed + 1))
+    continue
+  fi
+
+  tmp="$(mktemp)"
+  if ! kubeseal -o yaml -f "$src" -w "$tmp" 2>"$tmp.err"; then
+    printf '  %-14s FAILED: %s\n' "$app" "$(head -1 "$tmp.err")"
+    rm -f "$tmp" "$tmp.err"
+    failed=$((failed + 1))
+    continue
+  fi
+
+  if ! grep -qE 'kind: *"?SealedSecret"?' "$tmp"; then
+    printf '  %-14s FAILED: output is not a SealedSecret\n' "$app"
+    rm -f "$tmp" "$tmp.err"
+    failed=$((failed + 1))
+    continue
+  fi
+
+  mv "$tmp" "$dst"
+  chmod 600 "$dst"
+  rm -f "$tmp.err"
+  printf '  %-14s sealed -> %s\n' "$app" "${dst#"$REPO"/}"
+  sealed=$((sealed + 1))
+done
+
+echo
+echo "sealed: $sealed  skipped: $skipped  failed: $failed"
+[[ $failed -eq 0 ]]
