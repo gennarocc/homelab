@@ -30,8 +30,7 @@ transfers:
         files: 200
         megabytes: 4000       # 4 GB per user per week
   download:
-    slots: 5
-    speed_limit: 2000         # KiB/s -> ~2 MiB/s
+    speed_limit: 8000         # KiB/s ~ 65.5 Mbps (73% of 90 Mbps line); slots left unlimited
   groups:
     leechers:
       thresholds:
