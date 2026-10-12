@@ -1,0 +1,158 @@
+---
+# cube-tracker
+#
+# Daily CronJob appends a price row per printing to prices.csv and re-renders
+# dashboard.html; nginx serves the same directory the job writes to.
+#
+# No image to build. Stock python:3.12-alpine runs the scripts straight off the
+# configs volume, the same way hurleys-ranch serves its src/ off that volume.
+#
+#   configs PVC : cube-tracker/src  -> track.py, render.py, seed.py  (in git)
+#   data PVC    : cube-tracker      -> prices.csv, dashboard.html, sets/  (not in git)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cube-tracker
+  namespace: homelab
+spec:
+  # MTGJSON publishes once a day; 09:10 UTC is comfortably after it lands.
+  schedule: "10 9 * * *"
+  timeZone: "Etc/UTC"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  startingDeadlineSeconds: 7200
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: snapshot
+              image: python:3.12-alpine
+              command: ["python3", "/app/track.py"]
+              env:
+                - name: DATA_DIR
+                  value: /data
+                - name: CUBE_ID
+                  value: alpha2onslaught
+              volumeMounts:
+                - name: homelab-configs
+                  mountPath: /app
+                  subPath: cube-tracker/src
+                  readOnly: true
+                - name: homelab-data
+                  mountPath: /data
+                  subPath: cube-tracker
+              resources:
+                # Measured peak RSS on the Pi is 537 MiB -- MTGJSON's
+                # AllPricesToday.json.gz is held as bytes, as decompressed
+                # bytes, and as a parsed dict of every card in Magic, all at
+                # once. 512Mi OOMKills. 1Gi leaves room for the file to grow
+                # as sets release.
+                requests:
+                  cpu: 100m
+                  memory: 256Mi
+                limits:
+                  memory: 1Gi
+          volumes:
+            - name: homelab-configs
+              persistentVolumeClaim:
+                claimName: homelab-configs-pvc
+            - name: homelab-data
+              persistentVolumeClaim:
+                claimName: homelab-data-pvc
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cube-tracker
+  namespace: homelab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cube-tracker
+  template:
+    metadata:
+      labels:
+        app: cube-tracker
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: homelab-data
+              mountPath: /usr/share/nginx/html
+              subPath: cube-tracker
+              readOnly: true
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d
+          resources:
+            requests:
+              cpu: 10m
+              memory: 24Mi
+            limits:
+              memory: 64Mi
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 3
+      volumes:
+        - name: homelab-data
+          persistentVolumeClaim:
+            claimName: homelab-data-pvc
+        - name: nginx-conf
+          configMap:
+            name: cube-tracker-nginx
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cube-tracker-nginx
+  namespace: homelab
+data:
+  default.conf: |
+    server {
+      listen 80;
+      root /usr/share/nginx/html;
+      index dashboard.html;
+
+      location = /healthz { return 200 "ok\n"; add_header Content-Type text/plain; }
+
+      # The CronJob rewrites dashboard.html daily, so never let a browser or
+      # proxy pin yesterday's numbers.
+      location = / {
+        try_files /dashboard.html =503;
+        add_header Cache-Control "no-store";
+      }
+
+      # The raw series, for spreadsheets or anything else that wants it.
+      location = /prices.csv {
+        add_header Content-Type "text/csv";
+        add_header Cache-Control "no-store";
+      }
+
+      # sets/ is a 38 MB upstream cache, not content. Everything else is noise.
+      location / { return 404; }
+    }
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cube-tracker
+  namespace: homelab
+spec:
+  selector:
+    app: cube-tracker
+  ports:
+    - port: 8002
+      targetPort: 80
+  type: LoadBalancer
