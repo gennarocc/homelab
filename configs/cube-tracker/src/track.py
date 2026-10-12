@@ -182,17 +182,25 @@ def main():
     if not rows:
         sys.exit("no prices resolved -- refusing to write an empty snapshot")
 
+    # Drop the whole-of-Magic price dict before reading the CSV back in. It is
+    # ~500 MB and nothing below needs it; holding both at once is what would
+    # push a multi-year history over the container's memory limit.
+    del prices, data
+
     # Re-running the same day replaces that day rather than double-counting it.
     existing = []
     if os.path.exists(PRICES_CSV):
         with open(PRICES_CSV, newline="") as f:
             existing = [r for r in csv.DictReader(f) if r["date"] != rows[0]["date"]]
 
-    with open(PRICES_CSV, "w", newline="") as f:
+    tmp = PRICES_CSV + ".tmp"
+    with open(tmp, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=FIELDS)
         writer.writeheader()
         writer.writerows(existing)
         writer.writerows(rows)
+    os.replace(tmp, PRICES_CSV)   # the banked history is the one unrecoverable
+                                  # file here; never leave it half-written
 
     total = sum(float(r["price"]) * int(r["copies"]) for r in rows)
     stamp = datetime.now(timezone.utc).isoformat(timespec="seconds")

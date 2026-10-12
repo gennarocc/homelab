@@ -199,13 +199,14 @@ TEMPLATE = """<!doctype html>
 @media(prefers-color-scheme:dark){{:root{{--bg:#111110;--card:#1a1a19;--ink:#fff;
 --muted:#c3c2b7;--line:#383835;--accent:#3987e5;--accent2:#d95926;
 --up:#0ca30c;--down:#e46a6a;}}}}
+:root{{--inset:19px}}   /* 1px box border + 18px box padding */
 *{{box-sizing:border-box}}
 [hidden]{{display:none!important}}
 body{{margin:0;padding:28px 28px 80px;background:var(--bg);color:var(--ink);
 font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",sans-serif}}
 main{{max-width:1760px;margin:0 auto}}
 h1{{font-size:30px;margin:0 0 4px;letter-spacing:-.01em}}
-h2{{font-size:19px;margin:38px 0 14px;color:var(--muted);text-transform:uppercase;
+h2{{font-size:19px;margin:38px 0 14px;padding-left:var(--inset);color:var(--muted);text-transform:uppercase;
 letter-spacing:.09em;display:flex;align-items:center;gap:14px;flex-wrap:wrap}}
 h3{{font-size:16px;margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em}}
 h3.dim{{color:var(--muted)}}
@@ -224,7 +225,7 @@ display:flex;flex-direction:column;gap:3px}}
 
 .muted{{color:var(--muted);font-size:13px}}
 .up{{color:var(--up)}} .down{{color:var(--down)}}
-.panel{{background:var(--card);border:1px solid var(--line);padding:20px;overflow-x:auto}}
+.panel{{background:var(--card);border:1px solid var(--line);padding:18px;overflow-x:auto}}
 .chart{{width:100%;height:auto;min-height:280px;display:block}}
 .grid{{stroke:var(--line);stroke-width:1}}
 .vgrid{{opacity:.55}}
@@ -242,7 +243,7 @@ display:flex;flex-direction:column;gap:3px}}
    whether a card is cheap-and-spiking or expensive-and-drifting. */
 .chartbar{{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}}
 .top{{display:flex;justify-content:space-between;align-items:flex-start;
-gap:20px;flex-wrap:wrap}}
+gap:20px;flex-wrap:wrap;padding-left:var(--inset)}}
 .controls{{display:flex;align-items:center;gap:12px;flex-wrap:wrap}}
 .btn{{font:600 14px/1 ui-sans-serif,-apple-system,sans-serif;color:var(--ink);
 background:var(--card);border:1px solid var(--line);padding:8px 16px;cursor:pointer}}
