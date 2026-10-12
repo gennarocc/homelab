@@ -7,8 +7,8 @@
 # No image to build. Stock python:3.12-alpine runs the scripts straight off the
 # configs volume, the same way hurleys-ranch serves its src/ off that volume.
 #
-#   configs PVC : cube-tracker/src  -> track.py, render.py, seed.py  (in git)
-#   data PVC    : cube-tracker      -> prices.csv, dashboard.html, sets/  (not in git)
+#   configs PVC : cube-tracker/src  -> track.py, render.py, seed.py, images.py  (in git)
+#   data PVC    : cube-tracker      -> prices.csv, dashboard.html, sets/, images/  (not in git)
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -137,6 +137,13 @@ data:
       location = /prices.csv {
         add_header Content-Type "text/csv";
         add_header Cache-Control "no-store";
+      }
+
+      # Card art, fetched once per printing and never changed after.
+      location /images/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        access_log off;
       }
 
       # sets/ is a 38 MB upstream cache, not content. Everything else is noise.

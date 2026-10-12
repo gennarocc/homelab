@@ -195,6 +195,16 @@ def main():
     for m in missing:
         print(f"  unpriced: {m}")
 
+    # Art is cosmetic: a Scryfall hiccup must never fail a price snapshot,
+    # and every day missed on prices is gone permanently.
+    try:
+        import images
+        added, failed = images.sync(entries, os.path.join(DATA_DIR, "images"))
+        if added or failed:
+            print(f"images: {added} added, {failed} failed")
+    except Exception as exc:
+        print(f"warn: image sync skipped: {exc}", file=sys.stderr)
+
     import render
     render.build(PRICES_CSV, os.path.join(DATA_DIR, "dashboard.html"))
 

@@ -8,10 +8,16 @@ with no network at all. Sorting is the only JavaScript.
 import csv
 import html
 import json
+import math
 import os
 from collections import defaultdict
+from datetime import date as D
+
+import images
 
 WINDOWS = [("24h", 1), ("7d", 7), ("30d", 30), ("90d", 90), ("1y", 365)]
+MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 
 def load(path):
@@ -44,8 +50,6 @@ def totals(by_date):
 
 def pick(dates, days_back):
     """Nearest stored date at or before `days_back` days before the last one."""
-    from datetime import date as D
-
     if not dates:
         return None
     last = D.fromisoformat(dates[-1])
@@ -78,50 +82,108 @@ def movers(by_date, meta, days_back, limit=15):
     return out
 
 
-def sparkline(series, idx, color, w=860, h=220, pad=34):
-    vals = [s[idx] for s in series]
-    if len(vals) < 2:
-        return ""
-    lo, hi = min(vals), max(vals)
-    span = (hi - lo) or 1
-    step = (w - pad * 2) / (len(vals) - 1)
-    pts = [
-        (pad + i * step, h - pad - (v - lo) / span * (h - pad * 2))
-        for i, v in enumerate(vals)
-    ]
-    line = " ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
-    area = f"{pad},{h - pad} {line} {pts[-1][0]:.1f},{h - pad}"
-    return (
-        f'<polygon points="{area}" fill="{color}" opacity=".10"/>'
-        f'<polyline points="{line}" fill="none" stroke="{color}" stroke-width="2"/>'
-    )
+def nice_ticks(lo, hi, count=6):
+    """Round axis values at a 1/2/2.5/5 step, so labels read as money."""
+    span = hi - lo
+    if span <= 0:
+        span = max(abs(hi) * 0.02, 1.0)
+        lo, hi = lo - span / 2, hi + span / 2
+    raw = span / count
+    mag = 10 ** math.floor(math.log10(raw))
+    step = next(m * mag for m in (1, 2, 2.5, 5, 10) if raw <= m * mag)
+    start = math.floor(lo / step) * step
+    ticks, v = [], start
+    while v < hi + step:
+        ticks.append(round(v, 6))
+        v += step
+    return ticks
+
+
+def date_label(iso, show_year):
+    d = D.fromisoformat(iso)
+    return f"{MONTHS[d.month - 1]} {d.day}" + (f" '{d.year % 100:02d}" if show_year else "")
 
 
 def chart(series):
+    """Both series share one y-scale -- normalising each to its own range made
+    them identical lines that hid each other, which is worse than no chart."""
     if len(series) < 2:
         return '<p class="muted">Two days of snapshots needed before the chart appears.</p>'
-    w, h, pad = 860, 220, 34
-    vals = [s[1] for s in series]
-    lo, hi = min(vals), max(vals)
-    grid = "".join(
-        f'<line x1="{pad}" y1="{y:.0f}" x2="{w - pad}" y2="{y:.0f}" class="grid"/>'
-        for y in [pad, h / 2, h - pad]
-    )
-    labels = (
-        f'<text x="{pad}" y="{pad - 10}" class="tick">${hi:,.0f}</text>'
-        f'<text x="{pad}" y="{h - pad + 18}" class="tick">${lo:,.0f}</text>'
-        f'<text x="{w - pad}" y="{h - pad + 18}" class="tick end">{series[-1][0]}</text>'
-        f'<text x="{pad}" y="{h - pad + 32}" class="tick">{series[0][0]}</text>'
-    )
+
+    w, h, L, R, T, B = 1400, 440, 104, 104, 26, 60
+    dates = [s[0] for s in series]
+    tot = [s[1] for s in series]
+    idx = [s[2] for s in series]
+
+    # Until the cube list actually changes, the day-one index *is* the total --
+    # the seeded history applies today's list to every past day. Drawing a
+    # second line exactly under the first just gives the legend a dead entry.
+    same = all(abs(a - b) < 0.01 for a, b in zip(tot, idx))
+
+    ticks = nice_ticks(min(min(tot), min(idx)), max(max(tot), max(idx)))
+    ylo, yhi = ticks[0], ticks[-1]
+    yspan = (yhi - ylo) or 1
+    n = len(series)
+
+    def X(i):
+        return L + i * (w - L - R) / (n - 1)
+
+    def Y(v):
+        return h - B - (v - ylo) / yspan * (h - T - B)
+
+    # Up to 10 date ticks, always including the first and last day.
+    count = min(10, n)
+    xi = sorted({round(k * (n - 1) / (count - 1)) for k in range(count)}) if count > 1 else [0]
+    multiyear = D.fromisoformat(dates[-1]).year != D.fromisoformat(dates[0]).year
+
+    parts = []
+    for v in ticks:
+        y = Y(v)
+        parts.append(f'<line x1="{L}" y1="{y:.1f}" x2="{w - R}" y2="{y:.1f}" class="grid"/>')
+        parts.append(f'<text x="{L - 12}" y="{y + 4:.1f}" class="tick end">${v:,.0f}</text>')
+    for i in xi:
+        x = X(i)
+        parts.append(f'<line x1="{x:.1f}" y1="{T}" x2="{x:.1f}" y2="{h - B}" class="grid vgrid"/>')
+        parts.append(f'<text x="{x:.1f}" y="{h - B + 24}" class="tick mid">'
+                     f'{date_label(dates[i], multiyear)}</text>')
+
+    def line(vals, color, fill):
+        pts = " ".join(f"{X(i):.1f},{Y(v):.1f}" for i, v in enumerate(vals))
+        out = ""
+        if fill:
+            out += (f'<polygon points="{L},{h - B} {pts} {X(n - 1):.1f},{h - B}" '
+                    f'fill="{color}" opacity=".12"/>')
+        return out + f'<polyline points="{pts}" fill="none" stroke="{color}" stroke-width="2.5"/>'
+
+    def endpoint(vals, color, cls, dy=0):
+        x, y = X(n - 1), Y(vals[-1])
+        return (f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4.5" fill="{color}"/>'
+                f'<text x="{x + 11:.1f}" y="{y + 4 + dy:.1f}" class="tick {cls}">'
+                f'${vals[-1]:,.0f}</text>')
+
+    svg = "".join(parts)
+    svg += line(tot, "var(--accent)", True)
+    if not same:
+        svg += line(idx, "var(--accent2)", False)
+    svg += endpoint(tot, "var(--accent)", "c1", 0)
+    if not same:
+        # Nudge the labels apart when the two lines end close together.
+        gap = Y(idx[-1]) - Y(tot[-1])
+        svg += endpoint(idx, "var(--accent2)", "c2",
+                        (18 if gap >= 0 else -18) - gap if abs(gap) < 18 else 0)
+    svg += (f'<line x1="{L}" y1="{h - B}" x2="{w - R}" y2="{h - B}" class="axis"/>'
+            f'<line x1="{L}" y1="{T}" x2="{L}" y2="{h - B}" class="axis"/>')
+
+    legend = '<p class="legend"><span class="key k1"></span>Total cube value'
+    if same:
+        legend += ('<span class="note">Same-card index tracks the total exactly '
+                   'until the cube list changes.</span>')
+    else:
+        legend += '<span class="key k2"></span>Same-card index (day-one cards only)'
+
     return (
-        f'<svg viewBox="0 0 {w} {h}" class="chart" role="img" '
-        f'aria-label="Cube value over time">{grid}'
-        + sparkline(series, 1, "var(--accent)")
-        + sparkline(series, 2, "var(--accent2)")
-        + labels
-        + "</svg>"
-        '<p class="legend"><span class="key k1"></span>Total cube value'
-        '<span class="key k2"></span>Same-card index (day-one cards only)</p>'
+        f'<svg viewBox="0 0 {w} {h}" class="chart" '
+        f'role="img" aria-label="Cube value over time">{svg}</svg>' + legend + '</p>'
     )
 
 
@@ -138,30 +200,39 @@ def change_cards(series):
         delta, pct = now - was, (now - was) / was * 100 if was else 0
         cls = "up" if delta >= 0 else "down"
         out.append(f'<div class="stat"><span class="label">{label}</span>'
-                   f'<strong class="{cls}">{delta:+,.0f}</strong>'
+                   f'<strong class="{cls}">{"+" if delta >= 0 else "−"}'
+                   f'${abs(delta):,.0f}</strong>'
                    f'<span class="muted {cls}">{pct:+.1f}%</span></div>')
     return "".join(out)
 
 
-def mover_table(rows, key, reverse, limit, money):
+def mover_table(rows, key, reverse, limit):
+    """Both $ and % on every table -- which one you want depends on whether a
+    card is cheap-and-spiking or expensive-and-drifting, and that changes."""
     rows = sorted(rows, key=lambda r: r[key], reverse=reverse)[:limit]
     if not rows:
         return '<p class="muted">Not enough history yet.</p>'
     cells = []
     for r in rows:
-        change = "${:+,.2f}".format(r["delta"]) if money else "{:+.1f}%".format(r["pct"])
-        foil = " <em>foil</em>" if r["finish"] == "foil" else ""
-        trend = "up" if r[key] >= 0 else "down"
+        foil = ' <em>foil</em>' if r["finish"] == "foil" else ""
+        qty = f' <span class="muted">x{r["copies"]}</span>' if r["copies"] > 1 else ""
+        trend = "up" if r["delta"] >= 0 else "down"
         cells.append(
-            '<tr><td>{name}{foil}<span class="muted"> {set}</span></td>'
+            '<tr><td data-img="images/{img}.jpg">{name}{foil}'
+            '<span class="muted"> {set}</span>{qty}</td>'
             '<td class="num">${was:,.2f}</td><td class="num">${now:,.2f}</td>'
-            '<td class="num {trend}">{change}</td></tr>'.format(
-                name=html.escape(r["name"]), foil=foil, set=html.escape(r["set"]),
-                was=r["was"], now=r["now"], trend=trend, change=change)
+            '<td class="num money {trend}">{delta}</td>'
+            '<td class="num {trend}">{pct:+.1f}%</td></tr>'.format(
+                name=html.escape(r["name"]), foil=foil, qty=qty,
+                img=images.slug(r["set"], r["number"]),
+                set=html.escape(r["set"]), was=r["was"], now=r["now"], trend=trend,
+                delta=("+" if r["delta"] >= 0 else "−") + f"${abs(r['delta']):,.2f}",
+                pct=r["pct"])
         )
     body = "".join(cells)
     return ('<table><thead><tr><th>Card</th><th class="num">Then</th>'
-            '<th class="num">Now</th><th class="num">Change</th></tr></thead>'
+            '<th class="num">Now</th><th class="num">Change</th>'
+            '<th class="num">%</th></tr></thead>'
             f"<tbody>{body}</tbody></table>")
 
 
@@ -175,6 +246,7 @@ def build(csv_path, out_path):
     latest = by_date[dates[-1]]
     all_rows = sorted(
         ({"name": meta[k]["name"], "set": meta[k]["set"], "finish": meta[k]["finish"],
+          "img": images.slug(meta[k]["set"], meta[k]["number"]),
           "copies": c, "price": p, "value": p * c} for k, (p, c) in latest.items()),
         key=lambda r: -r["value"],
     )
@@ -187,10 +259,10 @@ def build(csv_path, out_path):
         stats=change_cards(series),
         chart=chart(series),
         window=f"{window_days}d",
-        gain_pct=mover_table([r for r in rows if r["was"] >= 2], "pct", True, 10, False),
-        loss_pct=mover_table([r for r in rows if r["was"] >= 2], "pct", False, 10, False),
-        gain_usd=mover_table(rows, "delta", True, 10, True),
-        loss_usd=mover_table(rows, "delta", False, 10, True),
+        gain_usd=mover_table(rows, "delta", True, 12),
+        loss_usd=mover_table(rows, "delta", False, 12),
+        gain_pct=mover_table([r for r in rows if r["was"] >= 2], "pct", True, 12),
+        loss_pct=mover_table([r for r in rows if r["was"] >= 2], "pct", False, 12),
         table_json=table_json,
     )
     tmp = out_path + ".tmp"
@@ -210,38 +282,60 @@ TEMPLATE = """<!doctype html>
 @media(prefers-color-scheme:dark){{:root{{--bg:#16140f;--card:#201d17;--ink:#f0ebe3;
 --muted:#9c938a;--line:#322d25;--accent:#d49a5a;--accent2:#7fb0c0;--up:#4ec98a;--down:#e8705f;}}}}
 *{{box-sizing:border-box}}
-body{{margin:0;padding:24px 16px 64px;background:var(--bg);color:var(--ink);
-font:15px/1.5 ui-sans-serif,-apple-system,"Segoe UI",sans-serif}}
-main{{max-width:900px;margin:0 auto}}
-h1{{font-size:22px;margin:0 0 2px}}
-h2{{font-size:15px;margin:28px 0 10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}}
-.sub{{color:var(--muted);margin:0 0 20px;font-size:13px}}
-.stats{{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}}
-.stat{{background:var(--card);border:1px solid var(--line);border-radius:10px;
-padding:10px 14px;min-width:92px;display:flex;flex-direction:column;gap:1px}}
-.stat.big{{min-width:190px}}
-.stat .label{{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}}
-.stat strong{{font-size:19px;font-variant-numeric:tabular-nums}}
-.stat.big strong{{font-size:26px}}
-.muted{{color:var(--muted);font-size:12px}}
+body{{margin:0;padding:28px 28px 80px;background:var(--bg);color:var(--ink);
+font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",sans-serif}}
+main{{max-width:1760px;margin:0 auto}}
+h1{{font-size:30px;margin:0 0 4px;letter-spacing:-.01em}}
+h2{{font-size:15px;margin:36px 0 12px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em}}
+h3{{font-size:13px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.07em}}
+.sub{{color:var(--muted);margin:0 0 22px;font-size:14px}}
+
+/* Dollar change is the headline number, so the cards are sized for it. */
+.stats{{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+gap:14px;margin-bottom:22px}}
+.stat{{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:14px 18px;display:flex;flex-direction:column;gap:3px}}
+.stat.big{{grid-column:span 2;min-width:260px}}
+.stat .label{{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}}
+.stat strong{{font-size:34px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.1}}
+.stat.big strong{{font-size:46px}}
+.stat .muted{{font-size:14px}}
+@media(max-width:620px){{.stat strong{{font-size:26px}}.stat.big strong{{font-size:34px}}}}
+
+.muted{{color:var(--muted);font-size:13px}}
 .up{{color:var(--up)}} .down{{color:var(--down)}}
-.panel{{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;overflow-x:auto}}
-.chart{{width:100%;height:auto;display:block}}
+.panel{{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;overflow-x:auto}}
+.chart{{width:100%;height:auto;min-height:280px;display:block}}
 .grid{{stroke:var(--line);stroke-width:1}}
-.tick{{fill:var(--muted);font-size:11px}} .tick.end{{text-anchor:end}}
-.legend{{margin:10px 0 0;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap}}
-.key{{width:11px;height:11px;border-radius:3px;display:inline-block;margin-left:10px}}
+.vgrid{{opacity:.55}}
+.axis{{stroke:var(--line);stroke-width:1.5}}
+.tick{{fill:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}}
+.tick.end{{text-anchor:end}} .tick.mid{{text-anchor:middle}}
+.tick.c1{{fill:var(--accent);font-weight:600}} .tick.c2{{fill:var(--accent2);font-weight:600}}
+.legend{{margin:14px 0 0;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:7px;flex-wrap:wrap}}
+.key{{width:12px;height:12px;border-radius:3px;display:inline-block;margin-left:14px}}
 .key:first-child{{margin-left:0}}
 .k1{{background:var(--accent)}} .k2{{background:var(--accent2)}}
-.cols{{display:grid;grid-template-columns:1fr 1fr;gap:14px}}
-@media(max-width:700px){{.cols{{grid-template-columns:1fr}}}}
-table{{width:100%;border-collapse:collapse;font-size:13px}}
-th,td{{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}}
-th{{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em;cursor:pointer}}
+.legend .note{{margin-left:14px;font-style:italic;opacity:.8}}
+
+.cols{{display:grid;grid-template-columns:repeat(auto-fit,minmax(520px,1fr));gap:16px}}
+@media(max-width:620px){{.cols{{grid-template-columns:1fr}}}}
+table{{width:100%;border-collapse:collapse;font-size:15px}}
+th,td{{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}}
+th{{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.06em;cursor:pointer}}
 td.num,th.num{{text-align:right;font-variant-numeric:tabular-nums}}
-td em{{color:var(--accent);font-style:normal;font-size:11px}}
+td.money{{font-weight:650}}
+td em{{color:var(--accent);font-style:normal;font-size:12px}}
 tbody tr:last-child td{{border-bottom:0}}
 #all td:first-child{{white-space:normal}}
+td[data-img]{{cursor:zoom-in}}
+
+/* Hover art. One <img> reused for every card, positioned at the cursor. */
+#preview{{position:fixed;width:340px;max-width:46vw;z-index:60;display:none;
+opacity:0;transition:opacity .09s ease-out;pointer-events:none;
+border-radius:4.75%/3.5%;box-shadow:0 14px 38px rgba(0,0,0,.5)}}
+#preview.on{{display:block;opacity:1}}
+@media(hover:none){{#preview{{display:none!important}}}}
 </style></head><body><main>
 <h1>Cube Tracker</h1>
 <p class="sub">{printings} printings &middot; {cards} cards &middot; TCGplayer market, snapshot {updated}</p>
@@ -250,10 +344,10 @@ tbody tr:last-child td{{border-bottom:0}}
 
 <h2>Gainers &amp; losers &mdash; last {window}</h2>
 <div class="cols">
+<div class="panel"><h3>Biggest $ gain</h3>{gain_usd}</div>
+<div class="panel"><h3>Biggest $ drop</h3>{loss_usd}</div>
 <div class="panel"><h3 class="muted">Top % gain (&ge;$2)</h3>{gain_pct}</div>
 <div class="panel"><h3 class="muted">Top % drop (&ge;$2)</h3>{loss_pct}</div>
-<div class="panel"><h3 class="muted">Top $ gain</h3>{gain_usd}</div>
-<div class="panel"><h3 class="muted">Top $ drop</h3>{loss_usd}</div>
 </div>
 
 <h2>Every card</h2>
@@ -262,7 +356,31 @@ tbody tr:last-child td{{border-bottom:0}}
 <th class="num" data-k="copies">Qty</th><th class="num" data-k="price">Price</th>
 <th class="num" data-k="value">Value</th></tr></thead><tbody></tbody></table></div>
 
+<img id="preview" alt="">
 <script>
+const pv = document.getElementById("preview");
+const PW = 340, PH = 475;       // 488x680 art, scaled to the CSS width
+let pvsrc = "";
+function place(e) {{
+  const w = Math.min(PW, innerWidth * .46), h = w * PH / PW;
+  let x = e.clientX + 22, y = e.clientY - h / 2;
+  if (x + w > innerWidth - 12) x = e.clientX - w - 22;   // flip to the left edge
+  pv.style.left = Math.max(12, x) + "px";
+  pv.style.top = Math.min(Math.max(12, y), innerHeight - h - 12) + "px";
+}}
+pv.onerror = () => pv.classList.remove("on");   // a printing we failed to fetch
+document.addEventListener("mouseover", e => {{
+  const el = e.target.closest("[data-img]");
+  if (!el) return;
+  if (el.dataset.img !== pvsrc) {{ pvsrc = el.dataset.img; pv.src = pvsrc; }}
+  place(e); pv.classList.add("on");
+}});
+document.addEventListener("mousemove", e => {{ if (pv.classList.contains("on")) place(e); }});
+document.addEventListener("mouseout", e => {{
+  if (e.target.closest("[data-img]")) pv.classList.remove("on");
+}});
+addEventListener("scroll", () => pv.classList.remove("on"), {{passive: true}});
+
 const rows = {table_json};
 let dir = -1, key = "value";
 const esc = s => String(s).replace(/[&<>]/g, c => ({{"&":"&amp;","<":"&lt;",">":"&gt;"}}[c]));
@@ -270,7 +388,8 @@ function draw() {{
   const sorted = [...rows].sort((a, b) =>
     typeof a[key] === "string" ? dir * a[key].localeCompare(b[key]) : dir * (a[key] - b[key]));
   document.querySelector("#all tbody").innerHTML = sorted.map(r =>
-    `<tr><td>${{esc(r.name)}}${{r.finish === "foil" ? ' <em>foil</em>' : ""}}</td>` +
+    `<tr><td data-img="images/${{encodeURIComponent(r.img)}}.jpg">${{esc(r.name)}}` +
+    `${{r.finish === "foil" ? ' <em>foil</em>' : ""}}</td>` +
     `<td>${{esc(r.set)}}</td><td class="num">${{r.copies}}</td>` +
     `<td class="num">$${{r.price.toFixed(2)}}</td>` +
     `<td class="num">$${{r.value.toFixed(2)}}</td></tr>`).join("");
