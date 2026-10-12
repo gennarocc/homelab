@@ -73,6 +73,11 @@
           description: Movie Podcast
           icon: /icons/favicon.ico
           siteMonitor: '{{HOMEPAGE_VAR_CINEMA_URL}}'
+      - Cube Tracker:
+          href: http://192.168.1.99:8002
+          description: MTG cube price history
+          icon: /icons/cube.png
+          siteMonitor: http://cube-tracker.homelab.svc.cluster.local:8002/healthz
 - Admin:
   - ArgoCD:
       href: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
