@@ -26,6 +26,7 @@ PRICES_CSV = os.path.join(DATA_DIR, "prices.csv")
 
 CUBE_URL = f"https://cubecobra.com/cube/api/cubeJSON/{CUBE_ID}"
 CUBE_NAME = CUBE_ID   # replaced with the cube's real name on the first fetch
+SET_DATES = {}        # set code -> release date, for the condition haircuts
 TODAY_URL = "https://mtgjson.com/api/v5/AllPricesToday.json.gz"
 SET_URL = "https://mtgjson.com/api/v5/{code}.json"
 
@@ -131,6 +132,7 @@ def scryfall_to_mtgjson(entries):
     for code in sorted({e["set"] for e in entries.values()}):
         try:
             data = set_file(code)["data"]
+            SET_DATES[code] = data.get("releaseDate") or ""
         except Exception as exc:  # a missing set should not kill the whole run
             print(f"warn: set {code} unavailable: {exc}", file=sys.stderr)
             continue
@@ -201,7 +203,7 @@ def main():
     # The page titles itself from the cube's own name, so renaming it on
     # CubeCobra renames the dashboard on the next run.
     with open(os.path.join(DATA_DIR, "cube.json"), "w") as f:
-        json.dump({"id": CUBE_ID, "name": CUBE_NAME}, f)
+        json.dump({"id": CUBE_ID, "name": CUBE_NAME, "sets": SET_DATES}, f)
 
     # Art is cosmetic: a Scryfall hiccup must never fail a price snapshot,
     # and every day missed on prices is gone permanently.

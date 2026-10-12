@@ -8,7 +8,6 @@ with no network at all. Sorting is the only JavaScript.
 import csv
 import html
 import json
-import math
 import os
 from collections import defaultdict
 from datetime import date as D
@@ -16,8 +15,33 @@ from datetime import date as D
 import images
 
 WINDOWS = [("24h", 1), ("7d", 7), ("30d", 30), ("90d", 90), ("1y", 365)]
-MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+# Moderately-played haircuts. CONTEXT.md records these as ranges from a one-off
+# estimate; these are the midpoints, and they are the one set of numbers here
+# that are judgement rather than measurement -- tune them in this table alone.
+#
+# Revised-through-Weatherlight was never given a range, yet it is 100 cards and
+# $7.6k of this cube. It sits between the two documented bands, so it takes the
+# value between them. Flagged rather than hidden.
+MP_FOIL = 0.65          # 58-72%
+MP_CHEAP = 0.90         # 85-95%; a sub-$1 card barely discounts by condition
+MP_BANDS = [("1994-04-11", 0.66),   # pre-Revised           60-72%
+            ("1997-10-14", 0.72),   # Revised..Weatherlight  UNDOCUMENTED
+            ("2003-06-01", 0.77)]   # Tempest..Scourge      72-82%
+MP_DEFAULT = 0.77
+
+
+def mp_factor(release, finish, price):
+    """Cheapest first: condition barely moves a bulk card, foil damage is its
+    own thing regardless of era, and era is the fallback."""
+    if price < 1:
+        return MP_CHEAP
+    if finish == "foil":
+        return MP_FOIL
+    for cutoff, factor in MP_BANDS:
+        if release and release < cutoff:
+            return factor
+    return MP_DEFAULT
 
 
 def load(path):
@@ -31,20 +55,27 @@ def load(path):
     return dict(sorted(by_date.items())), meta
 
 
-def totals(by_date):
-    """Headline value, plus an index over only the cards held since day one.
+def totals(by_date, meta, setdates):
+    """Per day: (date, total NM, index NM, total MP, index MP).
 
-    The two diverge whenever the cube list changes, which is the point: the
-    index says what prices did, the total says what the cube is worth.
+    The index covers only cards held since day one. It and the total diverge
+    whenever the cube list changes, which is the point: the index says what
+    prices did, the total says what the cube is worth.
     """
     dates = list(by_date)
     baseline = set(by_date[dates[0]]) if dates else set()
     series = []
     for d in dates:
-        snap = by_date[d]
-        total = sum(p * c for p, c in snap.values())
-        index = sum(p * c for k, (p, c) in snap.items() if k in baseline)
-        series.append((d, total, index))
+        tn = ti = mn = mi = 0.0
+        for k, (p, c) in by_date[d].items():
+            m = meta[k]
+            f = mp_factor(setdates.get(m["set"], ""), m["finish"], p)
+            tn += p * c
+            mn += p * f * c
+            if k in baseline:
+                ti += p * c
+                mi += p * f * c
+        series.append((d, tn, ti, mn, mi))
     return series
 
 
@@ -83,121 +114,16 @@ def movers(by_date, meta, days_back, limit=15):
     return out
 
 
-def nice_ticks(lo, hi, count=6):
-    """Round axis values at a 1/2/2.5/5 step, so labels read as money."""
-    span = hi - lo
-    if span <= 0:
-        span = max(abs(hi) * 0.02, 1.0)
-        lo, hi = lo - span / 2, hi + span / 2
-    raw = span / count
-    mag = 10 ** math.floor(math.log10(raw))
-    step = next(m * mag for m in (1, 2, 2.5, 5, 10) if raw <= m * mag)
-    start = math.floor(lo / step) * step
-    ticks, v = [], start
-    while v < hi + step:
-        ticks.append(round(v, 6))
-        v += step
-    return ticks
-
-
-def date_label(iso, show_year):
-    d = D.fromisoformat(iso)
-    return f"{MONTHS[d.month - 1]} {d.day}" + (f" '{d.year % 100:02d}" if show_year else "")
-
-
-def chart(series):
-    """Both series share one y-scale -- normalising each to its own range made
-    them identical lines that hid each other, which is worse than no chart."""
-    if len(series) < 2:
-        return '<p class="muted">Two days of snapshots needed before the chart appears.</p>'
-
-    w, h, L, R, T, B = 1400, 440, 104, 104, 26, 60
+def change_cards(series, ti=1):
     dates = [s[0] for s in series]
-    tot = [s[1] for s in series]
-    idx = [s[2] for s in series]
-
-    # Until the cube list actually changes, the day-one index *is* the total --
-    # the seeded history applies today's list to every past day. Drawing a
-    # second line exactly under the first just gives the legend a dead entry.
-    same = all(abs(a - b) < 0.01 for a, b in zip(tot, idx))
-
-    ticks = nice_ticks(min(min(tot), min(idx)), max(max(tot), max(idx)))
-    ylo, yhi = ticks[0], ticks[-1]
-    yspan = (yhi - ylo) or 1
-    n = len(series)
-
-    def X(i):
-        return L + i * (w - L - R) / (n - 1)
-
-    def Y(v):
-        return h - B - (v - ylo) / yspan * (h - T - B)
-
-    # Up to 10 date ticks, always including the first and last day.
-    count = min(10, n)
-    xi = sorted({round(k * (n - 1) / (count - 1)) for k in range(count)}) if count > 1 else [0]
-    multiyear = D.fromisoformat(dates[-1]).year != D.fromisoformat(dates[0]).year
-
-    parts = []
-    for v in ticks:
-        y = Y(v)
-        parts.append(f'<line x1="{L}" y1="{y:.1f}" x2="{w - R}" y2="{y:.1f}" class="grid"/>')
-        parts.append(f'<text x="{L - 12}" y="{y + 4:.1f}" class="tick end">${v:,.0f}</text>')
-    for i in xi:
-        x = X(i)
-        parts.append(f'<line x1="{x:.1f}" y1="{T}" x2="{x:.1f}" y2="{h - B}" class="grid vgrid"/>')
-        parts.append(f'<text x="{x:.1f}" y="{h - B + 24}" class="tick mid">'
-                     f'{date_label(dates[i], multiyear)}</text>')
-
-    def line(vals, color, fill):
-        pts = " ".join(f"{X(i):.1f},{Y(v):.1f}" for i, v in enumerate(vals))
-        out = ""
-        if fill:
-            out += (f'<polygon points="{L},{h - B} {pts} {X(n - 1):.1f},{h - B}" '
-                    f'fill="{color}" opacity=".12"/>')
-        return out + f'<polyline points="{pts}" fill="none" stroke="{color}" stroke-width="2.5"/>'
-
-    def endpoint(vals, color, cls, dy=0):
-        x, y = X(n - 1), Y(vals[-1])
-        return (f'<circle cx="{x:.1f}" cy="{y:.1f}" r="4.5" fill="{color}"/>'
-                f'<text x="{x + 11:.1f}" y="{y + 4 + dy:.1f}" class="tick {cls}">'
-                f'${vals[-1]:,.0f}</text>')
-
-    svg = "".join(parts)
-    svg += line(tot, "var(--accent)", True)
-    if not same:
-        svg += line(idx, "var(--accent2)", False)
-    svg += endpoint(tot, "var(--accent)", "c1", 0)
-    if not same:
-        # Nudge the labels apart when the two lines end close together.
-        gap = Y(idx[-1]) - Y(tot[-1])
-        svg += endpoint(idx, "var(--accent2)", "c2",
-                        (18 if gap >= 0 else -18) - gap if abs(gap) < 18 else 0)
-    svg += (f'<line x1="{L}" y1="{h - B}" x2="{w - R}" y2="{h - B}" class="axis"/>'
-            f'<line x1="{L}" y1="{T}" x2="{L}" y2="{h - B}" class="axis"/>')
-
-    legend = '<p class="legend"><span class="key k1"></span>Total cube value'
-    if same:
-        legend += ('<span class="note">Same-card index tracks the total exactly '
-                   'until the cube list changes.</span>')
-    else:
-        legend += '<span class="key k2"></span>Same-card index (day-one cards only)'
-
-    return (
-        f'<svg viewBox="0 0 {w} {h}" class="chart" '
-        f'role="img" aria-label="Cube value over time">{svg}</svg>' + legend + '</p>'
-    )
-
-
-def change_cards(series):
-    dates = [s[0] for s in series]
-    now = series[-1][1]
+    now = series[-1][ti]
     out = [f'<div class="stat big"><span class="label">Cube value</span>'
            f'<strong>${now:,.2f}</strong><span class="muted">{dates[-1]}</span></div>']
     for label, days in WINDOWS:
         start = pick(dates, days)
         if not start:
             continue
-        was = next(s[1] for s in series if s[0] == start)
+        was = next(s[ti] for s in series if s[0] == start)
         delta, pct = now - was, (now - was) / was * 100 if was else 0
         cls = "up" if delta >= 0 else "down"
         out.append(f'<div class="stat"><span class="label">{label}</span>'
@@ -207,18 +133,20 @@ def change_cards(series):
     return "".join(out)
 
 
-def cube_name(data_dir):
-    """track.py banks the cube's own name so the page titles itself."""
+def cube_meta(data_dir):
+    """track.py banks the cube's name and its sets' release dates."""
     try:
         with open(os.path.join(data_dir, "cube.json")) as f:
-            return json.load(f).get("name") or "Cube Tracker"
+            d = json.load(f)
+        return d.get("name") or "Cube Tracker", d.get("sets") or {}
     except Exception:
-        return "Cube Tracker"
+        return "Cube Tracker", {}
 
 
 def build(csv_path, out_path):
     by_date, meta = load(csv_path)
-    series = totals(by_date)
+    name, setdates = cube_meta(os.path.dirname(os.path.abspath(csv_path)))
+    series = totals(by_date, meta, setdates)
     dates = list(by_date)
     window_days = 30 if pick(dates, 30) else 7
     rows = movers(by_date, meta, window_days)
@@ -229,7 +157,8 @@ def build(csv_path, out_path):
     for k, (p, c) in latest.items():
         row = {"name": meta[k]["name"], "set": meta[k]["set"], "finish": meta[k]["finish"],
                "img": images.slug(meta[k]["set"], meta[k]["number"]),
-               "copies": c, "price": round(p, 2), "value": round(p * c, 2)}
+               "copies": c, "price": round(p, 2), "value": round(p * c, 2),
+               "mp": mp_factor(setdates.get(meta[k]["set"], ""), meta[k]["finish"], p)}
         m = mv.get(k)
         if m:   # cards added mid-window have no "then" price to compare against
             row.update(was=round(m["was"], 2), delta=round(m["delta"], 2),
@@ -238,14 +167,15 @@ def build(csv_path, out_path):
     all_rows.sort(key=lambda r: -r["value"])
     table_json = json.dumps(all_rows, separators=(",", ":"))
 
-    name = cube_name(os.path.dirname(os.path.abspath(csv_path)))
     page = TEMPLATE.format(
         title=html.escape(name),
         updated=dates[-1],
         cards=sum(c for _, c in latest.values()),
         printings=len(latest),
-        stats=change_cards(series),
-        chart=chart(series),
+        stats_nm=change_cards(series, 1),
+        stats_mp=change_cards(series, 3),
+        series_json=json.dumps([[d, round(a, 2), round(b, 2), round(c, 2), round(e, 2)]
+                                for d, a, b, c, e in series], separators=(",", ":")),
         window=f"{window_days}d",
         table_json=table_json,
     )
@@ -310,6 +240,14 @@ display:flex;flex-direction:column;gap:3px}}
 
 /* Rank the movers by dollars or by percent -- which one matters depends on
    whether a card is cheap-and-spiking or expensive-and-drifting. */
+.chartbar{{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}}
+.top{{display:flex;justify-content:space-between;align-items:flex-start;
+gap:20px;flex-wrap:wrap}}
+.controls{{display:flex;align-items:center;gap:12px;flex-wrap:wrap}}
+.btn{{font:600 14px/1 ui-sans-serif,-apple-system,sans-serif;color:var(--ink);
+background:var(--card);border:1px solid var(--line);padding:8px 16px;cursor:pointer}}
+.btn:hover{{border-color:var(--accent);color:var(--accent)}}
+.btn[disabled]{{opacity:.55;cursor:default;border-color:var(--line);color:var(--muted)}}
 .toggle{{display:inline-flex;border:1px solid var(--line);background:var(--card)}}
 .toggle button{{font:600 14px/1 ui-sans-serif,-apple-system,sans-serif;color:var(--muted);
 background:none;border:0;padding:7px 16px;cursor:pointer;letter-spacing:.04em}}
@@ -340,13 +278,42 @@ box-shadow:0 14px 38px rgba(0,0,0,.5)}}
 #preview.on{{display:block;opacity:1}}
 @media(hover:none){{#preview{{display:none!important}}}}
 </style></head><body><main>
-<h1>{title}</h1>
-<p class="sub">{printings} printings &middot; {cards} cards &middot; TCGplayer market, snapshot {updated}</p>
-<div class="stats">{stats}</div>
-<div class="panel">{chart}</div>
+<header class="top">
+  <div>
+    <h1>{title}</h1>
+    <p class="sub">{printings} printings &middot; {cards} cards &middot;
+       TCGplayer market, snapshot {updated}</p>
+  </div>
+  <div class="controls">
+    <span class="toggle" id="cond" role="group" aria-label="Card condition">
+      <button type="button" data-cond="nm">Near mint</button>
+      <button type="button" data-cond="mp">Mod. played</button>
+    </span>
+    <button type="button" id="refresh" class="btn">Refresh data</button>
+    <span class="floor" id="refresh-msg" hidden></span>
+  </div>
+</header>
+<div class="stats" id="stats-nm">{stats_nm}</div>
+<div class="stats" id="stats-mp" hidden>{stats_mp}</div>
+<div class="panel">
+<div class="chartbar">
+  <span class="toggle" id="range" role="group" aria-label="Chart range">
+    <button type="button" data-days="30">30 days</button>
+    <button type="button" data-days="90">90 days</button>
+    <button type="button" data-days="365">1 year</button>
+    <button type="button" data-days="0">All time</button>
+  </span>
+  <span class="floor" id="range-note"></span>
+</div>
+<div id="chart"></div>
+<p class="legend" id="legend"></p>
+<p class="legend"><span class="note" id="mp-note" hidden>Moderately-played
+estimate: 66% of NM pre-Revised, 72% Revised&ndash;Weatherlight, 77%
+Tempest&ndash;Scourge, 65% foils, 90% under $1. Percentages are judgement, not
+market data.</span></p></div>
 
 <h2>Gainers &amp; losers &mdash; last {window}
-  <span class="toggle" role="group" aria-label="Rank movers by">
+  <span class="toggle" id="metric" role="group" aria-label="Rank movers by">
     <button type="button" data-metric="delta">$</button>
     <button type="button" data-metric="pct">%</button>
   </span>
@@ -398,6 +365,134 @@ document.addEventListener("mouseout", e => {{
 addEventListener("scroll", () => pv.classList.remove("on"),
                  {{passive: true, capture: true}});   // capture: inner scrollers too
 
+/* ---- the chart ----
+   Drawn here rather than server-side: four ranges x two conditions would
+   otherwise be eight SVGs baked into the page. */
+const series = {series_json};
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+let days = 90;
+try {{ days = +(localStorage.getItem("cube.days") ?? 90); }} catch (e) {{}}
+
+function niceTicks(lo, hi, count) {{
+  let span = hi - lo;
+  if (span <= 0) {{ span = Math.max(Math.abs(hi) * .02, 1); lo -= span / 2; hi += span / 2; }}
+  const raw = span / count, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(v => raw <= v);
+  const out = []; for (let v = Math.floor(lo / step) * step; v < hi + step; v += step) out.push(v);
+  return out;
+}}
+const usd = v => "$" + Math.round(v).toLocaleString();
+function dlabel(iso, yr) {{
+  const [y, m, d] = iso.split("-");
+  return MON[+m - 1] + " " + (+d) + (yr ? " '" + y.slice(2) : "");
+}}
+function drawChart() {{
+  const win = days > 0 ? series.slice(-days) : series;
+  const ti = cond === "mp" ? 3 : 1, ii = cond === "mp" ? 4 : 2;
+  const box = document.getElementById("chart"), leg = document.getElementById("legend");
+  document.getElementById("range-note").textContent =
+    days > 0 && series.length <= days ? "only " + series.length + " days banked so far" : "";
+  document.querySelectorAll("#range button").forEach(b =>
+    b.classList.toggle("on", +b.dataset.days === days));
+  if (win.length < 2) {{
+    box.innerHTML = '<p class="muted">Two days of snapshots needed before the chart appears.</p>';
+    leg.innerHTML = ""; return;
+  }}
+  const W = 1400, H = 440, L = 104, R = 104, T = 26, B = 60, n = win.length;
+  const tot = win.map(r => r[ti]), idx = win.map(r => r[ii]);
+  const same = tot.every((v, i) => Math.abs(v - idx[i]) < 0.01);
+  const ticks = niceTicks(Math.min(...tot, ...idx), Math.max(...tot, ...idx), 6);
+  const ylo = ticks[0], yspan = (ticks[ticks.length - 1] - ylo) || 1;
+  const X = i => L + i * (W - L - R) / (n - 1);
+  const Y = v => H - B - (v - ylo) / yspan * (H - T - B);
+  let g = "";
+  for (const v of ticks) {{
+    const y = Y(v);
+    g += `<line x1="${{L}}" y1="${{y.toFixed(1)}}" x2="${{W - R}}" y2="${{y.toFixed(1)}}" class="grid"/>` +
+         `<text x="${{L - 12}}" y="${{(y + 4).toFixed(1)}}" class="tick end">${{usd(v)}}</text>`;
+  }}
+  const count = Math.min(10, n), yr = win[0][0].slice(0, 4) !== win[n - 1][0].slice(0, 4);
+  const seen = new Set();
+  for (let k = 0; k < count; k++) {{
+    const i = Math.round(k * (n - 1) / (count - 1 || 1));
+    if (seen.has(i)) continue; seen.add(i);
+    const x = X(i);
+    g += `<line x1="${{x.toFixed(1)}}" y1="${{T}}" x2="${{x.toFixed(1)}}" y2="${{H - B}}" class="grid vgrid"/>` +
+         `<text x="${{x.toFixed(1)}}" y="${{H - B + 24}}" class="tick mid">${{dlabel(win[i][0], yr)}}</text>`;
+  }}
+  const path = v => v.map((p, i) => `${{X(i).toFixed(1)}},${{Y(p).toFixed(1)}}`).join(" ");
+  g += `<polygon points="${{L}},${{H - B}} ${{path(tot)}} ${{X(n - 1).toFixed(1)}},${{H - B}}" fill="var(--accent)" opacity=".12"/>`;
+  g += `<polyline points="${{path(tot)}}" fill="none" stroke="var(--accent)" stroke-width="2.5"/>`;
+  if (!same) g += `<polyline points="${{path(idx)}}" fill="none" stroke="var(--accent2)" stroke-width="2.5"/>`;
+  const dot = (vals, col, cls, dy) =>
+    `<circle cx="${{X(n - 1).toFixed(1)}}" cy="${{Y(vals[n - 1]).toFixed(1)}}" r="4.5" fill="${{col}}"/>` +
+    `<text x="${{(X(n - 1) + 11).toFixed(1)}}" y="${{(Y(vals[n - 1]) + 4 + dy).toFixed(1)}}" class="tick ${{cls}}">${{usd(vals[n - 1])}}</text>`;
+  g += dot(tot, "var(--accent)", "c1", 0);
+  if (!same) {{
+    const gap = Y(idx[n - 1]) - Y(tot[n - 1]);
+    g += dot(idx, "var(--accent2)", "c2", Math.abs(gap) < 18 ? (gap >= 0 ? 18 : -18) - gap : 0);
+  }}
+  g += `<line x1="${{L}}" y1="${{H - B}}" x2="${{W - R}}" y2="${{H - B}}" class="axis"/>` +
+       `<line x1="${{L}}" y1="${{T}}" x2="${{L}}" y2="${{H - B}}" class="axis"/>`;
+  box.innerHTML = `<svg viewBox="0 0 ${{W}} ${{H}}" class="chart" role="img" aria-label="Cube value over time">${{g}}</svg>`;
+  leg.innerHTML = '<span class="key k1"></span>Total cube value' + (same
+    ? '<span class="note">Same-card index tracks the total exactly until the cube list changes.</span>'
+    : '<span class="key k2"></span>Same-card index (day-one cards only)');
+}}
+document.querySelectorAll("#range button").forEach(b => b.onclick = () => {{
+  days = +b.dataset.days;
+  try {{ localStorage.setItem("cube.days", days); }} catch (e) {{}}
+  drawChart();
+}});
+
+/* ---- near mint vs moderately played ---- */
+let cond = "nm";
+try {{ cond = localStorage.getItem("cube.cond") || "nm"; }} catch (e) {{}}
+const fac = r => cond === "mp" ? r.mp : 1;
+function applyCond() {{
+  const mp = cond === "mp";
+  document.getElementById("stats-nm").hidden = mp;
+  document.getElementById("stats-mp").hidden = !mp;
+  document.getElementById("mp-note").hidden = !mp;
+  drawChart();
+  document.querySelectorAll("#cond button").forEach(b =>
+    b.classList.toggle("on", b.dataset.cond === cond));
+  drawMovers(); draw();
+}}
+document.querySelectorAll("#cond button").forEach(b => b.onclick = () => {{
+  cond = b.dataset.cond;
+  try {{ localStorage.setItem("cube.cond", cond); }} catch (e) {{}}
+  applyCond();
+}});
+
+/* ---- refresh: ask the sidecar to run track.py now ---- */
+const rbtn = document.getElementById("refresh"), rmsg = document.getElementById("refresh-msg");
+function say(t) {{ rmsg.textContent = t; rmsg.hidden = !t; }}
+function stop(msg) {{ say(msg); rbtn.disabled = false; }}
+let polls = 0;
+async function poll() {{
+  // Never leave the button disabled forever: give up after ~5 minutes.
+  if (++polls > 100) return stop("still running \u2014 reload to see the result");
+  try {{
+    const s = await (await fetch("api/refresh")).json();
+    if (s.state === "running") {{ say("running\u2026"); setTimeout(poll, 3000); return; }}
+    if (s.state === "failed") return stop("job failed \u2014 check the pod logs");
+    say("done, reloading\u2026"); location.reload();
+  }} catch (e) {{ stop("lost contact with the refresher"); }}
+}}
+rbtn.onclick = async () => {{
+  rbtn.disabled = true; say("starting\u2026");
+  try {{
+    const res = await fetch("api/refresh", {{method: "POST"}});
+    // 409 means someone else already started one -- follow that job rather
+    // than reporting a failure the user can do nothing about.
+    if (res.status === 409) return poll();
+    if (res.status === 429) return stop((await res.json()).error);
+    if (!res.ok) return stop("could not start (" + res.status + ")");
+    poll();
+  }} catch (e) {{ stop("no refresher running"); }}
+}};
+
 /* ---- gainers & losers, rankable by $ or % ---- */
 const moved = rows.filter(r => r.was !== undefined);
 let metric = "delta";
@@ -406,16 +501,18 @@ try {{ metric = localStorage.getItem("cube.metric") || "delta"; }} catch (e) {{}
 function moverTable(sign) {{
   // A $0.40 card going to $1.20 is +200% and means nothing, so percent mode
   // keeps the same >=$2 floor the dollar ranking doesn't need.
-  const pool = metric === "pct" ? moved.filter(r => r.was >= 2) : moved;
-  const top = [...pool].sort((a, b) => sign * (b[metric] - a[metric])).slice(0, 12);
+  const pool = metric === "pct" ? moved.filter(r => r.was * fac(r) >= 2) : moved;
+  const mval = r => metric === "pct" ? r.pct : r.delta * fac(r);
+  const top = [...pool].sort((a, b) => sign * (mval(b) - mval(a))).slice(0, 12);
   if (!top.length) return '<p class="muted">Not enough history yet.</p>';
   return '<table><thead><tr><th>Card</th><th class="num">Then</th><th class="num">Now</th>' +
     '<th class="num">Change</th><th class="num">%</th></tr></thead><tbody>' +
     top.map(r => {{
       const t = r.delta >= 0 ? "up" : "down";
-      return `<tr>${{cell(r)}}<td class="num">$${{r.was.toFixed(2)}}</td>` +
-        `<td class="num">$${{r.price.toFixed(2)}}</td>` +
-        `<td class="num money ${{t}}">${{money(r.delta)}}</td>` +
+      const f = fac(r);
+      return `<tr>${{cell(r)}}<td class="num">$${{(r.was * f).toFixed(2)}}</td>` +
+        `<td class="num">$${{(r.price * f).toFixed(2)}}</td>` +
+        `<td class="num money ${{t}}">${{money(r.delta * f)}}</td>` +
         `<td class="num ${{t}}">${{pct(r.pct)}}</td></tr>`;
     }}).join("") + "</tbody></table>";
 }}
@@ -426,33 +523,34 @@ function drawMovers() {{
   document.getElementById("gain").innerHTML = moverTable(1);
   document.getElementById("loss").innerHTML = moverTable(-1);
   document.getElementById("floor").hidden = byMoney;
-  document.querySelectorAll(".toggle button").forEach(b =>
+  document.querySelectorAll("#metric button").forEach(b =>
     b.classList.toggle("on", b.dataset.metric === metric));
 }}
 const gainH = document.getElementById("gain-h"), lossH = document.getElementById("loss-h");
-document.querySelectorAll(".toggle button").forEach(b => b.onclick = () => {{
+document.querySelectorAll("#metric button").forEach(b => b.onclick = () => {{
   metric = b.dataset.metric;
   try {{ localStorage.setItem("cube.metric", metric); }} catch (e) {{}}
   drawMovers();
 }});
-drawMovers();
-
 /* ---- every card ---- */
 let dir = -1, key = "value";
 function draw() {{
+  // Sort on the displayed figure: the haircut differs per row, so scaling can
+  // reorder the list rather than just relabel it.
+  const kv = r => (key === "price" || key === "value") ? r[key] * fac(r) : r[key];
   const sorted = [...rows].sort((a, b) =>
-    typeof a[key] === "string" ? dir * a[key].localeCompare(b[key]) : dir * (a[key] - b[key]));
+    typeof kv(a) === "string" ? dir * kv(a).localeCompare(kv(b)) : dir * (kv(a) - kv(b)));
   document.querySelector("#all tbody").innerHTML = sorted.map(r =>
     `<tr>${{cell(r)}}<td>${{esc(r.set)}}</td><td class="num">${{r.copies}}</td>` +
-    `<td class="num">$${{r.price.toFixed(2)}}</td>` +
-    `<td class="num">$${{r.value.toFixed(2)}}</td></tr>`).join("");
+    `<td class="num">$${{(r.price * fac(r)).toFixed(2)}}</td>` +
+    `<td class="num">$${{(r.value * fac(r)).toFixed(2)}}</td></tr>`).join("");
 }}
 document.querySelectorAll("#all th").forEach(th => th.onclick = () => {{
   const k = th.dataset.k;
   dir = k === key ? -dir : (k === "name" || k === "set" ? 1 : -1);
   key = k; draw();
 }});
-draw();
+applyCond();
 </script>
 </main></body></html>
 """

@@ -80,7 +80,27 @@ spec:
       labels:
         app: cube-tracker
     spec:
+      serviceAccountName: cube-tracker
       containers:
+        - name: refresh
+          image: python:3.12-alpine
+          command: ["python3", "/app/refresh.py"]
+          env:
+            - name: CRONJOB
+              value: cube-tracker
+            - name: MIN_INTERVAL
+              value: "60"
+          volumeMounts:
+            - name: homelab-configs
+              mountPath: /app
+              subPath: cube-tracker/src
+              readOnly: true
+          resources:
+            requests:
+              cpu: 5m
+              memory: 24Mi
+            limits:
+              memory: 64Mi
         - name: nginx
           image: nginx
           ports:
@@ -104,6 +124,9 @@ spec:
               port: 80
             initialDelaySeconds: 3
       volumes:
+        - name: homelab-configs
+          persistentVolumeClaim:
+            claimName: homelab-configs-pvc
         - name: homelab-data
           persistentVolumeClaim:
             claimName: homelab-data-pvc
@@ -139,6 +162,14 @@ data:
         add_header Cache-Control "no-store";
       }
 
+      # The Refresh button. POST-only, no parameters -- all it can ask for is
+      # the job the CronJob already runs. See the sidecar for the rate limit.
+      location /api/ {
+        proxy_pass http://127.0.0.1:8090;
+        proxy_http_version 1.1;
+        proxy_read_timeout 30s;
+      }
+
       # Card art, fetched once per printing and never changed after.
       location /images/ {
         expires 1y;
@@ -149,6 +180,44 @@ data:
       # sets/ is a 38 MB upstream cache, not content. Everything else is noise.
       location / { return 404; }
     }
+
+---
+# The Refresh button's only privilege: start the job the CronJob already runs.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cube-tracker
+  namespace: homelab
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cube-tracker-refresh
+  namespace: homelab
+rules:
+  - apiGroups: ["batch"]
+    resources: ["cronjobs"]
+    resourceNames: ["cube-tracker"]
+    verbs: ["get"]
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["get", "list", "create", "delete"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cube-tracker-refresh
+  namespace: homelab
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cube-tracker-refresh
+subjects:
+  - kind: ServiceAccount
+    name: cube-tracker
+    namespace: homelab
 
 ---
 apiVersion: v1
