@@ -73,6 +73,7 @@ def movers(by_date, meta, days_back, limit=15):
             continue
         row = meta[key]
         out.append({
+            "key": key,
             "name": row["name"], "set": row["set"], "number": row["number"],
             "finish": row["finish"], "copies": copies,
             "was": was, "now": price,
@@ -206,34 +207,13 @@ def change_cards(series):
     return "".join(out)
 
 
-def mover_table(rows, key, reverse, limit):
-    """Both $ and % on every table -- which one you want depends on whether a
-    card is cheap-and-spiking or expensive-and-drifting, and that changes."""
-    rows = sorted(rows, key=lambda r: r[key], reverse=reverse)[:limit]
-    if not rows:
-        return '<p class="muted">Not enough history yet.</p>'
-    cells = []
-    for r in rows:
-        foil = ' <em>foil</em>' if r["finish"] == "foil" else ""
-        qty = f' <span class="muted">x{r["copies"]}</span>' if r["copies"] > 1 else ""
-        trend = "up" if r["delta"] >= 0 else "down"
-        cells.append(
-            '<tr><td data-img="images/{img}.jpg">{name}{foil}'
-            '<span class="muted"> {set}</span>{qty}</td>'
-            '<td class="num">${was:,.2f}</td><td class="num">${now:,.2f}</td>'
-            '<td class="num money {trend}">{delta}</td>'
-            '<td class="num {trend}">{pct:+.1f}%</td></tr>'.format(
-                name=html.escape(r["name"]), foil=foil, qty=qty,
-                img=images.slug(r["set"], r["number"]),
-                set=html.escape(r["set"]), was=r["was"], now=r["now"], trend=trend,
-                delta=("+" if r["delta"] >= 0 else "−") + f"${abs(r['delta']):,.2f}",
-                pct=r["pct"])
-        )
-    body = "".join(cells)
-    return ('<table><thead><tr><th>Card</th><th class="num">Then</th>'
-            '<th class="num">Now</th><th class="num">Change</th>'
-            '<th class="num">%</th></tr></thead>'
-            f"<tbody>{body}</tbody></table>")
+def cube_name(data_dir):
+    """track.py banks the cube's own name so the page titles itself."""
+    try:
+        with open(os.path.join(data_dir, "cube.json")) as f:
+            return json.load(f).get("name") or "Cube Tracker"
+    except Exception:
+        return "Cube Tracker"
 
 
 def build(csv_path, out_path):
@@ -244,25 +224,29 @@ def build(csv_path, out_path):
     rows = movers(by_date, meta, window_days)
 
     latest = by_date[dates[-1]]
-    all_rows = sorted(
-        ({"name": meta[k]["name"], "set": meta[k]["set"], "finish": meta[k]["finish"],
-          "img": images.slug(meta[k]["set"], meta[k]["number"]),
-          "copies": c, "price": p, "value": p * c} for k, (p, c) in latest.items()),
-        key=lambda r: -r["value"],
-    )
-    table_json = json.dumps(all_rows)
+    mv = {m["key"]: m for m in rows}
+    all_rows = []
+    for k, (p, c) in latest.items():
+        row = {"name": meta[k]["name"], "set": meta[k]["set"], "finish": meta[k]["finish"],
+               "img": images.slug(meta[k]["set"], meta[k]["number"]),
+               "copies": c, "price": round(p, 2), "value": round(p * c, 2)}
+        m = mv.get(k)
+        if m:   # cards added mid-window have no "then" price to compare against
+            row.update(was=round(m["was"], 2), delta=round(m["delta"], 2),
+                       pct=round(m["pct"], 2))
+        all_rows.append(row)
+    all_rows.sort(key=lambda r: -r["value"])
+    table_json = json.dumps(all_rows, separators=(",", ":"))
 
+    name = cube_name(os.path.dirname(os.path.abspath(csv_path)))
     page = TEMPLATE.format(
+        title=html.escape(name),
         updated=dates[-1],
         cards=sum(c for _, c in latest.values()),
         printings=len(latest),
         stats=change_cards(series),
         chart=chart(series),
         window=f"{window_days}d",
-        gain_usd=mover_table(rows, "delta", True, 12),
-        loss_usd=mover_table(rows, "delta", False, 12),
-        gain_pct=mover_table([r for r in rows if r["was"] >= 2], "pct", True, 12),
-        loss_pct=mover_table([r for r in rows if r["was"] >= 2], "pct", False, 12),
         table_json=table_json,
     )
     tmp = out_path + ".tmp"
@@ -275,26 +259,32 @@ def build(csv_path, out_path):
 TEMPLATE = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cube Tracker</title>
+<title>{title} &mdash; Cube Tracker</title>
 <style>
-:root{{--bg:#faf8f5;--card:#fff;--ink:#1a1714;--muted:#6b635a;--line:#e5ded4;
---accent:#8a5a2b;--accent2:#5a7d8a;--up:#1f7a4d;--down:#a8362f;}}
-@media(prefers-color-scheme:dark){{:root{{--bg:#16140f;--card:#201d17;--ink:#f0ebe3;
---muted:#9c938a;--line:#322d25;--accent:#d49a5a;--accent2:#7fb0c0;--up:#4ec98a;--down:#e8705f;}}}}
+/* Palette: categorical slots 1-2 for the two chart series, status green/red for
+   gain/loss. Both stepped per surface so the small bold table numbers clear
+   4.5:1 -- the reference green is only 3.27:1 on light, the red 3.62:1 on dark. */
+:root{{--bg:#f4f4f2;--card:#fcfcfb;--ink:#0b0b0b;--muted:#52514e;--line:#e3e2de;
+--accent:#2a78d6;--accent2:#eb6834;--up:#097f09;--down:#d03b3b;}}
+@media(prefers-color-scheme:dark){{:root{{--bg:#111110;--card:#1a1a19;--ink:#fff;
+--muted:#c3c2b7;--line:#383835;--accent:#3987e5;--accent2:#d95926;
+--up:#0ca30c;--down:#e46a6a;}}}}
 *{{box-sizing:border-box}}
+[hidden]{{display:none!important}}
 body{{margin:0;padding:28px 28px 80px;background:var(--bg);color:var(--ink);
 font:16px/1.55 ui-sans-serif,-apple-system,"Segoe UI",sans-serif}}
 main{{max-width:1760px;margin:0 auto}}
 h1{{font-size:30px;margin:0 0 4px;letter-spacing:-.01em}}
-h2{{font-size:15px;margin:36px 0 12px;color:var(--muted);text-transform:uppercase;letter-spacing:.09em}}
-h3{{font-size:13px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.07em}}
+h2{{font-size:19px;margin:38px 0 14px;color:var(--muted);text-transform:uppercase;
+letter-spacing:.09em;display:flex;align-items:center;gap:14px;flex-wrap:wrap}}
+h3{{font-size:16px;margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em}}
+h3.dim{{color:var(--muted)}}
 .sub{{color:var(--muted);margin:0 0 22px;font-size:14px}}
 
-/* Dollar change is the headline number, so the cards are sized for it. */
 .stats{{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
 gap:14px;margin-bottom:22px}}
-.stat{{background:var(--card);border:1px solid var(--line);border-radius:12px;
-padding:14px 18px;display:flex;flex-direction:column;gap:3px}}
+.stat{{background:var(--card);border:1px solid var(--line);padding:14px 18px;
+display:flex;flex-direction:column;gap:3px}}
 .stat.big{{grid-column:span 2;min-width:260px}}
 .stat .label{{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}}
 .stat strong{{font-size:34px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.1}}
@@ -304,7 +294,7 @@ padding:14px 18px;display:flex;flex-direction:column;gap:3px}}
 
 .muted{{color:var(--muted);font-size:13px}}
 .up{{color:var(--up)}} .down{{color:var(--down)}}
-.panel{{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;overflow-x:auto}}
+.panel{{background:var(--card);border:1px solid var(--line);padding:20px;overflow-x:auto}}
 .chart{{width:100%;height:auto;min-height:280px;display:block}}
 .grid{{stroke:var(--line);stroke-width:1}}
 .vgrid{{opacity:.55}}
@@ -313,51 +303,77 @@ padding:14px 18px;display:flex;flex-direction:column;gap:3px}}
 .tick.end{{text-anchor:end}} .tick.mid{{text-anchor:middle}}
 .tick.c1{{fill:var(--accent);font-weight:600}} .tick.c2{{fill:var(--accent2);font-weight:600}}
 .legend{{margin:14px 0 0;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:7px;flex-wrap:wrap}}
-.key{{width:12px;height:12px;border-radius:3px;display:inline-block;margin-left:14px}}
+.key{{width:12px;height:12px;display:inline-block;margin-left:14px}}
 .key:first-child{{margin-left:0}}
 .k1{{background:var(--accent)}} .k2{{background:var(--accent2)}}
 .legend .note{{margin-left:14px;font-style:italic;opacity:.8}}
 
-.cols{{display:grid;grid-template-columns:repeat(auto-fit,minmax(520px,1fr));gap:16px}}
-@media(max-width:620px){{.cols{{grid-template-columns:1fr}}}}
+/* Rank the movers by dollars or by percent -- which one matters depends on
+   whether a card is cheap-and-spiking or expensive-and-drifting. */
+.toggle{{display:inline-flex;border:1px solid var(--line);background:var(--card)}}
+.toggle button{{font:600 14px/1 ui-sans-serif,-apple-system,sans-serif;color:var(--muted);
+background:none;border:0;padding:7px 16px;cursor:pointer;letter-spacing:.04em}}
+.toggle button+button{{border-left:1px solid var(--line)}}
+.toggle button.on{{background:var(--accent);color:#fff}}
+.floor{{font-size:13px;font-weight:400;text-transform:none;letter-spacing:0;opacity:.85}}
+
+.cols{{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}}
+@media(max-width:900px){{.cols{{grid-template-columns:1fr}}}}
 table{{width:100%;border-collapse:collapse;font-size:15px}}
 th,td{{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}}
-th{{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.06em;cursor:pointer}}
+th{{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.06em}}
+#all th{{cursor:pointer}}
 td.num,th.num{{text-align:right;font-variant-numeric:tabular-nums}}
 td.money{{font-weight:650}}
-td em{{color:var(--accent);font-style:normal;font-size:12px}}
+td em{{color:var(--accent2);font-style:normal;font-size:12px}}
 tbody tr:last-child td{{border-bottom:0}}
 #all td:first-child{{white-space:normal}}
-td[data-img]{{cursor:zoom-in}}
+.scroll{{max-height:70vh;overflow:auto}}
+#all thead th{{position:sticky;top:0;z-index:2;background:var(--card);
+box-shadow:inset 0 -1px 0 var(--line)}}
+td[data-img]{{cursor:default}}
 
 /* Hover art. One <img> reused for every card, positioned at the cursor. */
 #preview{{position:fixed;width:340px;max-width:46vw;z-index:60;display:none;
 opacity:0;transition:opacity .09s ease-out;pointer-events:none;
-border-radius:4.75%/3.5%;box-shadow:0 14px 38px rgba(0,0,0,.5)}}
+box-shadow:0 14px 38px rgba(0,0,0,.5)}}
 #preview.on{{display:block;opacity:1}}
 @media(hover:none){{#preview{{display:none!important}}}}
 </style></head><body><main>
-<h1>Cube Tracker</h1>
+<h1>{title}</h1>
 <p class="sub">{printings} printings &middot; {cards} cards &middot; TCGplayer market, snapshot {updated}</p>
 <div class="stats">{stats}</div>
 <div class="panel">{chart}</div>
 
-<h2>Gainers &amp; losers &mdash; last {window}</h2>
+<h2>Gainers &amp; losers &mdash; last {window}
+  <span class="toggle" role="group" aria-label="Rank movers by">
+    <button type="button" data-metric="delta">$</button>
+    <button type="button" data-metric="pct">%</button>
+  </span>
+  <span class="floor" id="floor" hidden>cards under $2 excluded</span>
+</h2>
 <div class="cols">
-<div class="panel"><h3>Biggest $ gain</h3>{gain_usd}</div>
-<div class="panel"><h3>Biggest $ drop</h3>{loss_usd}</div>
-<div class="panel"><h3 class="muted">Top % gain (&ge;$2)</h3>{gain_pct}</div>
-<div class="panel"><h3 class="muted">Top % drop (&ge;$2)</h3>{loss_pct}</div>
+<div class="panel"><h3 id="gain-h"></h3><div id="gain"></div></div>
+<div class="panel"><h3 id="loss-h"></h3><div id="loss"></div></div>
 </div>
 
 <h2>Every card</h2>
-<div class="panel"><table id="all"><thead><tr>
+<div class="panel"><div class="scroll"><table id="all"><thead><tr>
 <th data-k="name">Card</th><th data-k="set">Set</th>
 <th class="num" data-k="copies">Qty</th><th class="num" data-k="price">Price</th>
-<th class="num" data-k="value">Value</th></tr></thead><tbody></tbody></table></div>
+<th class="num" data-k="value">Value</th></tr></thead><tbody></tbody></table></div></div>
 
 <img id="preview" alt="">
 <script>
+const rows = {table_json};
+const esc = s => String(s).replace(/[&<>]/g, c => ({{"&":"&amp;","<":"&lt;",">":"&gt;"}}[c]));
+const money = v => (v < 0 ? "\u2212$" : "+$") + Math.abs(v).toFixed(2);
+const pct = v => (v < 0 ? "\u2212" : "+") + Math.abs(v).toFixed(1) + "%";
+const cell = r => `<td data-img="images/${{encodeURIComponent(r.img)}}.jpg">${{esc(r.name)}}` +
+  `${{r.finish === "foil" ? ' <em>foil</em>' : ""}}<span class="muted"> ${{esc(r.set)}}</span>` +
+  `${{r.copies > 1 ? ` <span class="muted">x${{r.copies}}</span>` : ""}}</td>`;
+
+/* ---- hover art ---- */
 const pv = document.getElementById("preview");
 const PW = 340, PH = 475;       // 488x680 art, scaled to the CSS width
 let pvsrc = "";
@@ -379,18 +395,55 @@ document.addEventListener("mousemove", e => {{ if (pv.classList.contains("on")) 
 document.addEventListener("mouseout", e => {{
   if (e.target.closest("[data-img]")) pv.classList.remove("on");
 }});
-addEventListener("scroll", () => pv.classList.remove("on"), {{passive: true}});
+addEventListener("scroll", () => pv.classList.remove("on"),
+                 {{passive: true, capture: true}});   // capture: inner scrollers too
 
-const rows = {table_json};
+/* ---- gainers & losers, rankable by $ or % ---- */
+const moved = rows.filter(r => r.was !== undefined);
+let metric = "delta";
+try {{ metric = localStorage.getItem("cube.metric") || "delta"; }} catch (e) {{}}
+
+function moverTable(sign) {{
+  // A $0.40 card going to $1.20 is +200% and means nothing, so percent mode
+  // keeps the same >=$2 floor the dollar ranking doesn't need.
+  const pool = metric === "pct" ? moved.filter(r => r.was >= 2) : moved;
+  const top = [...pool].sort((a, b) => sign * (b[metric] - a[metric])).slice(0, 12);
+  if (!top.length) return '<p class="muted">Not enough history yet.</p>';
+  return '<table><thead><tr><th>Card</th><th class="num">Then</th><th class="num">Now</th>' +
+    '<th class="num">Change</th><th class="num">%</th></tr></thead><tbody>' +
+    top.map(r => {{
+      const t = r.delta >= 0 ? "up" : "down";
+      return `<tr>${{cell(r)}}<td class="num">$${{r.was.toFixed(2)}}</td>` +
+        `<td class="num">$${{r.price.toFixed(2)}}</td>` +
+        `<td class="num money ${{t}}">${{money(r.delta)}}</td>` +
+        `<td class="num ${{t}}">${{pct(r.pct)}}</td></tr>`;
+    }}).join("") + "</tbody></table>";
+}}
+function drawMovers() {{
+  const byMoney = metric === "delta";
+  gainH.textContent = byMoney ? "Biggest $ gain" : "Top % gain";
+  lossH.textContent = byMoney ? "Biggest $ drop" : "Top % drop";
+  document.getElementById("gain").innerHTML = moverTable(1);
+  document.getElementById("loss").innerHTML = moverTable(-1);
+  document.getElementById("floor").hidden = byMoney;
+  document.querySelectorAll(".toggle button").forEach(b =>
+    b.classList.toggle("on", b.dataset.metric === metric));
+}}
+const gainH = document.getElementById("gain-h"), lossH = document.getElementById("loss-h");
+document.querySelectorAll(".toggle button").forEach(b => b.onclick = () => {{
+  metric = b.dataset.metric;
+  try {{ localStorage.setItem("cube.metric", metric); }} catch (e) {{}}
+  drawMovers();
+}});
+drawMovers();
+
+/* ---- every card ---- */
 let dir = -1, key = "value";
-const esc = s => String(s).replace(/[&<>]/g, c => ({{"&":"&amp;","<":"&lt;",">":"&gt;"}}[c]));
 function draw() {{
   const sorted = [...rows].sort((a, b) =>
     typeof a[key] === "string" ? dir * a[key].localeCompare(b[key]) : dir * (a[key] - b[key]));
   document.querySelector("#all tbody").innerHTML = sorted.map(r =>
-    `<tr><td data-img="images/${{encodeURIComponent(r.img)}}.jpg">${{esc(r.name)}}` +
-    `${{r.finish === "foil" ? ' <em>foil</em>' : ""}}</td>` +
-    `<td>${{esc(r.set)}}</td><td class="num">${{r.copies}}</td>` +
+    `<tr>${{cell(r)}}<td>${{esc(r.set)}}</td><td class="num">${{r.copies}}</td>` +
     `<td class="num">$${{r.price.toFixed(2)}}</td>` +
     `<td class="num">$${{r.value.toFixed(2)}}</td></tr>`).join("");
 }}

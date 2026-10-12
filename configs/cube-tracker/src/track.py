@@ -25,6 +25,7 @@ SETS_DIR = os.path.join(DATA_DIR, "sets")
 PRICES_CSV = os.path.join(DATA_DIR, "prices.csv")
 
 CUBE_URL = f"https://cubecobra.com/cube/api/cubeJSON/{CUBE_ID}"
+CUBE_NAME = CUBE_ID   # replaced with the cube's real name on the first fetch
 TODAY_URL = "https://mtgjson.com/api/v5/AllPricesToday.json.gz"
 SET_URL = "https://mtgjson.com/api/v5/{code}.json"
 
@@ -88,7 +89,9 @@ def load_cube():
     Keyed by printing *and* finish because the same card can appear twice in
     the cube in different finishes, and those are different prices.
     """
+    global CUBE_NAME
     cube = fetch(CUBE_URL)
+    CUBE_NAME = cube.get("name") or CUBE_ID
     entries = {}
     for card in cube["cards"]["mainboard"]:
         det = card.get("details") or {}
@@ -194,6 +197,11 @@ def main():
     print(f"{stamp} {as_of}: {len(rows)} printings, ${total:,.2f}, {len(missing)} unpriced")
     for m in missing:
         print(f"  unpriced: {m}")
+
+    # The page titles itself from the cube's own name, so renaming it on
+    # CubeCobra renames the dashboard on the next run.
+    with open(os.path.join(DATA_DIR, "cube.json"), "w") as f:
+        json.dump({"id": CUBE_ID, "name": CUBE_NAME}, f)
 
     # Art is cosmetic: a Scryfall hiccup must never fail a price snapshot,
     # and every day missed on prices is gone permanently.
