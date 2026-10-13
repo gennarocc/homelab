@@ -30,7 +30,7 @@ transfers:
         files: 200
         megabytes: 4000       # 4 GB per user per week
   download:
-    speed_limit: 8000         # KiB/s ~ 65.5 Mbps (73% of 90 Mbps line); slots left unlimited
+    speed_limit: 8000
   groups:
     leechers:
       thresholds:
@@ -51,6 +51,18 @@ transfers:
           weekly:
             files: 30
             megabytes: 600
+    user_defined:
+      whitelist:
+        upload:
+          priority: 250
+          strategy: firstinfirstout
+          limits:
+            queued: ~
+            daily: ~
+            weekly: ~
+        members:
+          - vcevce
+
 
 integrations:
   scripts:

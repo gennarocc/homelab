@@ -50,32 +50,40 @@ def load(path):
     with open(path, newline="") as f:
         for row in csv.DictReader(f):
             key = (row["uuid"], row["finish"])
-            by_date[row["date"]][key] = (float(row["price"]), int(row["copies"]))
+            buy = row.get("buylist") or ""      # absent on pre-buylist rows
+            by_date[row["date"]][key] = (float(row["price"]), int(row["copies"]),
+                                         float(buy) if buy else None)
             meta[key] = row
     return dict(sorted(by_date.items())), meta
 
 
 def totals(by_date, meta, setdates):
-    """Per day: (date, total NM, index NM, total MP, index MP).
+    """Per day: (date, market NM, market MP, buylist NM, buylist MP).
 
-    The index covers only cards held since day one. It and the total diverge
-    whenever the cube list changes, which is the point: the index says what
-    prices did, the total says what the cube is worth.
+    Every printing in the cube on that day, at that day's price. Historical
+    rows carry today's list, so this is "what the cards I own now were worth",
+    not "what I owned then" -- nothing records the latter.
+
+    The buylist columns are a FLOOR: a printing Card Kingdom isn't currently
+    buying contributes nothing rather than being estimated. On a given day
+    that is around 92% of cube value covered, so the line sits a little under
+    what a dealer would really offer. Days with no buylist data at all come
+    back as None so the chart can stop the line instead of dropping to zero.
     """
-    dates = list(by_date)
-    baseline = set(by_date[dates[0]]) if dates else set()
     series = []
-    for d in dates:
-        tn = ti = mn = mi = 0.0
-        for k, (p, c) in by_date[d].items():
+    for d in by_date:
+        tn = mn = bn = bm = 0.0
+        any_buy = False
+        for k, (p, c, b) in by_date[d].items():
             m = meta[k]
             f = mp_factor(setdates.get(m["set"], ""), m["finish"], p)
             tn += p * c
             mn += p * f * c
-            if k in baseline:
-                ti += p * c
-                mi += p * f * c
-        series.append((d, tn, ti, mn, mi))
+            if b is not None:
+                any_buy = True
+                bn += b * c
+                bm += b * f * c
+        series.append((d, tn, mn, bn if any_buy else None, bm if any_buy else None))
     return series
 
 
@@ -96,7 +104,7 @@ def movers(by_date, meta, days_back, limit=15):
         return []
     a, b = by_date[start], by_date[dates[-1]]
     out = []
-    for key, (price, copies) in b.items():
+    for key, (price, copies, _b) in b.items():
         if key not in a:
             continue
         was = a[key][0]
@@ -138,14 +146,15 @@ def cube_meta(data_dir):
     try:
         with open(os.path.join(data_dir, "cube.json")) as f:
             d = json.load(f)
-        return d.get("name") or "Cube Tracker", d.get("sets") or {}
+        return (d.get("name") or "Cube Tracker", d.get("sets") or {},
+                d.get("colors") or {})
     except Exception:
-        return "Cube Tracker", {}
+        return "Cube Tracker", {}, {}
 
 
 def build(csv_path, out_path):
     by_date, meta = load(csv_path)
-    name, setdates = cube_meta(os.path.dirname(os.path.abspath(csv_path)))
+    name, setdates, colours = cube_meta(os.path.dirname(os.path.abspath(csv_path)))
     series = totals(by_date, meta, setdates)
     dates = list(by_date)
     window_days = 30 if pick(dates, 30) else 7
@@ -154,11 +163,12 @@ def build(csv_path, out_path):
     latest = by_date[dates[-1]]
     mv = {m["key"]: m for m in rows}
     all_rows = []
-    for k, (p, c) in latest.items():
+    for k, (p, c, _b) in latest.items():
         row = {"name": meta[k]["name"], "set": meta[k]["set"], "finish": meta[k]["finish"],
                "img": images.slug(meta[k]["set"], meta[k]["number"]),
                "copies": c, "price": round(p, 2), "value": round(p * c, 2),
-               "mp": mp_factor(setdates.get(meta[k]["set"], ""), meta[k]["finish"], p)}
+               "mp": mp_factor(setdates.get(meta[k]["set"], ""), meta[k]["finish"], p),
+               "c": colours.get(k[0], "c")}
         m = mv.get(k)
         if m:   # cards added mid-window have no "then" price to compare against
             row.update(was=round(m["was"], 2), delta=round(m["delta"], 2),
@@ -170,12 +180,15 @@ def build(csv_path, out_path):
     page = TEMPLATE.format(
         title=html.escape(name),
         updated=dates[-1],
-        cards=sum(c for _, c in latest.values()),
+        cards=sum(c for _, c, _b in latest.values()),
         printings=len(latest),
         stats_nm=change_cards(series, 1),
-        stats_mp=change_cards(series, 3),
-        series_json=json.dumps([[d, round(a, 2), round(b, 2), round(c, 2), round(e, 2)]
-                                for d, a, b, c, e in series], separators=(",", ":")),
+        stats_mp=change_cards(series, 2),
+        series_json=json.dumps(
+            [[d, round(nm, 2), round(mp, 2),
+              None if bn is None else round(bn, 2),
+              None if bm is None else round(bm, 2)]
+             for d, nm, mp, bn, bm in series], separators=(",", ":")),
         window=f"{window_days}d",
         table_json=table_json,
     )
@@ -195,10 +208,10 @@ TEMPLATE = """<!doctype html>
    gain/loss. Both stepped per surface so the small bold table numbers clear
    4.5:1 -- the reference green is only 3.27:1 on light, the red 3.62:1 on dark. */
 :root{{--bg:#f4f4f2;--card:#fcfcfb;--ink:#0b0b0b;--muted:#52514e;--line:#e3e2de;
---accent:#2a78d6;--accent2:#eb6834;--up:#097f09;--down:#d03b3b;}}
+--accent:#2a78d6;--accent2:#eb6834;--up:#087508;--down:#c73030;}}
 @media(prefers-color-scheme:dark){{:root{{--bg:#111110;--card:#1a1a19;--ink:#fff;
 --muted:#c3c2b7;--line:#383835;--accent:#3987e5;--accent2:#d95926;
---up:#0ca30c;--down:#e46a6a;}}}}
+--up:#0db60d;--down:#e77b7b;}}}}
 *{{box-sizing:border-box}}
 [hidden]{{display:none!important}}
 body{{margin:0;padding:28px 28px 80px;background:var(--bg);color:var(--ink);
@@ -232,10 +245,10 @@ display:flex;flex-direction:column;gap:3px}}
 .tick{{fill:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}}
 .tick.end{{text-anchor:end}} .tick.mid{{text-anchor:middle}}
 .tick.c1{{fill:var(--accent);font-weight:600}} .tick.c2{{fill:var(--accent2);font-weight:600}}
-.legend{{margin:14px 0 0;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:7px;flex-wrap:wrap}}
 .key{{width:12px;height:12px;display:inline-block;margin-left:14px}}
 .key:first-child{{margin-left:0}}
 .k1{{background:var(--accent)}} .k2{{background:var(--accent2)}}
+.legend{{margin:14px 0 0;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:7px;flex-wrap:wrap}}
 .legend .note{{margin-left:14px;font-style:italic;opacity:.8}}
 
 /* Rank the movers by dollars or by percent -- which one matters depends on
@@ -270,6 +283,21 @@ tbody tr:last-child td{{border-bottom:0}}
 #all thead th{{position:sticky;top:0;z-index:2;background:var(--card);
 box-shadow:inset 0 -1px 0 var(--line)}}
 td[data-img]{{cursor:default}}
+
+/* Row tint by card colour. Kept very light: the gain/loss figures sit on top
+   of it and still have to clear 4.5:1, so the effective background can only
+   move a few percent off the card surface. */
+:root{{--tint:.14}}
+@media(prefers-color-scheme:dark){{:root{{--tint:.13}}}}
+tbody tr[data-c]{{background:rgb(var(--hue) / var(--tint))}}
+tr[data-c="w"]{{--hue:235 220 170}}
+tr[data-c="u"]{{--hue:90 160 220}}
+tr[data-c="b"]{{--hue:140 120 160}}
+tr[data-c="r"]{{--hue:225 110 90}}
+tr[data-c="g"]{{--hue:110 180 120}}
+tr[data-c="m"]{{--hue:220 185 95}}
+tr[data-c="c"]{{--hue:165 172 182}}
+tr[data-c="l"]{{--hue:185 150 115}}
 
 /* Hover art. One <img> reused for every card, positioned at the cursor. */
 #preview{{position:fixed;width:340px;max-width:46vw;z-index:60;display:none;
@@ -307,6 +335,10 @@ box-shadow:0 14px 38px rgba(0,0,0,.5)}}
 </div>
 <div id="chart"></div>
 <p class="legend" id="legend"></p>
+<p class="legend"><span class="note" id="buy-note" hidden>Buylist is a floor:
+printings Card Kingdom isn&rsquo;t currently buying count as nothing, which is
+about 8% of cube value on a typical day. It only goes back as far as
+MTGJSON&rsquo;s 90-day window.</span></p>
 <p class="legend"><span class="note" id="mp-note" hidden>Moderately-played
 estimate: 66% of NM pre-Revised, 72% Revised&ndash;Weatherlight, 77%
 Tempest&ndash;Scourge, 65% foils, 90% under $1. Percentages are judgement, not
@@ -388,20 +420,24 @@ function dlabel(iso, yr) {{
 }}
 function drawChart() {{
   const win = days > 0 ? series.slice(-days) : series;
-  const ti = cond === "mp" ? 3 : 1, ii = cond === "mp" ? 4 : 2;
-  const box = document.getElementById("chart"), leg = document.getElementById("legend");
+  const ti = cond === "mp" ? 2 : 1, bi = cond === "mp" ? 4 : 3;
+  const box = document.getElementById("chart");
   document.getElementById("range-note").textContent =
     days > 0 && series.length <= days ? "only " + series.length + " days banked so far" : "";
   document.querySelectorAll("#range button").forEach(b =>
     b.classList.toggle("on", +b.dataset.days === days));
   if (win.length < 2) {{
     box.innerHTML = '<p class="muted">Two days of snapshots needed before the chart appears.</p>';
-    leg.innerHTML = ""; return;
+    return;
   }}
   const W = 1400, H = 440, L = 104, R = 104, T = 26, B = 60, n = win.length;
-  const tot = win.map(r => r[ti]), idx = win.map(r => r[ii]);
-  const same = tot.every((v, i) => Math.abs(v - idx[i]) < 0.01);
-  const ticks = niceTicks(Math.min(...tot, ...idx), Math.max(...tot, ...idx), 6);
+  const tot = win.map(r => r[ti]);
+  // Buylist only exists for the recent window; older days are null and the
+  // line simply starts where the data does.
+  const buy = win.map(r => r[bi]);
+  const hasBuy = buy.some(v => v !== null);
+  const span = hasBuy ? buy.filter(v => v !== null) : [];
+  const ticks = niceTicks(Math.min(...tot, ...span), Math.max(...tot, ...span), 6);
   const ylo = ticks[0], yspan = (ticks[ticks.length - 1] - ylo) || 1;
   const X = i => L + i * (W - L - R) / (n - 1);
   const Y = v => H - B - (v - ylo) / yspan * (H - T - B);
@@ -421,23 +457,26 @@ function drawChart() {{
          `<text x="${{x.toFixed(1)}}" y="${{H - B + 24}}" class="tick mid">${{dlabel(win[i][0], yr)}}</text>`;
   }}
   const path = v => v.map((p, i) => `${{X(i).toFixed(1)}},${{Y(p).toFixed(1)}}`).join(" ");
+  const partial = v => v.map((p, i) => p === null ? null : `${{X(i).toFixed(1)}},${{Y(p).toFixed(1)}}`)
+                        .filter(Boolean).join(" ");
   g += `<polygon points="${{L}},${{H - B}} ${{path(tot)}} ${{X(n - 1).toFixed(1)}},${{H - B}}" fill="var(--accent)" opacity=".12"/>`;
   g += `<polyline points="${{path(tot)}}" fill="none" stroke="var(--accent)" stroke-width="2.5"/>`;
-  if (!same) g += `<polyline points="${{path(idx)}}" fill="none" stroke="var(--accent2)" stroke-width="2.5"/>`;
-  const dot = (vals, col, cls, dy) =>
-    `<circle cx="${{X(n - 1).toFixed(1)}}" cy="${{Y(vals[n - 1]).toFixed(1)}}" r="4.5" fill="${{col}}"/>` +
-    `<text x="${{(X(n - 1) + 11).toFixed(1)}}" y="${{(Y(vals[n - 1]) + 4 + dy).toFixed(1)}}" class="tick ${{cls}}">${{usd(vals[n - 1])}}</text>`;
-  g += dot(tot, "var(--accent)", "c1", 0);
-  if (!same) {{
-    const gap = Y(idx[n - 1]) - Y(tot[n - 1]);
-    g += dot(idx, "var(--accent2)", "c2", Math.abs(gap) < 18 ? (gap >= 0 ? 18 : -18) - gap : 0);
+  if (hasBuy) g += `<polyline points="${{partial(buy)}}" fill="none" stroke="var(--accent2)" stroke-width="2.5"/>`;
+  g += `<circle cx="${{X(n - 1).toFixed(1)}}" cy="${{Y(tot[n - 1]).toFixed(1)}}" r="4.5" fill="var(--accent)"/>` +
+       `<text x="${{(X(n - 1) + 11).toFixed(1)}}" y="${{(Y(tot[n - 1]) + 4).toFixed(1)}}" class="tick c1">${{usd(tot[n - 1])}}</text>`;
+  if (hasBuy && buy[n - 1] !== null) {{
+    const gap = Y(buy[n - 1]) - Y(tot[n - 1]);
+    const dy = Math.abs(gap) < 18 ? (gap >= 0 ? 18 : -18) - gap : 0;
+    g += `<circle cx="${{X(n - 1).toFixed(1)}}" cy="${{Y(buy[n - 1]).toFixed(1)}}" r="4.5" fill="var(--accent2)"/>` +
+         `<text x="${{(X(n - 1) + 11).toFixed(1)}}" y="${{(Y(buy[n - 1]) + 4 + dy).toFixed(1)}}" class="tick c2">${{usd(buy[n - 1])}}</text>`;
   }}
   g += `<line x1="${{L}}" y1="${{H - B}}" x2="${{W - R}}" y2="${{H - B}}" class="axis"/>` +
        `<line x1="${{L}}" y1="${{T}}" x2="${{L}}" y2="${{H - B}}" class="axis"/>`;
   box.innerHTML = `<svg viewBox="0 0 ${{W}} ${{H}}" class="chart" role="img" aria-label="Cube value over time">${{g}}</svg>`;
-  leg.innerHTML = '<span class="key k1"></span>Total cube value' + (same
-    ? '<span class="note">Same-card index tracks the total exactly until the cube list changes.</span>'
-    : '<span class="key k2"></span>Same-card index (day-one cards only)');
+  document.getElementById("legend").innerHTML = !hasBuy ? "" :
+    '<span class="key k1"></span>TCGplayer market (what it is listed at)' +
+    '<span class="key k2"></span>Card Kingdom buylist (what a dealer pays)';
+  document.getElementById("buy-note").hidden = !hasBuy;
 }}
 document.querySelectorAll("#range button").forEach(b => b.onclick = () => {{
   days = +b.dataset.days;
@@ -510,7 +549,7 @@ function moverTable(sign) {{
     top.map(r => {{
       const t = r.delta >= 0 ? "up" : "down";
       const f = fac(r);
-      return `<tr>${{cell(r)}}<td class="num">$${{(r.was * f).toFixed(2)}}</td>` +
+      return `<tr data-c="${{r.c}}">${{cell(r)}}<td class="num">$${{(r.was * f).toFixed(2)}}</td>` +
         `<td class="num">$${{(r.price * f).toFixed(2)}}</td>` +
         `<td class="num money ${{t}}">${{money(r.delta * f)}}</td>` +
         `<td class="num ${{t}}">${{pct(r.pct)}}</td></tr>`;
@@ -541,7 +580,7 @@ function draw() {{
   const sorted = [...rows].sort((a, b) =>
     typeof kv(a) === "string" ? dir * kv(a).localeCompare(kv(b)) : dir * (kv(a) - kv(b)));
   document.querySelector("#all tbody").innerHTML = sorted.map(r =>
-    `<tr>${{cell(r)}}<td>${{esc(r.set)}}</td><td class="num">${{r.copies}}</td>` +
+    `<tr data-c="${{r.c}}">${{cell(r)}}<td>${{esc(r.set)}}</td><td class="num">${{r.copies}}</td>` +
     `<td class="num">$${{(r.price * fac(r)).toFixed(2)}}</td>` +
     `<td class="num">$${{(r.value * fac(r)).toFixed(2)}}</td></tr>`).join("");
 }}

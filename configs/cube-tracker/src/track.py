@@ -27,10 +27,24 @@ PRICES_CSV = os.path.join(DATA_DIR, "prices.csv")
 CUBE_URL = f"https://cubecobra.com/cube/api/cubeJSON/{CUBE_ID}"
 CUBE_NAME = CUBE_ID   # replaced with the cube's real name on the first fetch
 SET_DATES = {}        # set code -> release date, for the condition haircuts
+CARD_COLORS = {}      # uuid -> w/u/b/r/g/m(ulti)/c(olorless)/l(and), for row tints
+
+
+def colour_of(card):
+    """The conventional Magic sort order: lands first, then colourless, then
+    gold, then the five colours. Gaea's Cradle has no colours but a green
+    identity -- it still sorts as a land, which is how cube lists show it."""
+    if "Land" in (card.get("types") or []):
+        return "l"
+    cols = card.get("colors") or []
+    if not cols:
+        return "c"
+    return "m" if len(cols) > 1 else cols[0].lower()
 TODAY_URL = "https://mtgjson.com/api/v5/AllPricesToday.json.gz"
 SET_URL = "https://mtgjson.com/api/v5/{code}.json"
 
-FIELDS = ["date", "uuid", "name", "set", "number", "finish", "copies", "price"]
+FIELDS = ["date", "uuid", "name", "set", "number", "finish", "copies", "price",
+          "buylist"]   # what Card Kingdom pays; blank where they aren't buying
 
 
 def download(url, attempts=6):
@@ -140,7 +154,16 @@ def scryfall_to_mtgjson(entries):
             sid = (card.get("identifiers") or {}).get("scryfallId")
             if sid in wanted:
                 mapping[sid] = card["uuid"]
+                CARD_COLORS[card["uuid"]] = colour_of(card)
     return mapping
+
+
+def ck_buylist(record, finish):
+    """What Card Kingdom currently pays. Blank for ~114 printings at any time:
+    a dealer stops quoting once they are stocked up, so this comes and goes."""
+    buy = (((record or {}).get("paper") or {}).get("cardkingdom") or {}).get("buylist") or {}
+    series = buy.get(finish) or {}
+    return series[max(series)] if series else None
 
 
 def tcg_price(record, finish):
@@ -164,7 +187,9 @@ def main():
     rows, missing = [], []
     for entry in entries.values():
         uuid = mapping.get(entry["scryfall_id"])
-        day, price = tcg_price(data.get(uuid), entry["finish"]) if uuid else (None, None)
+        rec = data.get(uuid) if uuid else None
+        day, price = tcg_price(rec, entry["finish"]) if uuid else (None, None)
+        buy = ck_buylist(rec, entry["finish"]) if uuid else None
         if price is None:
             missing.append(f"{entry['name']} [{entry['set']}-{entry['number']} {entry['finish']}]")
             continue
@@ -177,6 +202,7 @@ def main():
             "finish": entry["finish"],
             "copies": entry["copies"],
             "price": f"{price:.2f}",
+            "buylist": f"{buy:.2f}" if buy is not None else "",
         })
 
     if not rows:
@@ -211,7 +237,8 @@ def main():
     # The page titles itself from the cube's own name, so renaming it on
     # CubeCobra renames the dashboard on the next run.
     with open(os.path.join(DATA_DIR, "cube.json"), "w") as f:
-        json.dump({"id": CUBE_ID, "name": CUBE_NAME, "sets": SET_DATES}, f)
+        json.dump({"id": CUBE_ID, "name": CUBE_NAME, "sets": SET_DATES,
+                   "colors": CARD_COLORS}, f)
 
     # Art is cosmetic: a Scryfall hiccup must never fail a price snapshot,
     # and every day missed on prices is gone permanently.
