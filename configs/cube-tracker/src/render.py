@@ -202,16 +202,21 @@ def build(csv_path, out_path):
 TEMPLATE = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- This page ships its own dark theme, contrast-checked against both
+     surfaces. Dark Reader re-tints on top of it and rewrites custom
+     properties, which breaks the row colours; this tells it to stand down. -->
+<meta name="darkreader-lock">
+<meta name="color-scheme" content="light dark">
 <title>{title} &mdash; Cube Tracker</title>
 <style>
 /* Palette: categorical slots 1-2 for the two chart series, status green/red for
    gain/loss. Both stepped per surface so the small bold table numbers clear
    4.5:1 -- the reference green is only 3.27:1 on light, the red 3.62:1 on dark. */
 :root{{--bg:#f4f4f2;--card:#fcfcfb;--ink:#0b0b0b;--muted:#52514e;--line:#e3e2de;
---accent:#2a78d6;--accent2:#eb6834;--up:#087508;--down:#c73030;}}
+--accent:#2a78d6;--accent2:#eb6834;--up:#077307;--down:#c11f1f;}}
 @media(prefers-color-scheme:dark){{:root{{--bg:#111110;--card:#1a1a19;--ink:#fff;
 --muted:#c3c2b7;--line:#383835;--accent:#3987e5;--accent2:#d95926;
---up:#0db60d;--down:#e77b7b;}}}}
+--up:#13aa13;--down:#e76e6e;}}}}
 *{{box-sizing:border-box}}
 [hidden]{{display:none!important}}
 body{{margin:0;padding:28px 28px 80px;background:var(--bg);color:var(--ink);
@@ -287,17 +292,27 @@ td[data-img]{{cursor:default}}
 /* Row tint by card colour. Kept very light: the gain/loss figures sit on top
    of it and still have to clear 4.5:1, so the effective background can only
    move a few percent off the card surface. */
-:root{{--tint:.14}}
-@media(prefers-color-scheme:dark){{:root{{--tint:.13}}}}
-tbody tr[data-c]{{background:rgb(var(--hue) / var(--tint))}}
-tr[data-c="w"]{{--hue:235 220 170}}
-tr[data-c="u"]{{--hue:90 160 220}}
-tr[data-c="b"]{{--hue:140 120 160}}
-tr[data-c="r"]{{--hue:225 110 90}}
-tr[data-c="g"]{{--hue:110 180 120}}
-tr[data-c="m"]{{--hue:220 185 95}}
-tr[data-c="c"]{{--hue:165 172 182}}
-tr[data-c="l"]{{--hue:185 150 115}}
+tr[data-c="w"]{{background:rgba(235,220,170,.23)}}
+tr[data-c="u"]{{background:rgba(90,160,220,.23)}}
+tr[data-c="b"]{{background:rgba(140,120,160,.23)}}
+tr[data-c="r"]{{background:rgba(225,110,90,.23)}}
+tr[data-c="g"]{{background:rgba(110,180,120,.23)}}
+tr[data-c="m"]{{background:rgba(220,185,95,.23)}}
+tr[data-c="c"]{{background:rgba(165,172,182,.23)}}
+tr[data-c="l"]{{background:rgba(185,150,115,.23)}}
+/* Dark rows take a deeper step of the same hue. Tinting with the light
+   hues at 30% lifts every row off the dark surface and forces the
+   gain/loss figures to go neon to stay legible. */
+@media(prefers-color-scheme:dark){{
+tr[data-c="w"]{{background:rgba(124,102,29,.23)}}
+tr[data-c="u"]{{background:rgba(27,80,126,.23)}}
+tr[data-c="b"]{{background:rgba(76,63,90,.23)}}
+tr[data-c="r"]{{background:rgba(129,39,24,.23)}}
+tr[data-c="g"]{{background:rgba(52,101,59,.23)}}
+tr[data-c="m"]{{background:rgba(126,98,27,.23)}}
+tr[data-c="c"]{{background:rgba(69,75,84,.23)}}
+tr[data-c="l"]{{background:rgba(102,77,51,.23)}}
+}}
 
 /* Hover art. One <img> reused for every card, positioned at the cursor. */
 #preview{{position:fixed;width:340px;max-width:46vw;z-index:60;display:none;
