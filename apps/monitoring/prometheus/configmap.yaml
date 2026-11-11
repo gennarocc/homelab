@@ -33,6 +33,12 @@ data:
         static_configs:
           - targets: ['192.168.1.99:9256']
 
+      # kube-state-metrics - Kubernetes object state (restarts, deployment health)
+      - job_name: 'kube-state-metrics'
+        honor_labels: true
+        static_configs:
+          - targets: ['kube-state-metrics:8080']
+
       # Kubelet cAdvisor - Container metrics (CPU, Memory, etc)
       - job_name: 'kubernetes-cadvisor'
         scheme: https
