@@ -33,7 +33,7 @@ spec:
   volumeName: homelab-configs-pv
 
 ---
-# PersistentVolume for databases and monitoring data (local SD card)
+# PersistentVolume for databases and monitoring data (HDD)
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -47,7 +47,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   hostPath:
-    path: /home/pi/homelab/data
+    path: /hdd/.k3s/data
     type: DirectoryOrCreate
 
 ---
