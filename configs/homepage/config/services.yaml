@@ -13,15 +13,19 @@
           href: '{{HOMEPAGE_VAR_PHOTOPRISM_URL}}'
           description: Image Gallery
           icon: /icons/photoprism.svg
-          siteMonitor: '{{HOMEPAGE_VAR_PHOTOPRISM_URL}}'
+          namespace: homelab
+          app: photoprism
+          podSelector: app=photoprism
           widget:
             type: photoprism
-            url: '{{HOMEPAGE_VAR_PHOTOPRISM_URL}}'
+            url: 'http://photoprism.homelab.svc.cluster.local:2342'
             key: '{{HOMEPAGE_VAR_PHOTOPRISM_TOKEN}}'
       - Romm:
           href: '{{HOMEPAGE_VAR_ROMM_URL}}'
           description: Emulator and Rom Manager
-          siteMonitor: '{{HOMEPAGE_VAR_ROMM_URL}}'
+          namespace: homelab
+          app: romm
+          podSelector: app=romm
           icon: /icons/romm.png
           widget:
             type: romm
@@ -32,12 +36,16 @@
           href: '{{HOMEPAGE_VAR_FILEBROWSER_URL}}'
           description: File server and browser
           icon: /icons/fb.svg
-          siteMonitor: '{{HOMEPAGE_VAR_FILEBROWSER_URL}}'
+          namespace: homelab
+          app: filebrowser
+          podSelector: app=filebrowser
       - qBittorrent:
           href: '{{HOMEPAGE_VAR_QBITTORRENT_URL}}'
           description: Torrent Manager
           icon: /icons/qbt.png
-          siteMonitor: '{{HOMEPAGE_VAR_QBITTORRENT_URL}}'
+          namespace: homelab
+          app: qbittorrent
+          podSelector: app=qbittorrent
           widget:
             type: qbittorrent
             url: '{{HOMEPAGE_VAR_QBITTORRENT_URL}}'
@@ -47,7 +55,9 @@
           href: '{{HOMEPAGE_VAR_SLSKD_URL}}'
           description: Music Sharing
           icon: /icons/slskd.png
-          siteMonitor: '{{HOMEPAGE_VAR_SLSKD_URL}}'
+          namespace: homelab
+          app: slskd
+          podSelector: app=slskd
           widget:
             type: slskd
             url: '{{HOMEPAGE_VAR_SLSKD_URL}}'
@@ -56,23 +66,31 @@
           href: '{{HOMEPAGE_VAR_WRTAG_URL}}'
           description: Music Tagger and Importer
           icon: /icons/musicbrainz.png
-          siteMonitor: '{{HOMEPAGE_VAR_WRTAG_URL}}'
+          namespace: homelab
+          app: wrtag
+          podSelector: app=wrtag
       - Metube:
           href: '{{HOMEPAGE_VAR_METUBE_URL}}'
           description: Youtube Downloader
           icon: /icons/metube.png
-          siteMonitor: '{{HOMEPAGE_VAR_METUBE_URL}}'
+          namespace: homelab
+          app: metube
+          podSelector: app=metube
   - Websites:
       - Hurley's Ranch:
           href: '{{HOMEPAGE_VAR_LOST_URL}}'
           description: Lost Website
           icon: /icons/hurl.png
-          siteMonitor: '{{HOMEPAGE_VAR_LOST_URL}}'
+          namespace: homelab
+          app: hurleys-ranch
+          podSelector: app=hurleys-ranch
       - Pugstreet Cinema:
           href: '{{HOMEPAGE_VAR_CINEMA_URL}}'
           description: Movie Podcast
           icon: /icons/favicon.ico
-          siteMonitor: '{{HOMEPAGE_VAR_CINEMA_URL}}'
+          namespace: homelab
+          app: pugst-cinema
+          podSelector: app=pugst-cinema
 - Admin:
   - ArgoCD:
       href: '{{HOMEPAGE_VAR_ARGOCD_URL}}'
@@ -87,7 +105,9 @@
       href: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
       icon: /icons/grafana.svg
       description: Observability Dashboard
-      siteMonitor: '{{HOMEPAGE_VAR_GRAFANA_URL}}'
+      namespace: homelab
+      app: grafana
+      podSelector: app=grafana
       widget:
         type: grafana
         url: 'http://192.168.1.99:3001'
