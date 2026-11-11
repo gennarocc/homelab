@@ -19,6 +19,13 @@ spec:
           image: nginx
           ports:
             - containerPort: 80
+          resources:
+            limits:
+              cpu: 200m
+              memory: 64Mi
+            requests:
+              cpu: 10m
+              memory: 16Mi
           volumeMounts:
             - name: homelab-configs
               mountPath: /usr/share/nginx/html
